@@ -1,0 +1,24 @@
+{
+	"type" : "text/plain",
+	"filename" : "just block",
+	"created" : "2012-04-23T18:25:43.511Z",
+	"author" : "Someone",
+	"size": 10,
+	"description" : "simple description of file",
+	"hash algorithm" : "SHA256",
+	
+	"recipies" : {
+		"first" : {
+			"wasm" : "_wasm_special_for_binary_concat_",
+			"arg1" : "5994471ABB01112AFCC18159F6CC74B4F511B99806DA59B3CAF5A9C173CACFC5",
+			"arg2" : "E3DAEA56B34112448147D0081E195E4EE8BCFA79F1D6863925F9742BEC1D9BC0"
+		},
+		"second" : {
+			"wasm" : "_wasm_special_for_binary_concat_",
+			"arg1" : "A665A45920422F9D417E4867EFDC4FB8A04A1F3FFF1FA07E998E86F7F7A27AE3",
+			"arg2" : "DB2E7F1BD5AB9968AE76199B7CC74795CA7404D5A08D78567715CE532F9D2669",
+			"arg3" : "90363681060467CEF1C7AC85C946522EF3CB00B5FC386064DE79FAF5DF57A547"
+		}
+	}
+
+}
