@@ -1,0 +1,50 @@
+{
+	"match1" : {
+
+		"MIME" 		: "image/png",
+		"name" 		: "horse",
+		"size" 		: 100,
+
+		"recipies1" : {
+			"cid" : "horse_cid_by_sha256",
+			"hashAlg" : "SHA256",
+			"exec" : {
+				"wasm" : "_make_horse_from_data_",
+				"arg1" : "_data_for_making_horse_"
+			}
+		},
+
+		"recipies2" : {
+			"cid" 		: "horse_cid_by_sha256",
+			"hashAlg" 	: "SHA256",
+			"data"		:	"_raw_horse_"
+		},
+
+		"recipies3" : {
+			"cid" : "horse_cid_by_md5",
+			"hashAlg" : "MD5",
+			"data" :	"_raw_horse_"
+		}
+
+	},
+
+	"match2" : {
+
+		"MIME" 		: "text",
+		"name" 		: "text",
+		"size" 		: 10,
+
+		"recipies1" : {
+			"cid" : "text_cid_by_sha256",
+			"hashAlg" : "SHA256",
+			"raw" : "text value"
+		},
+
+		"recipies2" : {
+			"cid" : "text_cid_by_md5",
+			"hashAlg" : "MD5",
+			"data" :	"_raw_text_"
+		}
+
+	}
+}
