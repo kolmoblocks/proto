@@ -1,50 +1,78 @@
 {
-	"match1" : {
+	"match" : {
 
 		"MIME" 		: "image/png",
 		"name" 		: "horse",
 		"size" 		: 100,
 
-		"recipies1" : {
-			"cid" : "horse_cid_by_sha256",
-			"hashAlg" : "SHA256",
+		"formula1" : {
+			"cid" 		: "horse_cid_by_sha256",
+			"hashAlg" 	: "SHA256",
+
 			"exec" : {
-				"wasm" : "_make_horse_from_data_",
-				"arg1" : "_data_for_making_horse_"
+				"wasm" : "_cid_of_wasm_to_making_horse_from_data_",
+				"arg1" : "_cid_of_match_to_making_horse_"
 			}
 		},
 
-		"recipies2" : {
+		"formula2" : {
 			"cid" 		: "horse_cid_by_sha256",
 			"hashAlg" 	: "SHA256",
-			"data"		:	"_raw_horse_"
+
+			"match_cid"	: "_cid_of_match_to_data_block_with_raw_horse_"
 		},
 
-		"recipies3" : {
-			"cid" : "horse_cid_by_md5",
-			"hashAlg" : "MD5",
-			"data" :	"_raw_horse_"
+		"formula3" : {
+			"cid" 		: "horse_cid_by_sha256",
+			"hashAlg" 	: "SHA256",
+
+			"ref"		: "ref to data in storage..."
+		},
+
+		"formula4" : {
+			"cid" 		: "horse_cid_by_md5",
+			"hashAlg" 	: "MD5",
+
+			"raw" :	"*PNG;lkmdf85wt;oe;ael4039=097234069346;v32'6kv'l"
 		}
 
 	},
 
-	"match2" : {
+	
+	"wasm_match" : {
 
-		"MIME" 		: "text",
-		"name" 		: "text",
-		"size" 		: 10,
+		"MIME" 		: "wasm",
+		"name" 		: "wasm for making horse",
+		"size" 		: 1000,
 
-		"recipies1" : {
-			"cid" : "text_cid_by_sha256",
-			"hashAlg" : "SHA256",
-			"raw" : "text value"
+		"recipie1" : {
+			"cid" 		: "_cid_of_wasm_to_making_horse_from_data_",
+			"hashAlg" 	: "SHA256",
+
+			"match_cid"	: "_cid_of_data_block_with_raw_wasm_"
+		}
+	},
+
+	"kb_match" : {
+
+		"size" 		: 100,
+
+		"recipie1" : {
+			"cid" 		: "_cid_of_data_block_with_raw_wasm_",
+			"hashAlg" 	: "SHA256",
+
+			"ref"		: "ref to data in storage..."
 		},
 
-		"recipies2" : {
-			"cid" : "text_cid_by_md5",
-			"hashAlg" : "MD5",
-			"data" :	"_raw_text_"
+		"recipie2" : {
+			"cid" 		: "_cid2_of_data_block_with_raw_wasm_",
+			"hashAlg" 	: "MD5",
+
+			"ref"		: "ref to data in storage..."
 		}
 
 	}
+
+
+
 }
