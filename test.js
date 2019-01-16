@@ -7,6 +7,6 @@ if ( false == MyStorage.Init() ) {
     return;
 }
 
-let obj = MyStorage.GetData("63640264849A87C90356129D99EA165E37AA5FABC1FEA46906DF1A7CA50DB492");
+let obj = MyStorage.GetData("_test_");
 
 console.log(obj);

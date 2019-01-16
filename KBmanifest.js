@@ -10,9 +10,12 @@ module.exports = class manifest
         try {
             this.manifest = JSON.parse(data_manifest);
         } catch (error) {
-            console.error(error.sta);
+            console.log(error.sta);
             return false;
         }
+
+        if ( null == this.manifest )
+            return false;
 
         // Check mandatory properties for manifest
         if ( !this.HasMandatoryProperty(this.manifest, "type") ) return false;
@@ -33,7 +36,7 @@ module.exports = class manifest
                 if ( !this.HasMandatoryProperty(recept, "wasm") ) return false;
 
                 if ( 1 == Object.entries(recept).length ){
-                    console.error("Each recipie must contain more then one propertie");
+                    console.log("Each recipie must contain more then one propertie");
                     return false;
                 }
 
@@ -47,7 +50,7 @@ module.exports = class manifest
     HasMandatoryProperty(obj, prop_name)
     {
         if ( !obj.hasOwnProperty(prop_name) ){
-            console.error("Manifest does't contain mandatory property - '" + prop_name + "'");
+            console.log("Manifest does't contain mandatory property - '" + prop_name + "'");
             return false;
         }
         return true;
@@ -68,7 +71,7 @@ module.exports = class manifest
         for ( var recept_name in this.manifest.recipies )
         {
             let recept = this.manifest.recipies[recept_name];
-            recept["_name_"] = recept_name;
+            //recept["_name_"] = recept_name;
             result.push(recept);
         }
 

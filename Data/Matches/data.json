@@ -1,0 +1,108 @@
+{
+	"test" : {
+
+		"MIME" 		: "utf8/text",
+		"name" 		: "",
+		"size" 		: 10,
+
+        "formula1" : {
+			"cid" 		: "_test_",
+			"hashAlg" 	: "SHA256",
+
+			"exec" : {
+				"wasm" : "_text_concat_",
+                "arg1" : "_b1_",
+                "arg2" : "_b2_"
+			}
+		}
+	},
+	
+	"text_match" : {
+
+		"MIME" 		: "utf8/text",
+		"name" 		: "",
+		"size" 		: 10,
+
+        "formula0" : {
+			"cid" 		: "_cid1_",
+            "hashAlg" 	: "SHA256",
+            
+			"raw"       : "1234567890"
+		},
+
+		"formula1" : {
+			"cid" 		: "_cid1_",
+			"hashAlg" 	: "SHA256",
+
+			"exec" : {
+				"wasm" : "_text_concat_",
+                "arg1" : "_b1_",
+                "arg2" : "_b2_"
+			}
+		},
+
+		"formula2" : {
+			"cid" 		: "_cid1_",
+			"hashAlg" 	: "SHA256",
+
+			"match_cid"	: "_b3_"
+		},
+
+		"formula3" : {
+			"cid" 		: "_cid1_",
+			"hashAlg" 	: "SHA256",
+
+			"ref"		: "E3DAEA56B34112448147D0081E195E4EE8BCFA79F1D6863925F9742BEC1D9BC0"
+		}
+    },
+    
+    "block_1" : {
+
+		"size" : 5,
+
+        "formula0" : {
+			"cid" 		: "_b1_",
+            "hashAlg" 	: "SHA256",
+            
+			"raw"       : "12345"
+        }
+    },
+
+    "block_2" : {
+
+		"size" : 5,
+
+        "formula0" : {
+			"cid" 		: "_b2_",
+            "hashAlg" 	: "SHA256",
+            
+			"raw"       : "67890"
+        }
+    },
+
+    "block_3" : {
+
+		"MIME" : "utf8/text",
+		"size" : 10,
+
+        "formula0" : {
+			"cid" 		: "_b3_",
+            "hashAlg" 	: "SHA256",
+            
+			"raw"       : "1234567890"
+        }
+    },
+
+    "block_4" : {
+
+		"size" : 10005,
+
+        "formula0" : {
+			"cid" 		: "_text_concat_",
+            "hashAlg" 	: "SHA256",
+            
+			"ref"		: "concat_text.wasm"
+        }
+    }
+
+}

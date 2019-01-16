@@ -8,39 +8,82 @@ module.exports = class KBcache
     constructor(){
     }
 
-    // Get data associated with guid
-    // if like "guid.json" - KB manifest
-    // if like "guid.wasm" - KB web assembly
-    // if just "guid" - KB data
-    Get(guid)
+    GetFormulas(cid)
     {
+        let result = new Array();
 
-        if ( !isBrowser ) {
-            try {  
-                // to do: search in local cache
-                let data = fs.readFileSync(process.cwd() + "\\Data\\" + guid);
-                // to do: set data to inner storage
-                return data;
-            } catch(error) {
-                console.error('Error:', error.stack);
+        if ( !isBrowser ) 
+        {
+            
+            try 
+            {  
+
+                let data = fs.readFileSync(process.cwd() + "\\Data\\Matches\\data.json");
+
+                let jsondata = JSON.parse(data);
+
+                for ( var matches in jsondata )
+                {
+                    let match = jsondata[matches];
+                    for ( var index in match )
+                    {
+                        let formula = match[index];
+                        if ( formula.hasOwnProperty("cid") )
+                        {
+                            if ( cid == formula["cid"])
+                                result.push(formula);
+                        }
+                    }
+                }
+
+                return result;
+
+            } 
+            catch(error) 
+            {
+                console.log('Error:', error.stack);
             }
-        } else {
+
+        }
+        else 
+        {
             
             // search in local cache
 
             // if no data in cache - load from....
 
-            console.error('Not implemented');
+            console.log('Not implemented');
         }
         
         return null;
     }
 
-    // Check for presense in cache data with guid
-    IsPresent(guid) 
+    GetDataByRef(ref)
     {
-        // search in local cache
+        if ( !isBrowser ) 
+        {
+            
+            try 
+            {  
+                let data = fs.readFileSync(process.cwd() + "\\Data\\" + ref);
+                return new Uint8Array(data);
+            } 
+            catch(error) 
+            {
+                console.log('Error:', error.stack);
+            }
 
+        }
+        else 
+        {
+            
+            // search in local cache
+
+            // if no data in cache - load from....
+
+            console.log('Not implemented');
+        }
+        
         return null;
     }
 }
