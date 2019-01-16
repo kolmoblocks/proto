@@ -10,7 +10,7 @@ module.exports = class KBcache
 
     GetFormulas(cid)
     {
-        let result = new Array();
+        let result = null;
 
         if ( !isBrowser ) 
         {
@@ -31,7 +31,12 @@ module.exports = class KBcache
                         if ( formula.hasOwnProperty("cid") )
                         {
                             if ( cid == formula["cid"])
+                            {
+                                if ( null == result )
+                                    result = new Array();
+
                                 result.push(formula);
+                            }
                         }
                     }
                 }

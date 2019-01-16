@@ -1,12 +1,12 @@
-const storage = require('./KBstorage.js')
+const KBstorage = require('./KBstorage.js')
 
-const MyStorage = new storage("some path to storage");
+const MyStorage = new KBstorage("some path to storage");
 
 if ( false == MyStorage.Init() ) {   
     console.error("Storage Init failed..");
     return;
 }
 
-let obj = MyStorage.GetData("_test_");
+let data = MyStorage.GetData("_cid1_");
 
-console.log(obj);
+console.log(data);

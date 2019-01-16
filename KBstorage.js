@@ -1,9 +1,9 @@
 const KBcache = require('./KBcache.js')
-const KBmanifest = require('./KBmanifest.js')
+const KBWasmMrapper = require('./KBWasmWrapper.js')
 
 const isBrowser = this.window === this;
 
-module.exports = class storage 
+module.exports = class KBstorage
 {
 
   constructor(path)
@@ -165,7 +165,9 @@ module.exports = class storage
       args.push( arg );
     }
 
-    return this.ExecWasm(raw_wasm, args);
+    let wasmwrapper = new KBWasmMrapper(raw_wasm, args);
+
+    return wasmwrapper.Exec();
   }
 
   ProcessFormula_Ref(formula) 
@@ -188,11 +190,5 @@ module.exports = class storage
     {
       return this.ProcessFormulas(formulas);
     }
-  }
-
-  ExecWasm(wasm,args)
-  {
-    // todo: !!!
-    return new Array();
   }
 }
