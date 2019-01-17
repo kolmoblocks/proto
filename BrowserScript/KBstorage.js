@@ -44,7 +44,7 @@ module.exports = class KBstorage
 
     _cid(expression)
     {
-        let data_by_cid = this.cache.GetDataByCID(expression["cid"]);
+        let data_by_cid = this.cache.GetDataExpressionByCID(expression["cid"]);
 
         let data_expressions = this.ExtractDataExpressions(data_by_cid);
 
@@ -111,7 +111,7 @@ module.exports = class KBstorage
     {
         let ref = expression["ref"];
 
-        let result = this.cache.GetDataByRef(ref);
+        let result = this.cache.GetRawDataByRef(ref);
 
         if ( null == result )
         {

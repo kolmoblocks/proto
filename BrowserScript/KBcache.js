@@ -7,15 +7,15 @@ module.exports = class KBcache
         this.KBserver = new KBserver();
     }
 
-    GetDataByCID(cid)
+    GetDataExpressionByCID(cid)
     {
         // todo: check local cache for existing requested information
-        return this.KBserver.GetDataByCID(cid);
+        return this.KBserver.GetDataExpressionByCID(cid);
     }
 
-    GetDataByRef(ref)
+    GetRawDataByRef(ref)
     {
         // todo: check local cache for existing requested information
-        return this.KBserver.GetDataByRef(ref);
+        return this.KBserver.GetRawDataByRef(ref);
     }
 }

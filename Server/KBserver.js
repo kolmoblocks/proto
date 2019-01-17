@@ -8,7 +8,7 @@ module.exports = class KBserver
     constructor(){
     }
 
-    GetDataByCID(cid)
+    GetDataExpressionByCID(cid)
     {
         if ( !isBrowser ) 
         {            
@@ -47,7 +47,7 @@ module.exports = class KBserver
 
     }
 
-    GetDataByRef(ref)
+    GetRawDataByRef(ref)
     {
         if ( !isBrowser ) 
         {
