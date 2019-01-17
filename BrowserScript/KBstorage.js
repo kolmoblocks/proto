@@ -1,6 +1,6 @@
-const KBcache = require('./KBcache.js')
+const KBcache = require('.//KBcache.js')
 
-const KBwasm = require('./KBwasm.js')
+const KBwasm = require('.//KBwasm.js')
 
 module.exports = class KBstorage
 {

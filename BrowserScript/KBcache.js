@@ -1,4 +1,4 @@
-const KBserver = require('../Server/KBserver.js')
+const KBserver = require('..//Server//KBserver.js')
 
 module.exports = class KBcache
 {

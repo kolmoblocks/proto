@@ -1,4 +1,4 @@
-const KBstorage = require('./BrowserScript/KBstorage.js')
+const KBstorage = require('.//BrowserScript//KBstorage.js')
 
 const MyStorage = new KBstorage();
 

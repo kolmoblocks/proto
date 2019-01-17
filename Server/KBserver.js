@@ -14,7 +14,7 @@ module.exports = class KBserver
         {            
             try 
             {  
-                let jsondata = JSON.parse(fs.readFileSync(process.cwd() + "\\Server\\db.json"));
+                let jsondata = JSON.parse(fs.readFileSync(process.cwd() + "//Server//db.json"));
 
                 for ( var i in jsondata )
                 {
@@ -45,7 +45,7 @@ module.exports = class KBserver
             
             try 
             {  
-                let data = fs.readFileSync(process.cwd() + "\\Server\\files\\" + ref);
+                let data = fs.readFileSync(process.cwd() + "//Server//files//" + ref);
                 return new Uint8Array(data);
             } 
             catch(error) 
