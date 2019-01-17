@@ -33,15 +33,6 @@ module.exports = class KBserver
                 console.log('Error getting data by CID:', error.stack);
             }
         }
-        else 
-        {
-            
-            // search in local cache
-
-            // if no data in cache - load from....
-
-            console.log('Not implemented getting data by CID');
-        }
         
         return null;
 
@@ -62,15 +53,6 @@ module.exports = class KBserver
                 console.log('Error:', error.stack);
             }
 
-        }
-        else 
-        {
-            
-            // search in local cache
-
-            // if no data in cache - load from....
-
-            console.log('Not implemented');
         }
         
         return null;
