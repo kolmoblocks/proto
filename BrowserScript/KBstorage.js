@@ -157,6 +157,12 @@ module.exports = class KBstorage
             
             let data_block = this.ExecExpression(expression);
 
+            if ( null == data_block )
+            {
+                console.log("Empty data in sequences");
+                return null;
+            }
+
             for ( var i in data_block )
                 result.push(data_block[i]);
         }
