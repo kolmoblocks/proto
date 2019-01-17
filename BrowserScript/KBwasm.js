@@ -13,6 +13,10 @@ module.exports = class KBWasm
         result.push(1);
         result.push(2);
         result.push(3);
+
+        result["MIME"] = "utf8/text";
+        result["size"] = 3;
+
         return result;
     }
 }

@@ -101,9 +101,6 @@ module.exports = class KBstorage
             return null;
         }
 
-        result["MIME"] = expression["MIME"];
-        result["size"] = expression["size"];
-
         return result;
     }
 
