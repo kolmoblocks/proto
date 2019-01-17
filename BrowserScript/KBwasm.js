@@ -5,18 +5,29 @@ module.exports = class KBWasm
         this.raw_wasm = raw_wasm;
         this.args = args;
     }
+    
 
     Exec()
     {
-        let r = WebAssembly.compile(this.raw_wasm);
-        //console.log("KBwasm Exec is not implemented...");
+        // hard coded implementstion of concat buffers
+        let count = 0;
         let result = new Array();
-        result.push(1);
-        result.push(2);
-        result.push(3);
 
+        for ( var i in this.args )
+        {
+            let arg = this.args[i];
+            for ( var j in arg )
+            {
+                if (( j == "MIME" ) || ( j == "size" ))
+                    continue;
+
+                result.push(arg[j]);
+                count++;
+            }
+        }
+        
         result["MIME"] = "utf8/text";
-        result["size"] = 3;
+        result["size"] = count;
 
         return result;
     }
