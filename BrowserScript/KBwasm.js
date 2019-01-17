@@ -8,6 +8,7 @@ module.exports = class KBWasm
 
     Exec()
     {
+        let r = WebAssembly.compile(this.raw_wasm);
         //console.log("KBwasm Exec is not implemented...");
         let result = new Array();
         result.push(1);
