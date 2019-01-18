@@ -13,12 +13,12 @@ module.exports = class KBstorage
     GetData(data_expression)
     {
         try {
-            return this.ExecExpression(JSON.parse(data_expression));
+            return Promise.all([this.ExecExpression(JSON.parse(data_expression))]);
         }catch(error){
             console.log('Error parsing expression to JSON: ', error.stack);
         }
 
-        return null;
+        return Promise.all([null]);
     }
 
     ExecExpression(expression)
