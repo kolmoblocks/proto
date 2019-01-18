@@ -2,7 +2,6 @@ const KBstorage = require('.//BrowserScript//KBstorage.js')
 
 const MyStorage = new KBstorage();
 
-
 {
     // code for demo project
     let exp = "{ \"cid\" : \"7E1D8D6609499A1A5FB67C6B9E7DD34CF7C6C4355259115FC7161F47266F5F3C\" }";
@@ -16,8 +15,6 @@ const MyStorage = new KBstorage();
     
         console.log(JSON.stringify(exp_array[i]) + ", InCache " + inCache);
     }
-    
-    console.log(exp_array);
 
     while( 0 != exp_array.length )
     {

@@ -281,7 +281,7 @@ module.exports = class KBstorage
         try{
 
             if ( expression.hasOwnProperty("ref") )
-                return this.cache.RawDataIncacheByRef(expression["ref"]);
+                return this.cache.RawDataInCacheByRef(expression["ref"]);
                 
         }catch(error){
             return false;
