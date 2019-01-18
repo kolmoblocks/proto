@@ -2,6 +2,48 @@ const KBstorage = require('.//BrowserScript//KBstorage.js')
 
 const MyStorage = new KBstorage();
 
+
+{
+    // code for demo project
+    let exp = "{ \"cid\" : \"7E1D8D6609499A1A5FB67C6B9E7DD34CF7C6C4355259115FC7161F47266F5F3C\" }";
+
+    // expecting array of expressions or empty array if error or exp has no inner expressions
+    let exp_array = MyStorage.ParseExpression(exp);
+
+    for ( var i in exp_array )
+    {
+        let inCache = MyStorage.ExpressionInCache(exp_array[i]);
+    
+        console.log(JSON.stringify(exp_array[i]) + ", InCache " + inCache);
+    }
+    
+    console.log(exp_array);
+
+    while( 0 != exp_array.length )
+    {
+        let new_exp_array = new Array();
+
+        for ( var i in exp_array )
+        {
+            let str_exp = JSON.stringify(exp_array[i]);
+            
+            let exp = MyStorage.ParseExpression(str_exp);
+
+            for ( var j in exp )
+            {
+                new_exp_array.push(exp[j]);
+
+                let inCache = MyStorage.ExpressionInCache(exp[j]);
+            
+                console.log(JSON.stringify(exp[j]) + ", InCache " + inCache);
+            }
+        }
+
+        exp_array = new_exp_array;
+    }
+}
+
+
 {
     // hello banana
     let data = MyStorage.GetData("{ \"cid\" : \"7E1D8D6609499A1A5FB67C6B9E7DD34CF7C6C4355259115FC7161F47266F5F3C\" }");

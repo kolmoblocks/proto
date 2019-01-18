@@ -227,4 +227,67 @@ module.exports = class KBstorage
         return data_expressions[0];
     }
 
+    ParseExpression(exp)
+    {
+        try{
+            let expression = JSON.parse(exp);
+
+            let result = new Array();
+
+            if ( expression.hasOwnProperty("cid") )
+            {
+                let data_by_cid = this.cache.GetDataExpressionByCID(expression["cid"]);
+                let data_expressions = this.ExtractDataExpressions(data_by_cid);
+                for ( var i in data_expressions )
+                    result.push(data_expressions[i]);
+            }
+
+            if ( expression.hasOwnProperty("exec") )
+            {
+                let exec = expression["exec"];
+                for ( var i in exec )
+                    result.push(exec[i]);
+            }
+
+            if ( expression.hasOwnProperty("ref") )
+            {
+                //let ref = expression["ref"];
+                //result.push(ref);
+            }
+
+            if ( expression.hasOwnProperty("raw") )
+            {
+                let raw = expression["raw"];
+                result.push(raw);
+            }
+
+            if ( expression.hasOwnProperty("seq") )
+            {
+                let seq = expression["seq"];
+                for ( var i in seq )
+                    result.push(seq[i]);
+            }
+
+            return result;
+
+        }catch(error){
+            return null;
+        }
+
+    }
+
+    ExpressionInCache(expression)
+    {
+        try{
+
+            if ( expression.hasOwnProperty("ref") )
+                return this.cache.RawDataIncacheByRef(expression["ref"]);
+                
+        }catch(error){
+            return false;
+        }
+
+        return false;
+    }
+
 }

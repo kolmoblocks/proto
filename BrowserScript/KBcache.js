@@ -18,4 +18,9 @@ module.exports = class KBcache
         // todo: check local cache for existing requested information
         return this.KBserver.GetRawDataByRef(ref);
     }
+
+    RawDataIncacheByRef(ref)
+    {
+        return false;
+    }
 }
