@@ -6,6 +6,10 @@ const MyStorage = new KBstorage();
     // code for demo project
     let exp = "{ \"cid\" : \"7E1D8D6609499A1A5FB67C6B9E7DD34CF7C6C4355259115FC7161F47266F5F3C\" }";
 
+    // get information for requested expression 
+    let inCache = MyStorage.ExpressionInCache(JSON.parse(exp));
+    console.log(exp + ", InCache " + inCache);
+
     // expecting array of expressions or empty array if error or exp has no inner expressions
     let exp_array = MyStorage.ParseExpression(exp);
 

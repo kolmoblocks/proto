@@ -282,6 +282,9 @@ module.exports = class KBstorage
 
             if ( expression.hasOwnProperty("ref") )
                 return this.cache.RawDataInCacheByRef(expression["ref"]);
+
+            if ( expression.hasOwnProperty("cid") )
+                return this.cache.DataExpressionInCacheByCID(expression["cid"]);
                 
         }catch(error){
             return false;
