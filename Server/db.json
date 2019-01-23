@@ -77,7 +77,7 @@
         },
 
         "data_expression1" : {
-            "ref" : "buffers_concat.wasm"
+            "ref" : "concat.wasm"
         }
 
     }
