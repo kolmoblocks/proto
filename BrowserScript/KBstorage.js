@@ -91,6 +91,8 @@ module.exports = class KBstorage
                 return null;
             }
 
+            arg["ArgName"] = index;
+
             args.push(arg);
         }
 
