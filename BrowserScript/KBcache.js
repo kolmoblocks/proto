@@ -1,4 +1,4 @@
-const KBserver = require('..//Server//KBserver.js')
+import KBserver from '../Server/KBserver';
 
 export default class KBcache
 {

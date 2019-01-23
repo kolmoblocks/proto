@@ -1,4 +1,5 @@
-var fs = require("fs");
+import fs from 'fs';
+import path from 'path';
 
 const isBrowser = false;
 
@@ -14,7 +15,8 @@ export default class KBserver
         {            
             try 
             {  
-                let jsondata = JSON.parse(fs.readFileSync(process.cwd() + "//Server//db.json"));
+                console.log(require(__dirname+"/db.json"));
+                let jsondata = require(__dirname+"/db.json");
 
                 for ( var i in jsondata )
                 {
@@ -30,7 +32,7 @@ export default class KBserver
             } 
             catch(error) 
             {
-                console.log('Error getting data by CID:', error.stack);
+                console.log(error);
             }
         }
         
@@ -45,7 +47,7 @@ export default class KBserver
             
             try 
             {  
-                let data = fs.readFileSync(process.cwd() + "//Server//files//" + ref);
+                let data = require(process.cwd() + "/Server/files/" + ref);
                 return new Uint8Array(data);
             } 
             catch(error) 
