@@ -21,7 +21,7 @@ lazy_static! {
 }
 
 #[no_mangle]
-pub extern "C" fn get_arg(arg_index: u8, size: usize) -> *mut c_void {
+pub extern "C" fn set_arg(arg_index: u8, size: usize) -> *mut c_void {
 
     // create vector
     let mut buf = Vec::<u8>::new();

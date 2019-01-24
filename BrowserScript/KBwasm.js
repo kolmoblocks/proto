@@ -29,7 +29,7 @@ module.exports = class KBWasm
                 
                 var size = this.args[arg].length;
 
-                var pointer = wasmInstance.exports.get_arg(arg_index, size);
+                var pointer = wasmInstance.exports.set_arg(arg_index, size);
 
                 var pWasmData = new Uint8ClampedArray(wasmInstance.exports.memory.buffer, pointer, size);
 
