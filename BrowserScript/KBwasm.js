@@ -5,7 +5,6 @@ module.exports = class KBWasm
         this.raw_wasm = raw_wasm;
         this.args = args;
     }
-    
 
     async Exec()
     {

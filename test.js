@@ -46,31 +46,20 @@ const MyStorage = new KBstorage();
 
 
 {
+    
     let expression = "{ \"cid\" : \"7E1D8D6609499A1A5FB67C6B9E7DD34CF7C6C4355259115FC7161F47266F5F3C\" }";
-    let data = MyStorage.GetData(expression);
-
-    if ( null == data )
-    {
-        console.log("Empty data");
-    }
-    else
-    {
-        console.log("first");
-        console.log("MIME " + data["MIME"]);
-        console.log("size " + data["size"]);
-        console.log(data);
-    }
-
-    /*let expression = "{ \"cid\" : \"7E1D8D6609499A1A5FB67C6B9E7DD34CF7C6C4355259115FC7161F47266F5F3C\" }";
+    
     MyStorage.GetData(expression).then( data => {
 
+        console.log("-------------- first --------------");
+        console.log(expression);
+        
         if ( null == data )
         {
             console.log("Empty data");
         }
         else
         {
-            console.log("first");
             console.log("MIME " + data["MIME"]);
             console.log("size " + data["size"]);
             console.log(data);
@@ -80,8 +69,11 @@ const MyStorage = new KBstorage();
 
 {
     let expression = "{ \"exec\" : { \"wasm\" : { \"cid\" : \"_wasm_concat_\" }, \"arg1\" : { \"cid\" : \"2CF24DBA5FB0A30E26E83B2AC5B9E29E1B161E5C1FA7425E73043362938B9824\" }, \"arg2\" : { \"cid\" : \"B493D48364AFE44D11C0165CF470A4164D1E2609911EF998BE868D46ADE3DE4E\" } } }";
-
+    
     MyStorage.GetData(expression).then( data => {
+
+        console.log("-------------- second --------------");
+        console.log(expression);
 
         if ( null == data )
         {
@@ -89,10 +81,10 @@ const MyStorage = new KBstorage();
         }
         else
         {
-            console.log("first");
+            console.log("second");
             console.log("MIME " + data["MIME"]);
             console.log("size " + data["size"]);
             console.log(data);
         }
-    });*/
+    });
 }

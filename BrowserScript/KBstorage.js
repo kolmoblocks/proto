@@ -10,10 +10,10 @@ module.exports = class KBstorage
         this.cache = new KBcache();
     }
 
-    GetData(data_expression)
+    async GetData(data_expression)
     {
         try {
-            return this.ExecExpression(JSON.parse(data_expression));
+            return await this.ExecExpression(JSON.parse(data_expression));
         }catch(error){
             console.log('Error parsing expression to JSON: ', error.stack);
         }
@@ -21,29 +21,29 @@ module.exports = class KBstorage
         return null;
     }
 
-    ExecExpression(expression)
+    async ExecExpression(expression)
     {
         if ( expression.hasOwnProperty("cid") )
-            return this._cid(expression);
+            return await this._cid(expression);
 
         if ( expression.hasOwnProperty("exec") )
-            return this._exec(expression);
+            return await this._exec(expression);
 
         if ( expression.hasOwnProperty("ref") )
-            return this._ref(expression);
+            return await this._ref(expression);
 
         if ( expression.hasOwnProperty("raw") )
-            return this._raw(expression);
+            return await this._raw(expression);
 
         if ( expression.hasOwnProperty("seq") )
-            return this._seq(expression);
+            return await this._seq(expression);
         
         console.log("Not implemented for this type of expression");
 
         return null;
     }
 
-    _cid(expression)
+    async _cid(expression)
     {
         let data_by_cid = this.cache.GetDataExpressionByCID(expression["cid"]);
 
@@ -57,10 +57,10 @@ module.exports = class KBstorage
 
         let exp_to_exec = this.ChooseExpression(data_expressions);
         
-        return this.ExecExpression(exp_to_exec);
+        return await this.ExecExpression(exp_to_exec);
     }
 
-    _exec(expression)
+    async _exec(expression)
     {
         let exec = expression["exec"]
 
@@ -73,7 +73,7 @@ module.exports = class KBstorage
             return null;
         }
         
-        let wasm = this.ExecExpression(exec["wasm"]);
+        let wasm = await this.ExecExpression(exec["wasm"]);
         if ( null == wasm )
         {
             console.log("Expression exec has empty wasm");
@@ -87,7 +87,7 @@ module.exports = class KBstorage
             if ( "wasm" == index )
                 continue;
             
-            let arg = this.ExecExpression(exec[index]);
+            let arg = await this.ExecExpression(exec[index]);
             if ( null == arg )
             {
                 console.log("Expression exec has empty arg");
@@ -99,19 +99,18 @@ module.exports = class KBstorage
             args.push(arg);
         }
 
-        new KBwasm(wasm, args).Exec().then( result => {
+        let result = await new KBwasm(wasm, args).Exec();
 
-            if ( null == result )
-            {
-                console.log("Wasm execution result is empty");
-                return null;
-            }
+        if ( null == result )
+        {
+            console.log("Wasm execution result is empty");
+            return null;
+        }
 
-            result["MIME"] = MIME;
-            result["size"] = size;
+        result["MIME"] = MIME;
+        result["size"] = size;
 
-            return result;
-        });
+        return result;
     }
 
     _ref(expression)
@@ -150,7 +149,7 @@ module.exports = class KBstorage
         return result;
     }
 
-    _seq(expression)
+    async _seq(expression)
     {
         let result = new Array();
         let seq = expression["seq"];
@@ -162,7 +161,7 @@ module.exports = class KBstorage
         {
             let expression = seq[index];
             
-            let data_block = this.ExecExpression(expression);
+            let data_block = await this.ExecExpression(expression);
 
             if ( null == data_block )
             {
