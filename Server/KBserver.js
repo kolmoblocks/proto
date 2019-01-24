@@ -51,7 +51,7 @@ export default class KBserver
             if (isBrowser) {
                 data = await fetch(process.env.API_URL + 'raw/' + ref);
             } else {
-                data = require(__dirname + "/Server/files/" + ref);
+                data = require(__dirname + "/files/" + ref);
             }
             return Promise.resolve(new Uint8Array(data));
         } catch (error) {
@@ -59,6 +59,6 @@ export default class KBserver
         }
         
         console.log("Raw data is null. Something wrong happened.");
-        return data;
+        return null;
     }
 }
