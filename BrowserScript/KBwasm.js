@@ -23,6 +23,10 @@ module.exports = class KBWasm
                 // var arg_index = wasmInstance.exports.arg_index_by_name(args[arg]["ArgName"]);
                 var arg_index = arg;
 
+                // next string for testing WebAssembly only !
+                if ( null != this.args[arg]["ArgIndex"] ) 
+                    arg_index = this.args[arg]["ArgIndex"]
+                
                 var size = this.args[arg].length;
 
                 var pointer = wasmInstance.exports.get_arg(arg_index, size);
