@@ -1,5 +1,4 @@
 use std::os::raw::c_void;
-use std::collections::HashMap;
 use std::sync::Mutex;
 use std::mem;
 
@@ -9,9 +8,8 @@ extern crate lazy_static;
 
 lazy_static! {
 
-    static ref args: Mutex<HashMap<u8, Vec<(u8)>>> = {
-        let m = HashMap::new();
-        return Mutex::new(m);
+    static ref arg: Mutex<Vec<(u8)>> = {
+        return Mutex::new(Vec::<u8>::new());
     };
 
     static ref result: Mutex<Vec<(u8)>> = {
@@ -21,21 +19,33 @@ lazy_static! {
 }
 
 #[no_mangle]
-pub extern "C" fn set_arg(arg_index: u8, size: usize) -> *mut c_void {
+pub extern "C" fn set_arg(_: u8, size: usize) -> *mut c_void {
 
-    // create vector
-    let mut buf = Vec::<u8>::new();
-    
-    // fill vector with 0 value
-    for _ in 1..=size {
-        buf.push(0);
+    let mut _arg = arg.lock().unwrap();
+
+    if 0 == _arg.len() {
+
+        // fill vector with 0 value
+        for _ in 1..=size {
+            _arg.push(0);
+        }
+
+    }else{
+        
+        // make size bigger
+        if size > _arg.len() {
+
+            let _diff = size - _arg.len();
+
+            // fill diff with 0 value
+            for _ in 1..=_diff {
+                _arg.push(0);
+            }
+
+        }
     }
-    
-    let ptr = buf.as_mut_ptr();
 
-    let mut argsmap = args.lock().unwrap();
-
-    argsmap.insert( arg_index, buf );
+    let ptr = _arg.as_mut_ptr();
 
     return ptr as *mut c_void;
 }
@@ -65,5 +75,14 @@ pub extern "C" fn get_result_size() -> usize {
 
 #[no_mangle]
 pub extern "C" fn exec() -> bool {
-    return false;
+
+    let mut _arg = arg.lock().unwrap();
+
+    if 0 == _arg.len() {
+        return false;
+    }
+
+    // to do here !
+
+    return true;
 }
