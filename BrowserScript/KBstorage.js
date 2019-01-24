@@ -64,6 +64,9 @@ module.exports = class KBstorage
     {
         let exec = expression["exec"]
 
+        let MIME = expression["MIME"];
+        let size = expression["size"];
+
         if ( !exec.hasOwnProperty("wasm") )
         {
             console.log("Expression exec does't contain wasm property");
@@ -96,15 +99,19 @@ module.exports = class KBstorage
             args.push(arg);
         }
 
-        let result = new KBwasm(wasm, args).Exec();
+        new KBwasm(wasm, args).Exec().then( result => {
 
-        if ( null == result )
-        {
-            console.log("Wasm execution result is empty");
-            return null;
-        }
+            if ( null == result )
+            {
+                console.log("Wasm execution result is empty");
+                return null;
+            }
 
-        return result;
+            result["MIME"] = MIME;
+            result["size"] = size;
+
+            return result;
+        });
     }
 
     _ref(expression)
