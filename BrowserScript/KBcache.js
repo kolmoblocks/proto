@@ -3,8 +3,8 @@ const KBserver = require('..//Server//KBserver.js')
 module.exports = class KBcache
 {
 
-    constructor(){
-        this.KBserver = new KBserver();
+    constructor(server_data_path){
+        this.KBserver = new KBserver(server_data_path);
         this.ref_cache = new Map();
         this.cid_cache = new Map();
     }

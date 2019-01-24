@@ -4,8 +4,11 @@ const isBrowser = this.window === this;
 
 module.exports = class KBserver
 {
-
-    constructor(){
+    constructor(server_data_path){
+        if ( null == server_data_path )
+            this.server_data_path = process.cwd() + "/Server/";
+        else
+            this.server_data_path = server_data_path;
     }
 
     GetDataExpressionByCID(cid)
@@ -14,7 +17,7 @@ module.exports = class KBserver
         {            
             try 
             {  
-                let jsondata = JSON.parse(fs.readFileSync(process.cwd() + "//Server//db.json"));
+                let jsondata = JSON.parse(fs.readFileSync(this.server_data_path + "db.json"));
 
                 for ( var i in jsondata )
                 {
@@ -45,7 +48,7 @@ module.exports = class KBserver
             
             try 
             {  
-                let data = fs.readFileSync(process.cwd() + "//Server//files//" + ref);
+                let data = fs.readFileSync(this.server_data_path + "files//" + ref);
                 return new Uint8Array(data);
             } 
             catch(error) 

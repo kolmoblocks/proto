@@ -4,16 +4,16 @@ const KBwasm = require('.//KBwasm.js')
 
 module.exports = class KBstorage
 {
-    constructor(path)
+    constructor(server_data_path)
     {
-        this.path = path;
-        this.cache = new KBcache();
+        this.cache = new KBcache(server_data_path);
     }
 
     async GetData(data_expression)
     {
         try {
-            return await this.ExecExpression(JSON.parse(data_expression));
+            let data = await this.ExecExpression(JSON.parse(data_expression));
+            return data;
         }catch(error){
             console.log('Error parsing expression to JSON: ', error.stack);
         }
@@ -47,6 +47,12 @@ module.exports = class KBstorage
     {
         let data_by_cid = this.cache.GetDataExpressionByCID(expression["cid"]);
 
+        if ( null == data_by_cid )
+        {
+            console.log("Empty data expressions by cid for " + expression["cid"]);
+            return null;
+        }
+
         let data_expressions = this.ExtractDataExpressions(data_by_cid);
 
         if ( 0 == data_expressions.length )
@@ -57,15 +63,14 @@ module.exports = class KBstorage
 
         let exp_to_exec = this.ChooseExpression(data_expressions);
         
-        return await this.ExecExpression(exp_to_exec);
+        let data = await this.ExecExpression(exp_to_exec);
+        
+        return data;
     }
 
     async _exec(expression)
     {
         let exec = expression["exec"]
-
-        let MIME = expression["MIME"];
-        let size = expression["size"];
 
         if ( !exec.hasOwnProperty("wasm") )
         {
@@ -107,13 +112,16 @@ module.exports = class KBstorage
             return null;
         }
 
-        result["MIME"] = MIME;
-        result["size"] = size;
+        if ( null == result["MIME"] )
+            result["MIME"] = expression["MIME"];
+        
+        if ( null == result["size"] )
+            result["size"] = expression["size"];
 
         return result;
     }
 
-    _ref(expression)
+    async _ref(expression)
     {
         let ref = expression["ref"];
 
@@ -131,7 +139,7 @@ module.exports = class KBstorage
         return result;
     }
 
-    _raw(expression)
+    async _raw(expression)
     {
         let raw = expression["raw"];
 
