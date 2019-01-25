@@ -89,7 +89,7 @@ pub extern "C" fn exec() -> bool {
         buf.push(_arg[i]);
     }
 
-    let mut _result = result.lock().unwrap();
+    let mut _result = result.lock().unwrap(); // todo: error catching !!!
 
     // unzip and add data to result
     let _reader = std::io::Cursor::new(buf);
