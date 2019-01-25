@@ -81,10 +81,12 @@ const MyStorage = new KBstorage();
         }
         else
         {
+
             console.log("second");
             console.log("MIME " + data["MIME"]);
             console.log("size " + data["size"]);
             console.log(data);
         }
     });
+
 }

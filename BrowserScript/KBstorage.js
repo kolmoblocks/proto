@@ -1,8 +1,8 @@
-const KBcache = require('.//KBcache.js')
+import KBcache from './KBcache'
 
-const KBwasm = require('.//KBwasm.js')
+import  KBwasm from './KBwasm'
 
-module.exports = class KBstorage
+export default class KBstorage
 {
     constructor(server_data_path)
     {
@@ -11,14 +11,14 @@ module.exports = class KBstorage
 
     async GetData(data_expression)
     {
+        console.log(data_expression);
         try {
-            let data = await this.ExecExpression(JSON.parse(data_expression));
-            return data;
+            return Promise.resolve(this.ExecExpression(data_expression));
         }catch(error){
-            console.log('Error parsing expression to JSON: ', error.stack);
+            console.log('Error parsing expression to JSON:\n', error);
         }
 
-        return null;
+        return Promise.resolve(null);
     }
 
     async ExecExpression(expression)
@@ -39,6 +39,7 @@ module.exports = class KBstorage
             return await this._seq(expression);
         
         console.log("Not implemented for this type of expression");
+        console.log(expression);
 
         return null;
     }
@@ -243,19 +244,30 @@ module.exports = class KBstorage
         return data_expressions[0];
     }
 
+    GetDataExpressionByCID(cid) {
+        return this.cache.GetDataExpressionByCID(cid);
+    }
+
     ParseExpression(exp)
     {
         try{
             let expression = JSON.parse(exp);
 
-            let result = new Array();
+            let result = new Object();
 
             if ( expression.hasOwnProperty("cid") )
             {
                 let data_by_cid = this.cache.GetDataExpressionByCID(expression["cid"]);
                 let data_expressions = this.ExtractDataExpressions(data_by_cid);
-                for ( var i in data_expressions )
-                    result.push(data_expressions[i]);
+                Object.keys(data_by_cid).forEach(function(key) {
+                    if (key.substr(0,15) != "data_expression") {
+                        result[key] = data_by_cid[key];
+                        console.log(key);
+                    }
+                    console.log(key);
+                })
+                console.log(result);
+                result['data_expressions'] = data_expressions;
             }
 
             if ( expression.hasOwnProperty("exec") )
@@ -287,6 +299,7 @@ module.exports = class KBstorage
             return result;
 
         }catch(error){
+            console.log(error);
             return null;
         }
 

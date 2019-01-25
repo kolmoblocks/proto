@@ -1,8 +1,6 @@
-var fs = require("fs");
+const isBrowser = (typeof process === 'object' ? false : true);
 
-const isBrowser = this.window === this;
-
-module.exports = class KBserver
+export default class KBserver
 {
     constructor(server_data_path){
         if ( null == server_data_path )
@@ -11,14 +9,22 @@ module.exports = class KBserver
             this.server_data_path = server_data_path;
     }
 
-    GetDataExpressionByCID(cid)
+    async GetDataExpressionByCID(cid)
     {
-        if ( !isBrowser ) 
-        {            
-            try 
-            {  
-                let jsondata = JSON.parse(fs.readFileSync(this.server_data_path + "db.json"));
 
+        try {
+            let jsondata = {};
+            if (isBrowser) {
+                jsondata = await fetch(process.env.API_URL+'search?cid='+cid);
+            }
+            else {
+                jsondata = require(__dirname+"/db.json");
+            }
+
+            if (jsondata == null) {
+                console.log("Fetching messed up.")
+            }
+            else {
                 for ( var i in jsondata )
                 {
                     let data = jsondata[i];
@@ -27,37 +33,35 @@ module.exports = class KBserver
                     {
                         let data_cids = data["cids"];
                         for ( var j in data_cids )
-                            if ( data_cids[j] == cid ) return data;
+                            if ( data_cids[j] == cid ) return Promise.resolve(data);
                     }
                 }
-            } 
-            catch(error) 
-            {
-                console.log('Error getting data by CID:', error.stack);
             }
         }
+        catch (error) {
+            console.log(error);
+        }
         
-        return null;
+        console.log("Requested cid not found in fetched object, or something else went wrong");
+        return Promise.resolve(null);
 
     }
 
-    GetRawDataByRef(ref)
+    async GetRawDataByRef(ref)
     {
-        if ( !isBrowser ) 
-        {
-            
-            try 
-            {  
-                let data = fs.readFileSync(this.server_data_path + "files//" + ref);
-                return new Uint8Array(data);
-            } 
-            catch(error) 
-            {
-                console.log('Error:', error.stack);
+        try {
+            let data = null;
+            if (isBrowser) {
+                data = await fetch(process.env.API_URL + 'raw/' + ref);
+            } else {
+                data = require(__dirname + "/files/" + ref);
             }
-
+            return Promise.resolve(new Uint8Array(data));
+        } catch (error) {
+            console.log(error);
         }
         
+        console.log("Raw data is null. Something wrong happened.");
         return null;
     }
 }
