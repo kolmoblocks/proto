@@ -37,6 +37,29 @@
 
     },
 
+    "hello banana!" : {
+
+        "MIME" 		: "utf8/text",
+		"size" 		: 13,
+
+        "cids" : {
+            "SHA256" : "6CB855C48656FA78D99F84D89515DEF944F3BDB0B2E0204AC0B09B94967B8E15"
+        },
+
+        "data_expression1" : 
+        {
+            "exec" : {
+                "wasm" : {
+                    "ref" : "unzip.wasm"
+                },
+                "arg1" : {
+                    "ref" : "hellobanana.zip"
+                }
+            }
+        }
+
+    },
+
     "hello" : {
 
         "MIME" 		: "utf8/text",

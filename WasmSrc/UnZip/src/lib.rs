@@ -1,10 +1,11 @@
 use std::os::raw::c_void;
 use std::sync::Mutex;
 use std::mem;
-
+use std::io::Read;
 
 #[macro_use]
 extern crate lazy_static;
+extern crate zip;
 
 lazy_static! {
 
@@ -76,13 +77,37 @@ pub extern "C" fn get_result_size() -> usize {
 #[no_mangle]
 pub extern "C" fn exec() -> bool {
 
+    // check arg length
     let mut _arg = arg.lock().unwrap();
-
     if 0 == _arg.len() {
         return false;
     }
 
-    // to do here !
+    // copy arg to buf
+    let mut buf = Vec::<u8>::new();
+    for i in 0.._arg.len() {
+        buf.push(_arg[i]);
+    }
 
-    return true;
+    let mut _result = result.lock().unwrap();
+
+    // unzip and add data to result
+    let _reader = std::io::Cursor::new(buf);
+
+    let mut _zip = zip::ZipArchive::new(_reader).unwrap();
+
+    for i in 0.._zip.len()
+    {
+        let mut _file = _zip.by_index(i).unwrap();
+
+        for byte in _file.bytes() {
+            _result.push(byte.unwrap());
+        }
+    }
+
+    if 0 != _result.len() {
+        return true;
+    } else {
+        return false;
+    }
 }
