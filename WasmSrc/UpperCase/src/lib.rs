@@ -75,6 +75,10 @@ pub extern "C" fn get_result_size() -> usize {
 #[no_mangle]
 pub extern "C" fn exec() -> bool {
     
+    // ! rule for utf8 BOM:
+    //  - arg has BOM -> result has BOM
+    //  - arg without BOM -> result without BOM
+
     // check arg length
     let mut _arg = arg.lock().unwrap();
     if 0 == _arg.len() {
@@ -85,6 +89,14 @@ pub extern "C" fn exec() -> bool {
     let mut buf = Vec::<u8>::new();
     for i in 0.._arg.len() {
         buf.push(_arg[i]);
+    }
+
+    // check for utf8 BOM in args
+    let mut _arg_has_bom = false;
+    if buf.len() > 3 {
+        if buf[0] == 0xEF && buf[1] == 0xBB && buf[2] == 0xBF {
+            _arg_has_bom = true;
+        }
     }
 
     // create utf8 string from buffer data
@@ -98,11 +110,33 @@ pub extern "C" fn exec() -> bool {
 
     // convert string to bytes
     let bytes = result_string.into_bytes();
+
+    // check for utf8 BOM in result_string
+    let mut _bytes_has_bom = false;
+    if bytes.len() > 3 {
+        if bytes[0] == 0xEF && bytes[1] == 0xBB && bytes[2] == 0xBF {
+            _bytes_has_bom = true;
+        }
+    }
     
     let mut _result = result.lock().unwrap();
 
+    // add BOM to result if needed
+    if _arg_has_bom && !_bytes_has_bom {
+        _result.push(0xEF);
+        _result.push(0xBB);
+        _result.push(0xBF);
+    }
+    
+    let mut start_pos = 0;
+
+    // shift for loose BOM
+    if !_arg_has_bom && _bytes_has_bom {
+        start_pos = 3;
+    }
+
     // copy bytes to result
-    for i in 0..bytes.len() {
+    for i in start_pos..bytes.len() {
         _result.push(bytes[i]);
     }
 

@@ -7,7 +7,7 @@ const MyStorage = new KBstorage(process.cwd() + "/../../Server/");
 console.log("- - - - - - - - - - - - -");
 
 {
-    let expected_string_data = "REHTORB GIB";
+    let expected_data = "REHTORB GIB";
 
     {
         let expression = "{ \"cid\" : \"838ECC02974A726857283E8160A89E25EE6859B1F58117DCA96212E2EA638B41\" }";
@@ -18,7 +18,19 @@ console.log("- - - - - - - - - - - - -");
 
             console.log("Test for data expression '" + expression + "'");
 
-            common.CheckReturnedData(data, expected_string_data)
+            // why not common.CheckReturnedData(data, expected_data) ?
+            // because data for expression is in the file
+            // then utf8 string in file, it's data has BOM (first 3 bytes)
+            let rd = common.stringFromUTF8Array(data).trim();
+            if ( rd == expected_data )
+            {
+                console.log("Returned data '" + rd + "'");
+                console.log("Test pass OK!");
+            }
+            else
+                common.CheckReturnedData(data, expected_data);
+            
+            console.log("- - - - - - - - - - - - -");
             
         });
     }
@@ -40,7 +52,19 @@ console.log("- - - - - - - - - - - - -");
 
                 console.log("Test 2 (direct call KBwasm)");
                 
-                common.CheckReturnedData(data, expected_string_data);
+                // why not common.CheckReturnedData(data, expected_data) ?
+                // because data for expression is in the file
+                // then utf8 string in file, it's data has BOM (first 3 bytes)
+                let rd = common.stringFromUTF8Array(data).trim();
+                if ( rd == expected_data )
+                {
+                    console.log("Returned data '" + rd + "'");
+                    console.log("Test pass OK!");
+                }
+                else
+                    common.CheckReturnedData(data, expected_data);
+
+                console.log("- - - - - - - - - - - - -");
 
             });
         }
@@ -48,7 +72,7 @@ console.log("- - - - - - - - - - - - -");
 }
 
 {
-    let expected_string_data = "计设性志标";
+    let expected_data = "计设性志标";
 
     {
         let expression = "{ \"exec\" : { \"wasm\" : { \"cid\" : \"_wasm_strreverse_\" }, \"arg1\" : { \"raw\" : \"标志性设计\" } } }";
@@ -59,7 +83,7 @@ console.log("- - - - - - - - - - - - -");
 
             console.log("Test for data expression '" + expression + "'");
 
-            common.CheckReturnedData(data, expected_string_data)
+            common.CheckReturnedData(data, expected_data)
             
         });
     }

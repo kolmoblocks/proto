@@ -17,8 +17,19 @@ let expected_data = "big brother";
 
         console.log("Test for data expression '" + expression + "'");
 
-        common.CheckReturnedData(data, expected_data)
+        // why not common.CheckReturnedData(data, expected_data) ?
+        // because data for expression is in the file
+        // then utf8 string in file, it's data has BOM (first 3 bytes)
+        let rd = common.stringFromUTF8Array(data).trim();
+        if ( rd == expected_data )
+        {
+            console.log("Returned data '" + rd + "'");
+            console.log("Test pass OK!");
+        }
+        else
+            common.CheckReturnedData(data, expected_data);
         
+        console.log("- - - - - - - - - - - - -");
     });
 }
 
@@ -39,8 +50,74 @@ let expected_data = "big brother";
 
             console.log("Test 2 (direct call KBwasm)");
             
-            common.CheckReturnedData(data, expected_data);
+            // why not common.CheckReturnedData(data, expected_data) ?
+            // because data for expression is in the file
+            // then utf8 string in file, it's data has BOM (first 3 bytes)
+            let rd = common.stringFromUTF8Array(data).trim();
+            if ( rd == expected_data )
+            {
+                console.log("Returned data '" + rd + "'");
+                console.log("Test pass OK!");
+            }
+            else
+                common.CheckReturnedData(data, expected_data);
+            
+            console.log("- - - - - - - - - - - - -");
 
+        });
+    }
+}
+
+{
+    let expected_string_data = "верхний регистр";
+
+    {
+        let expression = "{ \"exec\" : { \"wasm\" : { \"cid\" : \"_wasm_lowercase_\" }, \"arg1\" : { \"raw\" : \"ВЕРХНИЙ РЕГИСТР\" } } }";
+            
+        MyStorage.GetData(expression).then( data => {
+
+            console.log("Test 3 (GetData from expression)");
+
+            console.log("Test for data expression '" + expression + "'");
+
+            common.CheckReturnedData(data, expected_string_data)
+            
+        });
+    }
+}
+
+{
+    let expected_string_data = "需要技术支持";
+
+    {
+        let expression = "{ \"exec\" : { \"wasm\" : { \"cid\" : \"_wasm_lowercase_\" }, \"arg1\" : { \"raw\" : \"需要技术支持\" } } }";
+            
+        MyStorage.GetData(expression).then( data => {
+
+            console.log("Test 4 (GetData from expression)");
+
+            console.log("Test for data expression '" + expression + "'");
+
+            common.CheckReturnedData(data, expected_string_data)
+            
+        });
+    }
+}
+
+{
+    let expected_string_data = "big low";
+
+    {
+        let expression = "{ \"exec\" : { \"wasm\" : { \"cid\" : \"_wasm_lowercase_\" }, \"arg1\" : { \"raw\" : \"BIG LOW\" } } }";
+            
+        MyStorage.GetData(expression).then( data => {
+
+            console.log("Test 5 (GetData from expression)");
+
+            console.log("Test for data expression '" + expression + "'");
+
+            common.CheckReturnedData(data, expected_string_data)
+            
         });
     }
 }

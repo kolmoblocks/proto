@@ -98,3 +98,22 @@ console.log("- - - - - - - - - - - - -");
         });
     }
 }
+
+
+{
+    let val1 = " 123456 ";
+    let val2 = " 7890 ";
+
+    let expected_data = val1 + val2;
+
+    let expression = "{\"exec\":{\"wasm\":{\"ref\":\"concat.wasm\"},\"arg1\":{\"raw\":\"" + val1 + "\"},\"arg2\":{\"raw\":\"" + val2 + "\"}}}";
+        
+    MyStorage.GetData(expression).then( data => {
+
+        console.log("Test 5 (concat of two args)");
+
+        console.log("Test for data expression '" + expression + "'");
+
+        common.CheckReturnedData(data, expected_data)
+    });
+}
