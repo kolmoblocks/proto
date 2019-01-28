@@ -1,46 +1,13 @@
+const common = require('..//..//common.js')
 const KBstorage = require('..//..//..//BrowserScript/KBstorage')
 const KBwasm = require('..//..//..//BrowserScript/KBwasm')
 
 const MyStorage = new KBstorage(process.cwd() + "/../../Server/");
 
-function CheckReturnedData(data, expexted_data, expected_size)
-{
-    if ( null == data )
-        console.error("Test failed - empty data returned!");
-    else
-    {
-        let result = String.fromCharCode.apply(String, data);
-
-        console.log("Returned data '" + result + "'");
-
-        if ( result.length == expected_size )
-        {
-            console.log("Size OK");
-
-            if ( result == expexted_data )
-            {
-                console.log("Content OK");
-                console.log("Test pass OK!");
-            }
-            else
-            {
-                console.error("Different data!");
-                console.error("Exprected data '" + expexted_data + "'");
-            }
-        }
-        else
-            console.error("Size of data is not equal for exprected size");   
-    }
-
-    console.log("- - - - - - - - - - - - -");
-}
-
 console.log("- - - - - - - - - - - - -");
 
 
-let expexted_data = "hello banana!\n";
-
-let expected_size = new Buffer(expexted_data, 'utf8').length;
+let expected_data = "hello banana!";
 
 {    
     let expression = "{ \"cid\" : \"6CB855C48656FA78D99F84D89515DEF944F3BDB0B2E0204AC0B09B94967B8E15\" }";
@@ -51,7 +18,7 @@ let expected_size = new Buffer(expexted_data, 'utf8').length;
 
         console.log("Test for data expression '" + expression + "'");
 
-        CheckReturnedData(data, expexted_data, expected_size)
+        common.CheckReturnedData(data, expected_data)
         
     });
 }
@@ -73,7 +40,7 @@ let expected_size = new Buffer(expexted_data, 'utf8').length;
 
             console.log("Test 2 (direct call KBwasm)");
             
-            CheckReturnedData(data, expexted_data, expected_size);
+            common.CheckReturnedData(data, expected_data);
 
         });
     }
