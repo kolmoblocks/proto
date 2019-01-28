@@ -19,6 +19,13 @@ module.exports = class KBWasm
             // fill args
             for ( var arg in this.args )
             {
+                if ( null == this.args[arg] )
+                {
+                    console.log("One of args is empty");
+
+                    return null;
+                }
+
                 // TODO:
                 // var arg_index = wasmInstance.exports.arg_index_by_name(args[arg]["ArgName"]);
                 var arg_index = arg;

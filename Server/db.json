@@ -75,6 +75,29 @@
 
     },
 
+    "HELLO" : {
+
+        "MIME" 		: "utf8/text",
+		"size" 		: 5,
+
+        "cids" : {
+            "SHA256" : "3733CD977FF8EB18B987357E22CED99F46097F31ECB239E878AE63760E83E4D5"
+        },
+
+        "data_expression1" : {
+
+            "exec" : {
+                "wasm" : {
+                    "ref" : "uppercase.wasm"
+                },
+                "arg1" : {
+                    "ref" : "file1.txt"
+                }
+            }
+        }
+
+    },
+
     "banana" : {
 
         "MIME" 		: "utf8/text",
@@ -101,6 +124,36 @@
 
         "data_expression1" : {
             "ref" : "concat.wasm"
+        }
+
+    },
+
+    "wasm_unzip" : {
+
+        "MIME" 		: "wasm",
+        "size" 		: 110331,
+        
+        "cids" : {
+            "SHA256" : "_wasm_unzip_"
+        },
+
+        "data_expression1" : {
+            "ref" : "unzip.wasm"
+        }
+
+    },
+
+    "wasm_uppercase" : {
+
+        "MIME" 		: "wasm",
+        "size" 		: 74228,
+        
+        "cids" : {
+            "SHA256" : "_wasm_uppercase_"
+        },
+
+        "data_expression1" : {
+            "ref" : "uppercase.wasm"
         }
 
     }

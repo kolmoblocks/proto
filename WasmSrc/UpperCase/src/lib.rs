@@ -1,11 +1,9 @@
 use std::os::raw::c_void;
 use std::sync::Mutex;
 use std::mem;
-use std::io::Read;
 
 #[macro_use]
 extern crate lazy_static;
-extern crate zip;
 
 lazy_static! {
 
@@ -76,7 +74,7 @@ pub extern "C" fn get_result_size() -> usize {
 
 #[no_mangle]
 pub extern "C" fn exec() -> bool {
-
+    
     // check arg length
     let mut _arg = arg.lock().unwrap();
     if 0 == _arg.len() {
@@ -89,23 +87,29 @@ pub extern "C" fn exec() -> bool {
         buf.push(_arg[i]);
     }
 
-    // create zip from buf data 
-    let _wrapped_zip = zip::ZipArchive::new(std::io::Cursor::new(buf));
-    if _wrapped_zip.is_err() {
+    // create utf8 string from buffer data
+    let utf8_string = String::from_utf8(buf);
+    if utf8_string.is_err() {
         return false;
     }
 
+    // unwrap string and convert to uppercase 
+    let result_string = utf8_string.unwrap().to_uppercase();
+
+    // convert string to bytes
+    let bytes = result_string.into_bytes();
+    
+    // magic to remove lead BOM (ï»¿)
+    let mut start_pos = 0;
+    if bytes.len() > 3 {
+        start_pos = 3;
+    }
+    
     let mut _result = result.lock().unwrap();
 
-    // unwrap zipped data and add to result
-    let mut _zip = _wrapped_zip.unwrap();
-    for i in 0.._zip.len()
-    {
-        let mut _file = _zip.by_index(i).unwrap();
-
-        for byte in _file.bytes() {
-            _result.push(byte.unwrap());
-        }
+    // copy bytes to result
+    for i in start_pos..bytes.len() {
+        _result.push(bytes[i]);
     }
 
     // check result
