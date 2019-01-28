@@ -113,6 +113,44 @@
 
     },
 
+    "BIG BROTHER" : {
+
+        "MIME" 		: "utf8/text",
+		"size" 		: 11,
+
+        "cids" : {
+            "SHA256" : "E41B63C496ACD3978DFA624F513AC6B88832E07083BC99B029E2961AE547CB41"
+        },
+
+        "data_expression1" : {
+            "ref" : "file3.txt"
+        }
+
+    },
+
+    "big brother" : {
+
+        "MIME" 		: "utf8/text",
+		"size" 		: 11,
+
+        "cids" : {
+            "SHA256" : "FCE90620CE70369D4B6A5554CD8E52CA43B0AE303A9DE8014A5CAA88B310394D"
+        },
+
+        "data_expression1" : {
+
+            "exec" : {
+                "wasm" : {
+                    "ref" : "lowercase.wasm"
+                },
+                "arg1" : {
+                    "ref" : "file3.txt"
+                }
+            }
+        }
+
+    },
+
     "wasm_concat" : {
 
         "MIME" 		: "wasm",
@@ -154,6 +192,21 @@
 
         "data_expression1" : {
             "ref" : "uppercase.wasm"
+        }
+
+    },
+
+    "wasm_lowercase" : {
+
+        "MIME" 		: "wasm",
+        "size" 		: 80148,
+        
+        "cids" : {
+            "SHA256" : "_wasm_lowercase_"
+        },
+
+        "data_expression1" : {
+            "ref" : "lowercase.wasm"
         }
 
     }
