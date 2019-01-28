@@ -1,39 +1,8 @@
+const common = require('../../common.js')
 const KBstorage = require('..//..//..//BrowserScript/KBstorage')
 const KBwasm = require('..//..//..//BrowserScript/KBwasm')
 
 const MyStorage = new KBstorage(process.cwd() + "/../../Server/");
-
-function CheckReturnedData(data, expexted_data, expected_size)
-{
-    if ( null == data )
-        console.error("Test failed - empty data returned!");
-    else
-    {
-        let result = String.fromCharCode.apply(String, data);
-
-        console.log("Returned data '" + result + "'");
-
-        if ( result.length == expected_size )
-        {
-            console.log("Size OK");
-
-            if ( result == expexted_data )
-            {
-                console.log("Content OK");
-                console.log("Test pass OK!");
-            }
-            else
-            {
-                console.error("Different data!");
-                console.error("Exprected data '" + expexted_data + "'");
-            }
-        }
-        else
-            console.error("Size of data is not equal for exprected size");   
-    }
-
-    console.log("- - - - - - - - - - - - -");
-}
 
 console.log("- - - - - - - - - - - - -");
 
@@ -41,8 +10,7 @@ console.log("- - - - - - - - - - - - -");
     let val1 = "123456";
     let val2 = "7890";
 
-    let expected_size = new Buffer(val1, 'utf8').length + new Buffer(val2, 'utf8').length;
-    let expexted_data = val1 + val2;
+    let expected_data = val1 + val2;
 
     let expression = "{\"exec\":{\"wasm\":{\"ref\":\"concat.wasm\"},\"arg1\":{\"raw\":\"" + val1 + "\"},\"arg2\":{\"raw\":\"" + val2 + "\"}}}";
         
@@ -52,7 +20,7 @@ console.log("- - - - - - - - - - - - -");
 
         console.log("Test for data expression '" + expression + "'");
 
-        CheckReturnedData(data, expexted_data, expected_size)
+        common.CheckReturnedData(data, expected_data)
     });
 }
 
@@ -61,8 +29,7 @@ console.log("- - - - - - - - - - - - -");
     let val2 = ",";
     let val3 = "banana";
 
-    let expected_size = new Buffer(val1, 'utf8').length + new Buffer(val2, 'utf8').length + new Buffer(val3, 'utf8').length;
-    let expexted_data = val1 + val2 + val3;
+    let expected_data = val1 + val2 + val3;
 
     let expression = "{\"exec\":{\"wasm\":{\"ref\":\"concat.wasm\"},\"arg1\":{\"raw\":\"" + val1 + "\"},\"arg2\":{\"raw\":\"" + val2 + "\"},\"arg3\":{\"raw\":\"" + val3 + "\"}}}";
         
@@ -72,7 +39,7 @@ console.log("- - - - - - - - - - - - -");
 
         console.log("Test for data expression '" + expression + "'");
 
-        CheckReturnedData(data, expexted_data, expected_size)
+        common.CheckReturnedData(data, expected_data)
     });
 }
 
@@ -83,8 +50,7 @@ console.log("- - - - - - - - - - - - -");
     let val2 = "Rulez";
     let val3 = "World";
 
-    let expected_size = new Buffer(val1, 'utf8').length + new Buffer(val2, 'utf8').length + new Buffer(val3, 'utf8').length;
-    let expexted_data = val1 + val2 + val3;
+    let expected_data = val1 + val2 + val3;
 
     let arg1 = new Buffer(val1, 'utf8');
     let arg2 = new Buffer(val2, 'utf8');
@@ -104,7 +70,7 @@ console.log("- - - - - - - - - - - - -");
 
             console.log("Test 3 (direct call KBwasm, concat of three args with right order)");
             
-            CheckReturnedData(data, expexted_data, expected_size);
+            common.CheckReturnedData(data, expected_data);
 
         });
     }
@@ -125,9 +91,9 @@ console.log("- - - - - - - - - - - - -");
         
         wasmWrapper.Exec().then( data => {
 
-            console.log("Test 3 (direct call KBwasm, concat of three args with wrong order but with indexes)");
+            console.log("Test 4 (direct call KBwasm, concat of three args with wrong order but with indexes)");
             
-            CheckReturnedData(data, expexted_data, expected_size);
+            common.CheckReturnedData(data, expected_data);
 
         });
     }
