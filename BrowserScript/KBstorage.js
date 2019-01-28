@@ -143,16 +143,7 @@ module.exports = class KBstorage
     {
         let raw = expression["raw"];
 
-        let utf8str = String(raw); // <-- utf8 string
-    
-        var result = new Array();
-
-        for ( var i=0; i < utf8str.length; i++ ) {
-
-            var charcode = utf8str.charCodeAt(i);
-            
-            result.push( charcode ); // ????
-        }
+        var result = new Uint8Array(Buffer.from(raw));
 
         return result;
     }
