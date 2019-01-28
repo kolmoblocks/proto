@@ -99,16 +99,10 @@ pub extern "C" fn exec() -> bool {
     // convert string to bytes
     let bytes = result_string.into_bytes();
     
-    // magic to remove lead BOM (ï»¿)
-    let mut start_pos = 0;
-    if bytes.len() > 3 {
-        start_pos = 3;
-    }
-    
     let mut _result = result.lock().unwrap();
 
     // copy bytes to result
-    for i in start_pos..bytes.len() {
+    for i in 0..bytes.len() {
         _result.push(bytes[i]);
     }
 
