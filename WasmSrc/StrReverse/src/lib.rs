@@ -104,14 +104,8 @@ pub extern "C" fn exec() -> bool {
     // convert string to bytes
     let bytes = result_string.into_bytes();
     
-    // magic to remove past BOM (ï»¿)
-    let mut end_pos = bytes.len();
-    if bytes.len() > 3 {
-        end_pos = bytes.len() - 3;
-    }
-    
     // copy bytes to result
-    for i in 0..end_pos {
+    for i in 0..bytes.len() {
         _result.push(bytes[i]);
     }
 
