@@ -151,6 +151,31 @@
 
     },
 
+    "REHTORB GIB" : {
+
+        "MIME" 		: "utf8/text",
+		"size" 		: 11,
+
+        "cids" : {
+            "SHA256" : "838ECC02974A726857283E8160A89E25EE6859B1F58117DCA96212E2EA638B41"
+        },
+
+        "data_expression1" : {
+
+            "exec" : {
+                "wasm" : {
+                    "ref" : "strreverse.wasm"
+                },
+                "arg1" : {
+                    "ref" : "file3.txt"
+                }
+            }
+        }
+
+    },
+
+    
+
     "wasm_concat" : {
 
         "MIME" 		: "wasm",
@@ -207,6 +232,21 @@
 
         "data_expression1" : {
             "ref" : "lowercase.wasm"
+        }
+
+    },
+
+    "wasm_strreverse" : {
+
+        "MIME" 		: "wasm",
+        "size" 		: 50440,
+        
+        "cids" : {
+            "SHA256" : "_wasm_strreverse_"
+        },
+
+        "data_expression1" : {
+            "ref" : "strreverse.wasm"
         }
 
     }
