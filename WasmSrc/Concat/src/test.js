@@ -2,7 +2,7 @@ const common = require('../../common.js')
 const KBstorage = require('..//..//..//BrowserScript/KBstorage')
 const KBwasm = require('..//..//..//BrowserScript/KBwasm')
 
-const MyStorage = new KBstorage(process.cwd() + "/../../Server/");
+const MyStorage = new KBstorage("127.0.0.1", 3000);
 
 console.log("- - - - - - - - - - - - -");
 
@@ -44,59 +44,61 @@ console.log("- - - - - - - - - - - - -");
 }
 
 {
-    let raw_wasm = MyStorage.cache.GetRawDataByRef("concat.wasm");
+    MyStorage.cache.GetRawDataByRef("concat.wasm").then( raw_wasm => {
 
-    let val1 = "Cats";
-    let val2 = "Rulez";
-    let val3 = "World";
+        let val1 = "Cats";
+        let val2 = "Rulez";
+        let val3 = "World";
 
-    let expected_data = val1 + val2 + val3;
+        let expected_data = val1 + val2 + val3;
 
-    let arg1 = new Buffer(val1, 'utf8');
-    let arg2 = new Buffer(val2, 'utf8');
-    let arg3 = new Buffer(val3, 'utf8');
+        let arg1 = new Buffer(val1, 'utf8');
+        let arg2 = new Buffer(val2, 'utf8');
+        let arg3 = new Buffer(val3, 'utf8');
 
-    {
-        let args = new Array();
+        {
+            let args = new Array();
 
-        // push order matter!
-        args.push(arg1);
-        args.push(arg2);
-        args.push(arg3);
-    
-        let wasmWrapper = new KBwasm(raw_wasm, args);
+            // push order matter!
+            args.push(arg1);
+            args.push(arg2);
+            args.push(arg3);
         
-        wasmWrapper.Exec().then( data => {
-
-            console.log("Test 3 (direct call KBwasm, concat of three args with right order)");
+            let wasmWrapper = new KBwasm(raw_wasm, args);
             
-            common.CheckReturnedData(data, expected_data);
+            wasmWrapper.Exec().then( data => {
 
-        });
-    }
+                console.log("Test 3 (direct call KBwasm, concat of three args with right order)");
+                
+                common.CheckReturnedData(data, expected_data);
 
-    {
-        let args = new Array();
-    
-        arg1["ArgIndex"] = 0; // <--- arg1 always will be first arg while wasm exec
-        arg2["ArgIndex"] = 3; // <--- arg2 always will be second arg while wasm exec
-        arg3["ArgIndex"] = 99; // <--- arg3 always will be third arg while wasm exec
+            });
+        }
 
-        // push order does't matter
-        args.push(arg2); // first arg in array of arguments
-        args.push(arg1); // second arg in array of arguments
-        args.push(arg3); // third arg in array of arguments
-
-        let wasmWrapper = new KBwasm(raw_wasm, args);
+        {
+            let args = new Array();
         
-        wasmWrapper.Exec().then( data => {
-
-            console.log("Test 4 (direct call KBwasm, concat of three args with wrong order but with indexes)");
+            arg1["ArgIndex"] = 0; // <--- arg1 always will be first arg while wasm exec
+            arg2["ArgIndex"] = 3; // <--- arg2 always will be second arg while wasm exec
+            arg3["ArgIndex"] = 99; // <--- arg3 always will be third arg while wasm exec
+    
+            // push order does't matter
+            args.push(arg2); // first arg in array of arguments
+            args.push(arg1); // second arg in array of arguments
+            args.push(arg3); // third arg in array of arguments
+    
+            let wasmWrapper = new KBwasm(raw_wasm, args);
             
-            common.CheckReturnedData(data, expected_data);
+            wasmWrapper.Exec().then( data => {
+    
+                console.log("Test 4 (direct call KBwasm, concat of three args with wrong order but with indexes)");
+                
+                common.CheckReturnedData(data, expected_data);
+    
+            });
+        }
 
-        });
-    }
+    });
 }
 
 

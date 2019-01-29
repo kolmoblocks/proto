@@ -2,12 +2,12 @@ const common = require('..//..//common.js')
 const KBstorage = require('..//..//..//BrowserScript/KBstorage')
 const KBwasm = require('..//..//..//BrowserScript/KBwasm')
 
-const MyStorage = new KBstorage(process.cwd() + "/../../Server/");
+const MyStorage = new KBstorage("127.0.0.1",3000);
 
 console.log("- - - - - - - - - - - - -");
 
 
-let expected_data = "hello banana!";
+let expected_data = "hello banana!\n";
 
 {    
     let expression = "{ \"cid\" : \"6CB855C48656FA78D99F84D89515DEF944F3BDB0B2E0204AC0B09B94967B8E15\" }";
@@ -25,23 +25,25 @@ let expected_data = "hello banana!";
 
 
 {
-    let raw_wasm = MyStorage.cache.GetRawDataByRef("unzip.wasm");
+    MyStorage.cache.GetRawDataByRef("unzip.wasm").then( raw_wasm => {
 
-    let arg1 = MyStorage.cache.GetRawDataByRef("hellobanana.zip");
+        MyStorage.cache.GetRawDataByRef("hellobanana.zip").then( arg1 => {
 
-    {
-        let args = new Array();
+            let args = new Array();
 
-        args.push(arg1);
-        
-        let wasmWrapper = new KBwasm(raw_wasm, args);
-        
-        wasmWrapper.Exec().then( data => {
-
-            console.log("Test 2 (direct call KBwasm)");
+            args.push(arg1);
             
-            common.CheckReturnedData(data, expected_data);
+            let wasmWrapper = new KBwasm(raw_wasm, args);
+            
+            wasmWrapper.Exec().then( data => {
 
-        });
-    }
+                console.log("Test 2 (direct call KBwasm)");
+                
+                common.CheckReturnedData(data, expected_data);
+
+            });
+
+        } );
+
+    } );
 }

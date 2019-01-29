@@ -2,7 +2,7 @@ const common = require('../../common.js')
 const KBstorage = require('..//..//..//BrowserScript/KBstorage')
 const KBwasm = require('..//..//..//BrowserScript/KBwasm')
 
-const MyStorage = new KBstorage(process.cwd() + "/../../Server/");
+const MyStorage = new KBstorage("127.0.0.1",3000);
 
 {
     let expected_data = "REHTORB GIB";
@@ -22,12 +22,10 @@ const MyStorage = new KBstorage(process.cwd() + "/../../Server/");
     }
 
 
-    {
-        let raw_wasm = MyStorage.cache.GetRawDataByRef("strreverse.wasm");
+    MyStorage.cache.GetRawDataByRef("strreverse.wasm").then( raw_wasm => {
 
-        let arg1 = MyStorage.cache.GetRawDataByRef("file3.txt");
+        MyStorage.cache.GetRawDataByRef("file3.txt").then( arg1 => {
 
-        {
             let args = new Array();
 
             args.push(arg1);
@@ -41,8 +39,11 @@ const MyStorage = new KBstorage(process.cwd() + "/../../Server/");
                 common.CheckReturnedData(data, expected_data);
 
             });
-        }
-    }
+
+        } );
+
+    } );
+    
 }
 
 {

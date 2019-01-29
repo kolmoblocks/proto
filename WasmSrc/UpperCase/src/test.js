@@ -2,7 +2,7 @@ const common = require('..//..//common.js')
 const KBstorage = require('..//..//..//BrowserScript/KBstorage')
 const KBwasm = require('..//..//..//BrowserScript/KBwasm')
 
-const MyStorage = new KBstorage(process.cwd() + "/../../Server/");
+const MyStorage = new KBstorage("127.0.0.1",3000);
 
 let expected_data = "HELLO";
 
@@ -22,25 +22,27 @@ let expected_data = "HELLO";
 
 
 {
-    let raw_wasm = MyStorage.cache.GetRawDataByRef("uppercase.wasm");
+    MyStorage.cache.GetRawDataByRef("uppercase.wasm").then( raw_wasm => {
 
-    let arg1 = MyStorage.cache.GetRawDataByRef("file1.txt");
+        MyStorage.cache.GetRawDataByRef("file1.txt").then( arg1 => {
 
-    {
-        let args = new Array();
+            let args = new Array();
 
-        args.push(arg1);
-        
-        let wasmWrapper = new KBwasm(raw_wasm, args);
-        
-        wasmWrapper.Exec().then( data => {
-
-            console.log("Test 2 (direct call KBwasm)");
+            args.push(arg1);
             
-            common.CheckReturnedData(data, expected_data);
+            let wasmWrapper = new KBwasm(raw_wasm, args);
             
-        });
-    }
+            wasmWrapper.Exec().then( data => {
+
+                console.log("Test 2 (direct call KBwasm)");
+                
+                common.CheckReturnedData(data, expected_data);
+                
+            });
+
+        } );
+
+    } );
 }
 
 {
