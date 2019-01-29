@@ -4,9 +4,9 @@ const KBwasm = require('.//KBwasm.js')
 
 module.exports = class KBstorage
 {
-    constructor(server_data_path)
+    constructor(hostname, port)
     {
-        this.cache = new KBcache(server_data_path);
+        this.cache = new KBcache(hostname, port);
     }
 
     async GetData(data_expression)
@@ -45,7 +45,7 @@ module.exports = class KBstorage
 
     async _cid(expression)
     {
-        let data_by_cid = this.cache.GetDataExpressionByCID(expression["cid"]);
+        let data_by_cid = await this.cache.GetDataExpressionByCID(expression["cid"]);
 
         if ( null == data_by_cid )
         {
@@ -125,7 +125,7 @@ module.exports = class KBstorage
     {
         let ref = expression["ref"];
 
-        let result = this.cache.GetRawDataByRef(ref);
+        let result = await this.cache.GetRawDataByRef(ref);
 
         if ( null == result )
         {
@@ -234,7 +234,7 @@ module.exports = class KBstorage
         return data_expressions[0];
     }
 
-    ParseExpression(exp)
+    async ParseExpression(exp)
     {
         try{
             let expression = JSON.parse(exp);
@@ -243,8 +243,10 @@ module.exports = class KBstorage
 
             if ( expression.hasOwnProperty("cid") )
             {
-                let data_by_cid = this.cache.GetDataExpressionByCID(expression["cid"]);
+                let data_by_cid = await this.cache.GetDataExpressionByCID(expression["cid"]);
+
                 let data_expressions = this.ExtractDataExpressions(data_by_cid);
+                
                 for ( var i in data_expressions )
                     result.push(data_expressions[i]);
             }
@@ -283,15 +285,15 @@ module.exports = class KBstorage
 
     }
 
-    ExpressionInCache(expression)
+    async ExpressionInCache(expression)
     {
         try{
 
             if ( expression.hasOwnProperty("ref") )
-                return this.cache.RawDataInCacheByRef(expression["ref"]);
+                return await this.cache.RawDataInCacheByRef(expression["ref"]);
 
             if ( expression.hasOwnProperty("cid") )
-                return this.cache.DataExpressionInCacheByCID(expression["cid"]);
+                return await this.cache.DataExpressionInCacheByCID(expression["cid"]);
                 
         }catch(error){
             return false;

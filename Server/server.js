@@ -4,6 +4,8 @@ const KBserver = require("../Server//KBserver")
 const hostname = '127.0.0.1';
 const port = 3000;
 const backend = new KBserver("");
+const cid_msg = `To get data from CID -> http://${hostname}:${port}/CID=FCE90620CE70369D4B6A5554CD8E52CA43B0AE303A9DE8014A5CAA88B310394D`;
+const ref_msg = `To get data from REF -> http://${hostname}:${port}/REF=file1.txt`;
 
 const server = http.createServer((req, res) => {
 
@@ -25,6 +27,8 @@ const server = http.createServer((req, res) => {
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(data));
 
+        console.log(`CID Request processed for ` + cid);
+
         return;
     }
     if ( req.url.startsWith("/REF=") )
@@ -45,16 +49,22 @@ const server = http.createServer((req, res) => {
         res.setHeader('Content-Type', 'binary');
         res.end(Buffer.from(data.buffer));
 
+        console.log(`REF Request processed for ` + ref);
+
         return;
     }
 
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/plain');
-    res.end('Unsupported request (SID or REF implemented only)\n');
+    res.end(cid_msg + "\n" + ref_msg);
 });
 
 server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-  console.log(`to get data from CID -> http://${hostname}:${port}/CID=FCE90620CE70369D4B6A5554CD8E52CA43B0AE303A9DE8014A5CAA88B310394D`);
-  console.log(`to get data from REF -> http://${hostname}:${port}/REF=file1.txt`);
+
+    console.log(`Server running at http://${hostname}:${port}/`);
+
+    console.log(cid_msg);
+
+    console.log(ref_msg);
+    
 });
