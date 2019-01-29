@@ -4,8 +4,6 @@ const KBwasm = require('..//..//..//BrowserScript/KBwasm')
 
 const MyStorage = new KBstorage(process.cwd() + "/../../Server/");
 
-console.log("- - - - - - - - - - - - -");
-
 let expected_data = "HELLO";
 
 {    
@@ -17,19 +15,7 @@ let expected_data = "HELLO";
 
         console.log("Test for data expression '" + expression + "'");
 
-        // why not common.CheckReturnedData(data, expected_data) ?
-        // because data for expression is in the file
-        // then utf8 string in file, it's data has BOM (first 3 bytes)
-        let rd = common.stringFromUTF8Array(data).trim();
-        if ( rd == expected_data )
-        {
-            console.log("Returned data '" + rd + "'");
-            console.log("Test pass OK!");
-        }
-        else
-            common.CheckReturnedData(data, expected_data);
-        
-        console.log("- - - - - - - - - - - - -");
+        common.CheckReturnedData(data, expected_data);
         
     });
 }
@@ -51,26 +37,14 @@ let expected_data = "HELLO";
 
             console.log("Test 2 (direct call KBwasm)");
             
-            // why not common.CheckReturnedData(data, expected_data) ?
-            // because data for expression is in the file
-            // then utf8 string in file, it's data has BOM (first 3 bytes)
-            let rd = common.stringFromUTF8Array(data).trim();
-            if ( rd == expected_data )
-            {
-                console.log("Returned data '" + rd + "'");
-                console.log("Test pass OK!");
-            }
-            else
-                common.CheckReturnedData(data, expected_data);
+            common.CheckReturnedData(data, expected_data);
             
-            console.log("- - - - - - - - - - - - -");
-
         });
     }
 }
 
 {
-    let expected_string_data = "ВЕРХНИЙ РЕГИСТР";
+    let expected_data = "ВЕРХНИЙ РЕГИСТР";
 
     {
         let expression = "{ \"exec\" : { \"wasm\" : { \"cid\" : \"_wasm_uppercase_\" }, \"arg1\" : { \"raw\" : \"верхний регистр\" } } }";
@@ -81,14 +55,14 @@ let expected_data = "HELLO";
 
             console.log("Test for data expression '" + expression + "'");
 
-            common.CheckReturnedData(data, expected_string_data)
+            common.CheckReturnedData(data, expected_data);
             
         });
     }
 }
 
 {
-    let expected_string_data = "需要技术支持";
+    let expected_data = "需要技术支持";
 
     {
         let expression = "{ \"exec\" : { \"wasm\" : { \"cid\" : \"_wasm_uppercase_\" }, \"arg1\" : { \"raw\" : \"需要技术支持\" } } }";
@@ -99,14 +73,14 @@ let expected_data = "HELLO";
 
             console.log("Test for data expression '" + expression + "'");
 
-            common.CheckReturnedData(data, expected_string_data)
+            common.CheckReturnedData(data, expected_data);
             
         });
     }
 }
 
 {
-    let expected_string_data = "BIG LOW";
+    let expected_data = "BIG LOW";
 
     {
         let expression = "{ \"exec\" : { \"wasm\" : { \"cid\" : \"_wasm_uppercase_\" }, \"arg1\" : { \"raw\" : \"big low\" } } }";
@@ -117,7 +91,7 @@ let expected_data = "HELLO";
 
             console.log("Test for data expression '" + expression + "'");
 
-            common.CheckReturnedData(data, expected_string_data)
+            common.CheckReturnedData(data, expected_data);
             
         });
     }

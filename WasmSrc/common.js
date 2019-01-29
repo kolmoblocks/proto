@@ -3,29 +3,51 @@ module.exports = {
     CheckReturnedData: function(data, expected_string_data)
     {
         if ( null == data )
+        {
             console.error("Test failed - empty data returned!");
+
+            return false;
+        }
         else
         {
+            // check for utf8 BOM, if it present - delete it from data
+            if ( data.length > 3 )
+            {
+                if ((data[0] == 0xEF) && (data[1] == 0xBB) && (data[2] == 0xBF)) 
+                {
+                    data.splice(0, 3);
+                }
+            }
+
             let result = this.stringFromUTF8Array(data);
 
             console.log("Returned data '" + result + "'");
 
             if ( result.length != expected_string_data.length )
+            {
                 console.log("Diff length (expected-" + expected_string_data.length + ", result-" + result.length + ")");
 
-            if ( result == expected_string_data )
-            {
-                console.log("Test pass OK!");
+                return false;
             }
             else
             {
-                console.error("Different data!");
-                console.error("Exprected data '" + expected_string_data + "'");
+                if ( result == expected_string_data )
+                {
+                    console.log("Test pass OK!");
+
+                    return true;
+                }
+                else
+                {
+                    console.error("Different data!");
+
+                    console.error("Exprected data '" + expected_string_data + "'");
+
+                    return false;
+                }
             }
             
         }
-
-        console.log("- - - - - - - - - - - - -");
     },
 
     stringFromUTF8Array: function(data)

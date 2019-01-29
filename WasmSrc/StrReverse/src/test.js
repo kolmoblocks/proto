@@ -4,8 +4,6 @@ const KBwasm = require('..//..//..//BrowserScript/KBwasm')
 
 const MyStorage = new KBstorage(process.cwd() + "/../../Server/");
 
-console.log("- - - - - - - - - - - - -");
-
 {
     let expected_data = "REHTORB GIB";
 
@@ -18,19 +16,7 @@ console.log("- - - - - - - - - - - - -");
 
             console.log("Test for data expression '" + expression + "'");
 
-            // why not common.CheckReturnedData(data, expected_data) ?
-            // because data for expression is in the file
-            // then utf8 string in file, it's data has BOM (first 3 bytes)
-            let rd = common.stringFromUTF8Array(data).trim();
-            if ( rd == expected_data )
-            {
-                console.log("Returned data '" + rd + "'");
-                console.log("Test pass OK!");
-            }
-            else
-                common.CheckReturnedData(data, expected_data);
-            
-            console.log("- - - - - - - - - - - - -");
+            common.CheckReturnedData(data, expected_data);
             
         });
     }
@@ -52,19 +38,7 @@ console.log("- - - - - - - - - - - - -");
 
                 console.log("Test 2 (direct call KBwasm)");
                 
-                // why not common.CheckReturnedData(data, expected_data) ?
-                // because data for expression is in the file
-                // then utf8 string in file, it's data has BOM (first 3 bytes)
-                let rd = common.stringFromUTF8Array(data).trim();
-                if ( rd == expected_data )
-                {
-                    console.log("Returned data '" + rd + "'");
-                    console.log("Test pass OK!");
-                }
-                else
-                    common.CheckReturnedData(data, expected_data);
-
-                console.log("- - - - - - - - - - - - -");
+                common.CheckReturnedData(data, expected_data);
 
             });
         }
