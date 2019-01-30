@@ -12,9 +12,9 @@ class KBwasm
 
         try {
 
-            var wasmModule = await new WebAssembly.Module(this.raw_wasm);
+            var wasmModule = await new WebAssembly.compile(this.raw_wasm);
 
-            var wasmInstance = await new WebAssembly.Instance(wasmModule, []);
+            var wasmInstance = await new WebAssembly.instantiate(wasmModule, []);
 
             // fill args
             for ( var arg in this.args )
