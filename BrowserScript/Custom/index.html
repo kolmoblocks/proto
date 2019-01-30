@@ -41,7 +41,7 @@
 
     storage.GetData("{ \"cid\" : \"2CF24DBA5FB0A30E26E83B2AC5B9E29E1B161E5C1FA7425E73043362938B9824\" }").then( data => {
         
-        document.write("Retrived data from server");
+        document.write("Data from server");
         document.write('<br>');
 
         document.write(data.MIME);
@@ -52,7 +52,6 @@
         
         document.write(stringFromUTF8Array(data));
         document.write('<br>');
-        //alert(data);
     } );
 
 </script>
