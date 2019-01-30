@@ -8,15 +8,33 @@ class KBcache
         this.cid_cache = new Map();
     }
 
-    async requestDataFromServer(url)
+    async requestDataFromServer2(url)
     {
-        //let resp = await fetch(url);
-        //console.log(url + "--->>>" + resp);
-        //return resp;
-        var xmlHttp = new XMLHttpRequest();
+        console.log(url);
+
+        let resp = await fetch(url);
+        let a = await resp.blob();
+
+        //console.log(resp.type);
+
+        return a;
+    }
+
+    async requestDataFromServer1(url)
+    {
+        console.log(url);
+
+        let resp = await fetch(url);
+        let a = await resp.json();
+
+        let b = JSON.stringify(a);
+
+        return b;
+        
+        /*var xmlHttp = new XMLHttpRequest();
         xmlHttp.open( "GET", url, false ); // false for synchronous request
         xmlHttp.send( null );
-        return xmlHttp.responseText;
+        return xmlHttp.responseText;*/
         
         /*return new Promise((resolve, reject) => {
             http.get(url, (res) => {
@@ -35,7 +53,7 @@ class KBcache
         {
             let url = 'http://' + this.hostname + ':' + this.port + '/CID=' + cid;
 
-            let server_data = JSON.parse(await this.requestDataFromServer(url));
+            let server_data = JSON.parse(await this.requestDataFromServer1(url));
             
             if ( null != server_data )
             {
@@ -56,7 +74,7 @@ class KBcache
         {
             let url = 'http://' + this.hostname + ':' + this.port + '/REF=' + ref;
 
-            let server_data = new Uint8Array(await this.requestDataFromServer(url));
+            let server_data = new Uint8Array(await this.requestDataFromServer2(url));
 
             if ( null != server_data )
             {
