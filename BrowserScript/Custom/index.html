@@ -1,30 +1,14 @@
-<!DOCTYPE HTML>
-<html>
 
-<body>
+<script src="./KBwasm.js"></script>
+<script src="./KBcache.js"></script>
+<script src="./KBstorage.js"></script>
 
-  <p>Before the script...</p>
+<script>
+    
+    let storage = new KBstorage("127.0.0.1", 3000);
 
-  <script src="./KBstorage.js"></script>
+    storage.GetData("{ \"cid\" : \"FCE90620CE70369D4B6A5554CD8E52CA43B0AE303A9DE8014A5CAA88B310394D\" }").then( data => {
+        alert(data);
+    } );
 
-  <script>
-      
-      //let cache = new KBcache("host", "port");
-
-      let storage = new KBstorage("127.0.0.1", 3000);
-
-      //storage.cache.GetDataExpressionByCID("sdfsdf").then( data => {
-      //    alert(data);
-      //});
-
-      storage.GetData("{ \"cid\" : \"FCE90620CE70369D4B6A5554CD8E52CA43B0AE303A9DE8014A5CAA88B310394D\" }").then( data => {
-          alert(data);
-      } );
-
-  </script>
-
-  <p>...After the script.</p>
-
-</body>
-
-</html>
+</script>
