@@ -8,34 +8,18 @@ class KBcache
         this.cid_cache = new Map();
     }
 
-    async requestDataFromServer2(url)
+    async requestREF(url)
     {
-        let resp = await fetch(url);
-        let a = await resp.arrayBuffer();
-        
-        return a;
+        let response = await fetch(url);
+        let raw_data = await response.arrayBuffer();
+        return raw_data;
     }
 
-    async requestDataFromServer1(url)
+    async requestCID(url)
     {
-        let resp = await fetch(url);
-        let a = await resp.json();
-        let b = JSON.stringify(a);
-
-        return b;
-        
-        /*var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open( "GET", url, false ); // false for synchronous request
-        xmlHttp.send( null );
-        return xmlHttp.responseText;*/
-        
-        /*return new Promise((resolve, reject) => {
-            http.get(url, (res) => {
-                let data = [];
-                res.on('end', () => resolve(Buffer.concat(data)));
-                res.on('data', (chunk) => data.push(chunk));
-            }).on('error', e => reject(e));
-        });*/
+        let response = await fetch(url);
+        let json_data = await response.json();
+        return JSON.stringify(json_data);;
     }
 
     async GetDataExpressionByCID(cid)
@@ -46,7 +30,7 @@ class KBcache
         {
             let url = 'http://' + this.hostname + ':' + this.port + '/CID=' + cid;
 
-            let server_data = JSON.parse(await this.requestDataFromServer1(url));
+            let server_data = JSON.parse(await this.requestCID(url));
             
             if ( null != server_data )
             {
@@ -67,7 +51,7 @@ class KBcache
         {
             let url = 'http://' + this.hostname + ':' + this.port + '/REF=' + ref;
 
-            let server_data = new Uint8Array(await this.requestDataFromServer2(url));
+            let server_data = new Uint8Array(await this.requestREF(url));
 
             if ( null != server_data )
             {
