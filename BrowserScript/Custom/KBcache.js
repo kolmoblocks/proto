@@ -10,6 +10,9 @@ class KBcache
 
     async requestDataFromServer(url)
     {
+        //let resp = await fetch(url);
+        //console.log(url + "--->>>" + resp);
+        //return resp;
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open( "GET", url, false ); // false for synchronous request
         xmlHttp.send( null );

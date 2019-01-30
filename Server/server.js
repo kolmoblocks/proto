@@ -1,3 +1,4 @@
+var fs = require('fs');
 const http = require('http');
 const KBserver = require("../Server//KBserver")
 
@@ -54,9 +55,23 @@ const server = http.createServer((req, res) => {
         return;
     }
 
+    
+    if ( req.url.endsWith(".html") || req.url.endsWith(".js") )
+    {
+        let data = fs.readFileSync(process.cwd() + '/../BrowserScript/Custom' + req.url);
+
+        res.writeHead(200, {'Content-Type': 'text/html','Content-Length':data.length});
+        res.write(data);
+        res.end();
+
+        console.log(`Request processed for ` + req.url);
+        
+        return;
+    }
+
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/plain');
-    res.end(cid_msg + "\n" + ref_msg);
+    res.end("Supported only\n" + cid_msg + "\n" + ref_msg);
 });
 
 server.listen(port, hostname, () => {

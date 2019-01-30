@@ -1,4 +1,4 @@
-class KBWasm
+class KBwasm
 {
     constructor(raw_wasm, args)
     {
