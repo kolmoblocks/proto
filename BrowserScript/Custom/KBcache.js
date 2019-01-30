@@ -10,23 +10,16 @@ class KBcache
 
     async requestDataFromServer2(url)
     {
-        console.log(url);
-
         let resp = await fetch(url);
-        let a = await resp.blob();
-
-        //console.log(resp.type);
-
+        let a = await resp.arrayBuffer();
+        
         return a;
     }
 
     async requestDataFromServer1(url)
     {
-        console.log(url);
-
         let resp = await fetch(url);
         let a = await resp.json();
-
         let b = JSON.stringify(a);
 
         return b;
