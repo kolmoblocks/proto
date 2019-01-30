@@ -1,3 +1,9 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<body>
 
 <script src="./KBwasm.js"></script>
 <script src="./KBcache.js"></script>
@@ -39,19 +45,37 @@
 
     let storage = new KBstorage("127.0.0.1", 3000);
 
-    storage.GetData("{ \"cid\" : \"2CF24DBA5FB0A30E26E83B2AC5B9E29E1B161E5C1FA7425E73043362938B9824\" }").then( data => {
-        
-        document.write("Data from server");
-        document.write('<br>');
+    function EvaluateDE()
+    {
+        let de = document.getElementById("DE").value;
 
-        document.write(data.MIME);
-        document.write('<br>');
-        
-        document.write(data.size);
-        document.write('<br>');
-        
-        document.write(stringFromUTF8Array(data));
-        document.write('<br>');
-    } );
+        storage.GetData(de).then( data => {
+            document.getElementById("MIME").value = data.MIME;
+            document.getElementById("size").value = data.size;
+            document.getElementById("String value").value = stringFromUTF8Array(data);
+        } );
+    }
 
 </script>
+
+<form>
+    Data Expression:<br>
+    <input type="text" name="DataExpression" value='{ "cid" : "2CF24DBA5FB0A30E26E83B2AC5B9E29E1B161E5C1FA7425E73043362938B9824" }' size=100 id="DE"><br>
+    <input type="button" onclick="EvaluateDE()" value="Evaluate Data Expression">
+</form>
+
+<br>Evaluation Result:<br>
+<table style="width:100%">
+    <tr>
+      <th align="left">MIME</th>
+      <th align="left">size</th>
+      <th align="left">String value</th>
+    </tr>
+    <tr>
+      <td><output id="MIME"></output></td>
+      <td><output id="size"></output></td>
+      <td><output id="String value"></output></td>
+    </tr>
+  </table>
+</body>
+</html>
