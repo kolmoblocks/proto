@@ -13,3 +13,5 @@ WasmSrc/UnZip/target/*
 WasmSrc/UpperCase/pkg/*
 WasmSrc/UpperCase/target/*
 
+WasmSrc/CabBuilder/pkg/*
+WasmSrc/CabBuilder/target/*

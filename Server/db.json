@@ -320,5 +320,53 @@
         {
             "ref" : "book1_encoded_table.bin"
         }
+    },
+
+    "cab_builder" : {
+
+        "MIME" 		: "wasm",
+        "size" 		: 2705437,
+        
+        "cids" : {
+            "SHA256" : "_wasm_cabbuilder_"
+        },
+
+        "data_expression" : {
+            "ref" : "cabbuilder.wasm"
+        }
+
+    },
+
+
+    "data_bundle1" : {
+
+        "MIME" 		: "application/octet-stream",
+        "size" 		: 11111,
+
+        "cids" : {
+            "SHA256" : "_data_bundle1_"
+        },
+
+        "data_expression" : 
+        {
+            "exec" : {
+                "wasm" : {
+                    "cid" : "_wasm_cabbuilder_"
+                },
+                "CabStructure" : {
+                    "raw" : "{ \"1\" : \"Book1/book1_encoded_data.bin\", \"2\" : \"Book1/book1_encoded_table.bin\", \"3\" : \"Wasm/huffman2.wasm\" }"
+                },
+                "Arg1" : {
+                    "ref" : "book1_encoded_data.bin"
+                },
+                "Arg2" : {
+                    "ref" : "book1_encoded_table.bin"
+                },
+                "Arg3" : {
+                    "ref" : "huffman2.wasm"
+                }
+            }
+        }
+
     }
 }
