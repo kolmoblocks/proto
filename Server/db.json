@@ -249,6 +249,76 @@
             "ref" : "strreverse.wasm"
         }
 
-    }
+    },
 
+    "huffman2" : {
+
+        "MIME" 		: "wasm",
+        "size" 		: 2705437,
+        
+        "cids" : {
+            "SHA256" : "_wasm_huffman2_"
+        },
+
+        "data_expression" : {
+            "ref" : "huffman2.wasm"
+        }
+
+    },
+
+    "book1" : {
+        
+        "MIME" 		: "utf8/text",
+        "size" 		: 18130,
+
+        "cids" : {
+            "SHA256" : "_book1_"
+        },
+ 
+        "data_expression1" : 
+        {
+            "exec" : {
+                "wasm" : {
+                    "cid" : "_wasm_huffman2_"
+                },
+                "EncodedData" : {
+                    "cid" : "E9972B1F3A0F855289E46ECC94FE45EBED9106EF5A9AC2FC08787F7671347150"
+                },
+                "EncodedTable" : {
+                    "cid" : "90EC7319DFF3815E827BC332EA5EC0B0C828E27FCEC32771BD38F9A32C1F1B63"
+                }
+            }
+        }
+
+    },
+
+    "book1_encoded_data" : {
+        
+        "MIME" 		: "application/octet-stream",
+        "size" 		: 9020,
+
+        "cids" : {
+            "SHA256" : "E9972B1F3A0F855289E46ECC94FE45EBED9106EF5A9AC2FC08787F7671347150"
+        },
+
+        "data_expression1" : 
+        {
+            "ref" : "book1_encoded_data.bin"
+        }
+    },
+
+    "book1_encoded_table" : {
+        
+        "MIME" 		: "application/octet-stream",
+        "size" 		: 2594,
+
+        "cids" : {
+            "SHA256" : "90EC7319DFF3815E827BC332EA5EC0B0C828E27FCEC32771BD38F9A32C1F1B63"
+        },
+
+        "data_expression1" : 
+        {
+            "ref" : "book1_encoded_table.bin"
+        }
+    }
 }
