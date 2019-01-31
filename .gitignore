@@ -1,0 +1,15 @@
+WasmSrc/Concat/pkg/*
+WasmSrc/Concat/target/*
+
+WasmSrc/LowerCase/pkg/*
+WasmSrc/LowerCase/target/*
+
+WasmSrc/StrReverse/pkg/*
+WasmSrc/StrReverse/target/*
+
+WasmSrc/UnZip/pkg/*
+WasmSrc/UnZip/target/*
+
+WasmSrc/UpperCase/pkg/*
+WasmSrc/UpperCase/target/*
+
