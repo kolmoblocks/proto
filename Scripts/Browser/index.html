@@ -65,6 +65,7 @@
                     new_element.hidden = false;
                     new_element.id = child_expression
                     new_element.children["0"].innerText = child_expression;
+                    new_element.style = "padding: 40px";
 
                     parent.appendChild( new_element );
                 });
@@ -85,7 +86,25 @@
         storage.GetData(expression).then( data => { 
             
             if ( null != data )
-                parent.children["3"].innerText = "MIME=" + data.MIME + ", size=" + data.size + ", strVal=" + stringFromUTF8Array(data);
+            {
+                if ( data.MIME == 'utf8/text' )
+                    parent.children["3"].innerText = "MIME=" + data.MIME + ", size=" + data.size + ", StringValue=" + stringFromUTF8Array(data);
+                else
+                {
+                    if ( data.size > 100 )
+                    {
+                        let first_100Bytes = [];
+                        for ( i = 0; i < 100; i++ )
+                            first_100Bytes.push(data[i]);
+
+                        parent.children["3"].innerText = "MIME=" + data.MIME + ", size=" + data.size + ", RawData(first 100)=" + first_100Bytes;
+                    }
+                    else
+                        parent.children["3"].innerText = "MIME=" + data.MIME + ", size=" + data.size + ", RawData=" + data;
+                }
+
+                parent.style = "background-color: green";
+            }
 
         } );
 
@@ -95,15 +114,23 @@
 </script>
 
 <div id="empty_expression" hidden="true">
-    <p></p> 
+    <p></p><br>
     <button onclick="parseExpression(this.parentNode.id)">Parse</button>
     <button onclick="getData(this.parentNode.id)">Get Data</button>
     <p></p> 
 </div>
 
+<style>
+.expression {
+    background-color: gray;
+    color: white;
+    padding: 20px;
+} 
+</style>
 
-<div id="init">
-    <p>{ "cid" : "_book1_" }</p> 
+
+<div id="init" class="expression">
+    <p>{ "cid" : "_book1_" }</p><br>
     <button onclick="parseExpression(this.parentNode.id)">Parse</button>
     <button onclick="getData(this.parentNode.id)">Get Data</button>
     <p></p>

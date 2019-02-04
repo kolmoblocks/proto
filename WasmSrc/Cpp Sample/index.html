@@ -28,6 +28,8 @@ Module.onRuntimeInitialized = function() {
         for (var i = 0; i < pWasmData.length; i++) {
             pWasmData[i] = arr_arg0[i];
         }
+
+        console.log( "Arg0 ", ab2str(arr_arg0) );
     }
 
     {
@@ -40,6 +42,8 @@ Module.onRuntimeInitialized = function() {
         for (var i = 0; i < pWasmData.length; i++) {
             pWasmData[i] = arr_arg1[i];
         }
+
+        console.log( "Arg1 ", ab2str(arr_arg1) );
     }
 
     if ( Module._exec() )
