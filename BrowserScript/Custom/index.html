@@ -45,37 +45,68 @@
 
     let storage = new KBstorage("127.0.0.1", 3000);
 
-    function EvaluateDE()
+    function parseExpression(expression_id)
     {
-        let de = document.getElementById("DE").value;
+        var parent = document.getElementById(expression_id);
+        parent.children["1"].disabled = true;
 
-        storage.GetData(de).then( data => {
-            document.getElementById("MIME").value = data.MIME;
-            document.getElementById("size").value = data.size;
-            document.getElementById("String value").value = stringFromUTF8Array(data);
+        var expression = parent.children["0"].innerText;
+
+        storage.ParseExpression(expression).then( data => { 
+            
+            if ( null != data )
+            {
+                data.forEach(element => {
+
+                    var child_expression = JSON.stringify(element);
+                    
+                    var new_element = document.getElementById("empty_expression").cloneNode(true);
+
+                    new_element.hidden = false;
+                    new_element.id = child_expression
+                    new_element.children["0"].innerText = child_expression;
+
+                    parent.appendChild( new_element );
+                });
+            }
+
         } );
+
+        return;
+    }
+
+    function getData(expression_id)
+    {
+        var parent = document.getElementById(expression_id);
+        parent.children["2"].disabled = true;
+
+        var expression = parent.children["0"].innerText;
+
+        storage.GetData(expression).then( data => { 
+            
+            if ( null != data )
+                parent.children["3"].innerText = "MIME=" + data.MIME + ", size=" + data.size + ", strVal=" + stringFromUTF8Array(data);
+
+        } );
+
+        return;
     }
 
 </script>
 
-<form>
-    Data Expression:<br>
-    <input type="text" name="DataExpression" value='{ "cid" : "3733CD977FF8EB18B987357E22CED99F46097F31ECB239E878AE63760E83E4D5" }' size=100 id="DE"><br>
-    <input type="button" onclick="EvaluateDE()" value="Evaluate Data Expression">
-</form>
+<div id="empty_expression" hidden="true">
+    <p></p> 
+    <button onclick="parseExpression(this.parentNode.id)">Parse</button>
+    <button onclick="getData(this.parentNode.id)">Get Data</button>
+</div>
 
-<br>Evaluation Result:<br>
-<table style="width:100%">
-    <tr>
-      <th align="left">MIME</th>
-      <th align="left">size</th>
-      <th align="left">String value</th>
-    </tr>
-    <tr>
-      <td><output id="MIME"></output></td>
-      <td><output id="size"></output></td>
-      <td><output id="String value"></output></td>
-    </tr>
-  </table>
+
+<div id="init">
+    <p>{ "cid" : "_book1_" }</p> 
+    <button onclick="parseExpression(this.parentNode.id)">Parse</button>
+    <button onclick="getData(this.parentNode.id)">Get Data</button>
+    <p></p>
+</div>
+
 </body>
 </html>
