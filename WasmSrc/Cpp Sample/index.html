@@ -1,0 +1,69 @@
+<html>
+<body>
+<script src="main.js"></script>
+<script>
+
+function str2ab(str) {
+    var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
+    var bufView = new Uint16Array(buf);
+    for (var i=0, strLen=str.length; i < strLen; i++) {
+        bufView[i] = str.charCodeAt(i);
+    }
+    return buf;
+}
+
+function ab2str(buf) {
+  return String.fromCharCode.apply(null, new Uint16Array(buf));
+}
+
+Module.onRuntimeInitialized = function() {
+
+    {
+        let arr_arg0 = new Uint8Array(str2ab("hello"));
+
+        let pointer = Module._set_arg(0, arr_arg0.length );
+        
+        var pWasmData = new Uint8ClampedArray(Module.wasmMemory.buffer, pointer, arr_arg0.length);
+
+        for (var i = 0; i < pWasmData.length; i++) {
+            pWasmData[i] = arr_arg0[i];
+        }
+    }
+
+    {
+        let arr_arg1 = new Uint8Array(str2ab("banana"));
+
+        let pointer = Module._set_arg(1, arr_arg1.length );
+        
+        var pWasmData = new Uint8ClampedArray(Module.wasmMemory.buffer, pointer, arr_arg1.length);
+
+        for (var i = 0; i < pWasmData.length; i++) {
+            pWasmData[i] = arr_arg1[i];
+        }
+    }
+
+    if ( Module._exec() )
+    {
+        let result = [];
+
+        var size = Module._get_result_size();
+        console.log( "Result size ", size );
+
+        var pointer = Module._get_result();
+        console.log( "Result pointer ", pointer );
+        
+        var pResultData = new Uint8ClampedArray(Module.wasmMemory.buffer, pointer, size);
+        
+        for (var i = 0; i < pResultData.length; i++) {
+            result.push(pResultData[i]);
+        }
+
+        console.log( "Result ", ab2str(result) );
+    }
+    else
+        console.log( "Exacution failed!" );
+
+}
+</script>
+</body>
+</html>
