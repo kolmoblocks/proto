@@ -58,7 +58,7 @@ const server = http.createServer((req, res) => {
     
     if ( req.url.endsWith(".html") || req.url.endsWith(".js") )
     {
-        let data = fs.readFileSync(process.cwd() + '/../BrowserScript/Custom' + req.url);
+        let data = fs.readFileSync(process.cwd() + '/../Scripts/Browser' + req.url);
 
         res.writeHead(200, {'Content-Type': 'text/html','Content-Length':data.length});
         res.write(data);
