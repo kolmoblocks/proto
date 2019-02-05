@@ -18,6 +18,8 @@ function ab2str(buf) {
 
 Module.onRuntimeInitialized = function() {
 
+    document.writeln( "Concat buffers WASM sample <br>" );
+
     {
         let arr_arg0 = new Uint8Array(str2ab("hello"));
 
@@ -29,7 +31,7 @@ Module.onRuntimeInitialized = function() {
             pWasmData[i] = arr_arg0[i];
         }
 
-        console.log( "Arg0 ", ab2str(arr_arg0) );
+        document.writeln( "Arg0 ", ab2str(arr_arg0), "<br>" );
     }
 
     {
@@ -43,15 +45,17 @@ Module.onRuntimeInitialized = function() {
             pWasmData[i] = arr_arg1[i];
         }
 
-        console.log( "Arg1 ", ab2str(arr_arg1) );
+        document.writeln( "Arg1 ", ab2str(arr_arg1), "<br>" );
     }
+
+    document.writeln( "-------------------<br>" );
 
     if ( Module._exec() )
     {
         let result = [];
 
         var size = Module._get_result_size();
-        console.log( "Result size ", size );
+        document.writeln( "Result size ", size, "<br>" );
 
         var pointer = Module._get_result();
         console.log( "Result pointer ", pointer );
@@ -62,10 +66,10 @@ Module.onRuntimeInitialized = function() {
             result.push(pResultData[i]);
         }
 
-        console.log( "Result ", ab2str(result) );
+        document.writeln( "Result ", ab2str(result), "<br>" );
     }
     else
-        console.log( "Exacution failed!" );
+        document.writeln( "Exacution failed!" );
 
 }
 </script>
