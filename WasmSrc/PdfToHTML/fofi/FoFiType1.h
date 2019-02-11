@@ -1,0 +1,67 @@
+//========================================================================
+//
+// FoFiType1.h
+//
+// Copyright 1999-2003 Glyph & Cog, LLC
+//
+//========================================================================
+
+#ifndef FOFITYPE1_H
+#define FOFITYPE1_H
+
+#include "../aconf.h"
+
+#ifdef USE_GCC_PRAGMAS
+#pragma interface
+#endif
+
+#include "../goo/gtypes.h"
+#include "../fofi/FoFiBase.h"
+
+//------------------------------------------------------------------------
+// FoFiType1
+//------------------------------------------------------------------------
+
+class FoFiType1: public FoFiBase {
+public:
+
+  // Create a FoFiType1 object from a memory buffer.
+  static FoFiType1 *make(char *fileA, int lenA);
+
+  // Create a FoFiType1 object from a file on disk.
+  static FoFiType1 *load(char *fileName);
+
+  virtual ~FoFiType1();
+
+  // Return the font name.
+  char *getName();
+
+  // Return the encoding, as an array of 256 names (any of which may
+  // be NULL).
+  char **getEncoding();
+
+  // Write a version of the Type 1 font file with a new encoding.
+  void writeEncoded(char **newEncoding,
+		    FoFiOutputFunc outputFunc, void *outputStream);
+
+  char *copyString(char *s) {
+    char *s1;
+    s1 = (char *)malloc(strlen(s) + 1);
+    strcpy(s1, s);
+    return s1;
+  }
+
+private:
+
+  FoFiType1(char *fileA, int lenA, GBool freeFileDataA);
+
+  char *getNextLine(char *line);
+  void parse();
+
+  char *name;
+  char **encoding;
+  GBool parsed;
+  
+};
+
+#endif

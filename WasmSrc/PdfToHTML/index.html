@@ -1,0 +1,85 @@
+<html>
+<body>
+<script src="pdf2html.js"></script>
+<script>
+
+function str2ab(str) {
+    var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
+    var bufView = new Uint16Array(buf);
+    for (var i=0, strLen=str.length; i < strLen; i++) {
+        bufView[i] = str.charCodeAt(i);
+    }
+    return buf;
+}
+
+
+function ab2str(buf) {
+  return String.fromCharCode.apply(null, new Uint16Array(buf));
+}
+
+
+var MyWasm = new Module (
+    { 
+        instantiateWasm : function(imports, successCallback)
+        {
+            fetch('pdf2html.wasm').then(response => response.arrayBuffer()).then( wasmBinary => { 
+
+                WebAssembly.instantiate(new Uint8Array(wasmBinary), imports).then(function(output) {
+
+                    successCallback(output.instance);
+
+                });
+
+            } );
+        }
+    }
+);
+
+
+MyWasm.onRuntimeInitialized = function() {
+
+    document.writeln( "Concat buffers WASM sample <br>" );
+
+    fetch('sample.pdf').then(response => response.arrayBuffer()).then( pdfBinary => { 
+
+        {
+            let arr_arg0 = new Uint8Array(pdfBinary);
+
+            let pointer = MyWasm._set_arg(0, arr_arg0.length );
+            
+            var pdf = new Uint8ClampedArray(MyWasm.wasmMemory.buffer, pointer, arr_arg0.length);
+
+            for (var i = 0; i < pdf.length; i++) {
+                pdf[i] = arr_arg0[i];
+            }
+
+            document.writeln( "sample.pdf - size ", arr_arg0.length, " loaded...<br>" );
+        }
+
+        if ( MyWasm._exec() )
+        {
+            let result = [];
+
+            var size = MyWasm._get_result_size();
+            document.writeln( "Result size ", size, "<br>" );
+
+            var pointer = MyWasm._get_result();
+            
+            var pResultData = new Uint8ClampedArray(MyWasm.wasmMemory.buffer, pointer, size);
+            
+            for (var i = 0; i < pResultData.length; i++) {
+                result.push(pResultData[i]);
+            }
+
+            document.writeln( "Result ", ab2str(result), "<br>" );
+        }
+        else
+            document.writeln( "Exacution failed!" );
+
+    } );
+}
+
+
+</script>
+</body>
+</html>
