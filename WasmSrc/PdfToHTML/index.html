@@ -17,6 +17,72 @@ function ab2str(buf) {
   return String.fromCharCode.apply(null, new Uint16Array(buf));
 }
 
+function readURL(sender)
+{
+    displayPDF(sender.files[0].name);
+}
+
+function displayPDF(filename)
+{
+    document.writeln( "<br>loading...<br>" );
+
+    fetch(filename).then(response => response.arrayBuffer()).then( pdfBinary => { 
+    {
+        let arr_arg0 = new Uint8Array(pdfBinary);
+
+        let pointer = MyWasm._set_arg(0, arr_arg0.length );
+        
+        var pdf = new Uint8ClampedArray(MyWasm.wasmMemory.buffer, pointer, arr_arg0.length);
+
+        for (var i = 0; i < pdf.length; i++) {
+            pdf[i] = arr_arg0[i];
+        }
+
+        document.writeln( filename + " - size ", arr_arg0.length, " loaded...<br>" );
+    }
+
+    document.writeln( "converting to HTML...<br>" );
+
+    if ( MyWasm._exec() )
+    {
+        let result = [];
+
+        let str_result = "";
+
+        var size = MyWasm._get_result_size();
+
+        document.writeln( "Result size ", size, "<br>" );
+
+        var pointer = MyWasm._get_result();
+        
+        var pResultData = new Uint8ClampedArray(MyWasm.wasmMemory.buffer, pointer, size);
+        
+        for (var i = 0; i < pResultData.length; i++) {
+            
+            result.push(pResultData[i]);
+
+            if (100 == result.length)
+            {
+                str_result += ab2str(result);
+
+                result = [];
+            }
+        }
+
+        if (0 != result.length)
+            str_result += ab2str(result);
+
+
+        var w = window.open("", filename,"resizable,status,width=640,height=480");
+        var d = w.document;
+        d.write(str_result);
+        d.close();
+    }
+    else
+        document.writeln( "Exacution failed!" );
+    } );
+}
+
 
 var MyWasm = new Module (
     { 
@@ -38,63 +104,9 @@ var MyWasm = new Module (
 
 MyWasm.onRuntimeInitialized = function() {
 
-    document.writeln( "Pdf to HTML WASM sample <br>" );
-
-    fetch('sample.pdf').then(response => response.arrayBuffer()).then( pdfBinary => { 
-
-        {
-            let arr_arg0 = new Uint8Array(pdfBinary);
-
-            let pointer = MyWasm._set_arg(0, arr_arg0.length );
-            
-            var pdf = new Uint8ClampedArray(MyWasm.wasmMemory.buffer, pointer, arr_arg0.length);
-
-            for (var i = 0; i < pdf.length; i++) {
-                pdf[i] = arr_arg0[i];
-            }
-
-            document.writeln( "sample.pdf - size ", arr_arg0.length, " loaded...<br>" );
-        }
-
-        if ( MyWasm._exec() )
-        {
-            let result = [];
-
-            let str_result = "";
-
-            var size = MyWasm._get_result_size();
-
-            document.writeln( "Result size ", size, "<br>" );
-
-            var pointer = MyWasm._get_result();
-            
-            var pResultData = new Uint8ClampedArray(MyWasm.wasmMemory.buffer, pointer, size);
-            
-            for (var i = 0; i < pResultData.length; i++) {
-                
-                result.push(pResultData[i]);
-
-                if (100 == result.length)
-                {
-                    str_result += ab2str(result);
-
-                    result = [];
-                }
-            }
-
-            if (0 != result.length)
-                str_result += ab2str(result);
-
-
-            var w = window.open("", "sample.pdf","resizable,status,width=640,height=480");
-            var d = w.document;
-            d.write(str_result);
-            d.close();
-        }
-        else
-            document.writeln( "Exacution failed!" );
-
-    } );
+    document.writeln( "Pdf to HTML converter using WebAssembly<br>" );
+    document.writeln( "pdf2html.wasm loaded...<br>" );
+    document.writeln( "<input type='file' onchange='readURL(this);'/>");
 }
 
 
