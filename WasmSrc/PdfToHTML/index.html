@@ -24,7 +24,7 @@ function readURL(sender)
 
 function displayPDF(filename)
 {
-    document.writeln( "<br>loading...<br>" );
+    document.writeln( "<br>Loading...<br>" );
 
     fetch(filename).then(response => response.arrayBuffer()).then( pdfBinary => { 
     {
@@ -38,10 +38,12 @@ function displayPDF(filename)
             pdf[i] = arr_arg0[i];
         }
 
-        document.writeln( filename + " - size ", arr_arg0.length, " loaded...<br>" );
+        document.writeln( filename + " - size ", arr_arg0.length, "<br>" );
     }
 
-    document.writeln( "converting to HTML...<br>" );
+    document.writeln( "Converting to HTML...<br>" );
+
+    var start = window.performance.now();
 
     if ( MyWasm._exec() )
     {
@@ -72,8 +74,11 @@ function displayPDF(filename)
         if (0 != result.length)
             str_result += ab2str(result);
 
+        var stop = window.performance.now();
+        
+        document.writeln( "Converting time is: ", stop - start, "ms. <br>" );
 
-        var w = window.open("", filename,"resizable,status,width=640,height=480");
+        var w = window.open("", filename, "resizable,status,width=640,height=480");
         var d = w.document;
         d.write(str_result);
         d.close();
