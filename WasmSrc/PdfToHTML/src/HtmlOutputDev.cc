@@ -870,7 +870,7 @@ HtmlOutputDev::HtmlOutputDev(char *fileName, char *title,
   pages = new HtmlPage(rawOrder, extension, &_HTML);
   
   glMetaVars = new GList();
-  glMetaVars->append(new HtmlMetaVar("generator", "pdftohtml 0.39"));  
+  //glMetaVars->append(new HtmlMetaVar("generator", "pdftohtml 0.39"));  
   if( author ) glMetaVars->append(new HtmlMetaVar("author", author));  
   if( keywords ) glMetaVars->append(new HtmlMetaVar("keywords", keywords));  
   if( date ) glMetaVars->append(new HtmlMetaVar("date", date));  
@@ -1022,7 +1022,9 @@ void HtmlOutputDev::startPage(int pageNum, GfxState *state) {
       if (complexMode)
 		my_fprintf(fContentsFrame,"<A href=\"%s-%d.html\"",str->getCString(),pageNum);
       else 
-		my_fprintf(fContentsFrame,"<A href=\"%ss.html#%d\"",str->getCString(),pageNum);
+		//my_fprintf(fContentsFrame,"<A href=\"%ss.html#%d\"",str->getCString(),pageNum);
+    my_fprintf(fContentsFrame,"<A href=\"%ss#%d\"",str->getCString(),pageNum);
+
       my_fprintf(fContentsFrame," target=\"contents\" >Page %d</a><br>\n",pageNum);
     }
   }

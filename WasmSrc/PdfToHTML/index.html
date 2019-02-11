@@ -78,7 +78,7 @@ function displayPDF(filename)
         
         document.writeln( "Converting time is: ", stop - start, "ms. <br>" );
 
-        var w = window.open("", filename, "resizable,status,width=640,height=480");
+        var w = window.open("", "", "resizable,status,width=640,height=820");
         var d = w.document;
         d.write(str_result);
         d.close();

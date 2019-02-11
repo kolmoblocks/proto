@@ -37,6 +37,9 @@ int* set_arg(uint8_t arg_index, int size)
 {
     if (0 == arg_index)
     {
+        if (pArg1)
+            delete [] pArg1;
+
         pArg1 = new char[size];
         Arg1Size = size;
         return (int*)pArg1;
@@ -81,6 +84,9 @@ int exec()
             std::string html = htmlOut.GetHTML();
             
             ResultSize = html.size( );
+
+            if ( pResult )
+                delete [] pResult;
 
             pResult = new char[ResultSize];
             
