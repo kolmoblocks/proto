@@ -38,7 +38,7 @@ var MyWasm = new Module (
 
 MyWasm.onRuntimeInitialized = function() {
 
-    document.writeln( "Concat buffers WASM sample <br>" );
+    document.writeln( "Pdf to HTML WASM sample <br>" );
 
     fetch('sample.pdf').then(response => response.arrayBuffer()).then( pdfBinary => { 
 
@@ -60,7 +60,10 @@ MyWasm.onRuntimeInitialized = function() {
         {
             let result = [];
 
+            let str_result = "";
+
             var size = MyWasm._get_result_size();
+
             document.writeln( "Result size ", size, "<br>" );
 
             var pointer = MyWasm._get_result();
@@ -68,10 +71,25 @@ MyWasm.onRuntimeInitialized = function() {
             var pResultData = new Uint8ClampedArray(MyWasm.wasmMemory.buffer, pointer, size);
             
             for (var i = 0; i < pResultData.length; i++) {
+                
                 result.push(pResultData[i]);
+
+                if (100 == result.length)
+                {
+                    str_result += ab2str(result);
+
+                    result = [];
+                }
             }
 
-            document.writeln( "Result ", ab2str(result), "<br>" );
+            if (0 != result.length)
+                str_result += ab2str(result);
+
+
+            var w = window.open("", "sample.pdf","resizable,status,width=640,height=480");
+            var d = w.document;
+            d.write(str_result);
+            d.close();
         }
         else
             document.writeln( "Exacution failed!" );

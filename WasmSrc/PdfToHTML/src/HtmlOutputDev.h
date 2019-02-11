@@ -15,6 +15,8 @@
 #endif
 
 #include <stdio.h>
+#include <string>
+#include <stdarg.h>
 #include "../goo/gtypes.h"
 #include "../goo/GList.h"
 #include "../xpdf/GfxFont.h"
@@ -92,7 +94,7 @@ class HtmlPage {
 public:
 
   // Constructor.
-  HtmlPage(GBool rawOrder, char *imgExtVal);
+  HtmlPage(GBool rawOrder, char *imgExtVal, std::string *pHTML);
 
   // Destructor.
   ~HtmlPage();
@@ -132,6 +134,7 @@ public:
   void clear();
   
   void conv();
+
 private:
   HtmlFont* getFont(HtmlString *hStr) { return fonts->Get(hStr->fontpos); }
 
@@ -161,6 +164,35 @@ private:
   int firstPage;                // used to begin the numeration of pages
 
   friend class HtmlOutputDev;
+
+  int my_fputs(const char * str, FILE *__stream)
+  {
+    _pHTML->append( std::string(str) );
+
+    return 0;
+  }
+
+  int my_fprintf(FILE * __stream, const char * format, ...)
+  {
+    char buffer[512];
+    
+    va_list args;
+
+    va_start( args, format );
+    
+    vsnprintf( buffer, 512, format, args );
+    
+    perror( buffer );
+
+    va_end( args );
+
+    _pHTML->append( std::string(buffer) );
+
+    return 0;
+  }
+
+  std::string* _pHTML;
+
 };
 
 //------------------------------------------------------------------------
@@ -260,6 +292,22 @@ public:
 
   GBool dumpDocOutline(Catalog* catalog);
 
+  FILE * my_fopen(const char *__restrict __filename, const char *__restrict __modes)
+  {
+    return 0;
+  }
+
+  int my_fclose(FILE *__stream)
+  {
+    return 0;
+  }
+
+  std::string GetHTML()
+  {
+    return _HTML;
+  }
+  
+
 private:
   // convert encoding into a HTML standard, or encoding->getCString if not
   // recognized
@@ -287,6 +335,34 @@ private:
   GString *docTitle;
   GList *glMetaVars;
   friend class HtmlPage;
+
+  int my_fputs(const char * str, FILE *__stream)
+  {
+    _HTML.append( std::string(str) );
+    return 0;
+  }
+
+  int my_fprintf(FILE * __stream, const char * format, ...)
+  {
+    char buffer[512];
+    
+    va_list args;
+
+    va_start( args, format );
+    
+    vsnprintf( buffer, 512, format, args );
+    
+    perror( buffer );
+
+    va_end( args );
+
+    _HTML.append( std::string(buffer) );
+
+    return 0;
+  }
+
+  std::string _HTML;
+
 };
 
 #endif

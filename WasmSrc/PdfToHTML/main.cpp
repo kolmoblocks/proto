@@ -62,9 +62,6 @@ int exec()
 {
     if ( Arg1Size )
     {
-        char str_buffer[1000000];
-        setvbuf( stdout, str_buffer, _IOFBF, 1000000 );
-
         globalParams = new GlobalParams( "" );
         globalParams->setErrQuiet( gTrue );
         
@@ -81,15 +78,13 @@ int exec()
         {
             doc.displayPages( &htmlOut, 1, doc.getNumPages( ), static_cast< int >( 72 * scale ), static_cast< int >( 72 * scale ), 0, gTrue, gTrue );
 
-            std::cout << '\0';
-
-            std::string str_result( str_buffer );
+            std::string html = htmlOut.GetHTML();
             
-            ResultSize = str_result.size( );
+            ResultSize = html.size( );
 
             pResult = new char[ResultSize];
             
-            memcpy( (void*)pResult, (void*)str_result.c_str(), ResultSize );
+            memcpy( (void*)pResult, (void*)html.c_str(), ResultSize );
 
             return true;
         }
