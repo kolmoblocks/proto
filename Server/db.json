@@ -368,5 +368,97 @@
             }
         }
 
+    },
+
+
+
+    "new_format" : {
+
+        "attrib_expr" : [
+            { "size"    : 102 },
+            { "MIME"    : "utf8/text" }
+        ],
+
+        "doi_expr" : [
+            { "SHA256"  : "_SHA256_" },
+            { "MD5"     : "_MD5_" }
+        ],
+
+        "formulas" : [
+            { "exec" : {
+                    "wasm" : {
+                        "doi" : "_wasm_"
+                    },
+                    "Arg1" : {
+                        "doi" : "_doi1_"
+                    },
+                    "Arg2" : {
+                        "raw" : "raw data"
+                    }
+                }
+            },
+
+            { "raw" : "some data + raw data" },
+
+            { "exec" : {
+                    "wasm" : {
+                        "doi" : "_wasm_"
+                    },
+                    "Arg1" : {
+                        "doi" : "_doi1_"
+                    },
+                    "Arg2" : {
+                        "exec" : {
+                            "wasm" : {
+                                "bin" : {
+                                    "doi" : "_universal_wasm_doi_"
+                                },
+                                "glueJs" : {
+                                    "raw" : "class Module..."
+                                },
+                                "params" : [
+                                    { "opCode" : {
+                                            "raw"   : "concat"
+                                        }
+                                    },
+                                    { "mode" : {
+                                            "raw"   : "strings"
+                                        }
+                                    },
+                                    { "version" : {
+                                            "raw"   : "v1"
+                                        }
+                                    }
+                                ],
+                                "args" : [
+                                    { "arg1" : {
+                                            "raw" : "arg1 value"
+                                        }
+                                    },
+                                    { "arg2" : {
+                                        "doi" : "_arg2_doi_"
+                                    }
+                                }
+                                ]
+                            },
+                            "opCode" : {
+                                "raw" : "concat"
+                            },
+                            "glueJs" : {
+                                "raw" : "class Module..."
+                            },
+                            "Arg1" : {
+                                "raw" : "raw"
+                            },
+                            "Arg2" : {
+                                "raw" : "data"
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+
     }
+
 }

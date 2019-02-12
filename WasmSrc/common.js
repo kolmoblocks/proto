@@ -41,7 +41,7 @@ module.exports = {
                 {
                     console.error("Different data!");
 
-                    console.error("Exprected data '" + expected_string_data + "'");
+                    console.error("Expected data '" + expected_string_data + "'");
 
                     return false;
                 }
