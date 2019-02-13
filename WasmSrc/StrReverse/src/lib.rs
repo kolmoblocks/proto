@@ -153,6 +153,29 @@ pub extern "C" fn get_result_size() -> usize {
 }
 
 #[no_mangle]
+pub extern "C" fn get_last_error() -> *mut c_void {
+    
+    let mut buf = Vec::<u8>::new();
+
+    let _last_error = last_error.lock().unwrap();
+
+    for (_pos, _val) in _last_error.iter().enumerate() {
+        buf.push(*_val);
+    }
+
+    let ptr = buf.as_mut_ptr();
+
+    mem::forget(buf);
+
+    return ptr as *mut c_void;
+}
+
+#[no_mangle]
+pub extern "C" fn get_last_error_size() -> usize {
+    return last_error.lock().unwrap().len();
+}
+
+#[no_mangle]
 pub extern "C" fn exec() -> bool {
 
     // ! rule for utf8 BOM:
