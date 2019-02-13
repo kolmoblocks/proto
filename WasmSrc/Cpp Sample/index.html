@@ -43,7 +43,7 @@ MyWasm.onRuntimeInitialized = function() {
     {
         let arr_arg0 = new Uint8Array(str2ab("hello"));
 
-        let pointer = MyWasm._set_arg(0, arr_arg0.length );
+        let pointer = MyWasm._set_arg(1, arr_arg0.length );
         
         var pWasmData = new Uint8ClampedArray(MyWasm.wasmMemory.buffer, pointer, arr_arg0.length);
 
@@ -51,13 +51,13 @@ MyWasm.onRuntimeInitialized = function() {
             pWasmData[i] = arr_arg0[i];
         }
 
-        document.writeln( "Arg0 ", ab2str(arr_arg0), "<br>" );
+        document.writeln( "Arg1 ", ab2str(arr_arg0), "<br>" );
     }
 
     {
         let arr_arg1 = new Uint8Array(str2ab("banana"));
 
-        let pointer = MyWasm._set_arg(1, arr_arg1.length );
+        let pointer = MyWasm._set_arg(2, arr_arg1.length );
         
         var pWasmData = new Uint8ClampedArray(MyWasm.wasmMemory.buffer, pointer, arr_arg1.length);
 
@@ -65,7 +65,7 @@ MyWasm.onRuntimeInitialized = function() {
             pWasmData[i] = arr_arg1[i];
         }
 
-        document.writeln( "Arg1 ", ab2str(arr_arg1), "<br>" );
+        document.writeln( "Arg2 ", ab2str(arr_arg1), "<br>" );
     }
 
     document.writeln( "-------------------<br>" );
@@ -88,7 +88,20 @@ MyWasm.onRuntimeInitialized = function() {
         document.writeln( "Result ", ab2str(result), "<br>" );
     }
     else
-        document.writeln( "Exacution failed!" );
+    {
+        let result = [];
+
+        var size = MyWasm._get_last_error_size();
+        var pointer = MyWasm._get_last_error();
+
+        var pResultData = new Uint8ClampedArray(MyWasm.wasmMemory.buffer, pointer, size);
+        
+        for (var i = 0; i < pResultData.length; i++) {
+            result.push(pResultData[i]);
+        }
+
+        document.writeln( "Execution failed: - ", ab2str(result), "<br>" );
+    }
 
 }
 

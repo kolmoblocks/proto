@@ -1108,11 +1108,11 @@ function updateGlobalBufferViews() {
 
 
 var STATIC_BASE = 1024,
-    STACK_BASE = 2832,
+    STACK_BASE = 2992,
     STACKTOP = STACK_BASE,
-    STACK_MAX = 5245712,
-    DYNAMIC_BASE = 5245712,
-    DYNAMICTOP_PTR = 2576;
+    STACK_MAX = 5245872,
+    DYNAMIC_BASE = 5245872,
+    DYNAMICTOP_PTR = 2736;
 
 
 
@@ -1617,7 +1617,7 @@ var ASM_CONSTS = [];
 
 STATIC_BASE = GLOBAL_BASE;
 
-// STATICTOP = STATIC_BASE + 1808;
+// STATICTOP = STATIC_BASE + 1968;
 /* global initializers */  __ATINIT__.push();
 
 
@@ -1626,12 +1626,12 @@ STATIC_BASE = GLOBAL_BASE;
 
 
 
-var STATIC_BUMP = 1808;
+var STATIC_BUMP = 1968;
 Module["STATIC_BASE"] = STATIC_BASE;
 Module["STATIC_BUMP"] = STATIC_BUMP;
 
 /* no memory initializer */
-var tempDoublePtr = 2816
+var tempDoublePtr = 2976
 
 function copyTempFloat(ptr) { // functions, because inlining this code increases code size too much
   HEAP8[tempDoublePtr] = HEAP8[ptr];
@@ -1715,6 +1715,9 @@ Module["asm"] = asm;
 var ___errno_location = Module["___errno_location"] = function() {  return Module["asm"]["___errno_location"].apply(null, arguments) };
 var _exec = Module["_exec"] = function() {  return Module["asm"]["_exec"].apply(null, arguments) };
 var _free = Module["_free"] = function() {  return Module["asm"]["_free"].apply(null, arguments) };
+var _get_arg_index = Module["_get_arg_index"] = function() {  return Module["asm"]["_get_arg_index"].apply(null, arguments) };
+var _get_last_error = Module["_get_last_error"] = function() {  return Module["asm"]["_get_last_error"].apply(null, arguments) };
+var _get_last_error_size = Module["_get_last_error_size"] = function() {  return Module["asm"]["_get_last_error_size"].apply(null, arguments) };
 var _get_result = Module["_get_result"] = function() {  return Module["asm"]["_get_result"].apply(null, arguments) };
 var _get_result_size = Module["_get_result_size"] = function() {  return Module["asm"]["_get_result_size"].apply(null, arguments) };
 var _malloc = Module["_malloc"] = function() {  return Module["asm"]["_malloc"].apply(null, arguments) };
@@ -1722,6 +1725,7 @@ var _memcpy = Module["_memcpy"] = function() {  return Module["asm"]["_memcpy"].
 var _memset = Module["_memset"] = function() {  return Module["asm"]["_memset"].apply(null, arguments) };
 var _sbrk = Module["_sbrk"] = function() {  return Module["asm"]["_sbrk"].apply(null, arguments) };
 var _set_arg = Module["_set_arg"] = function() {  return Module["asm"]["_set_arg"].apply(null, arguments) };
+var _set_arg_name = Module["_set_arg_name"] = function() {  return Module["asm"]["_set_arg_name"].apply(null, arguments) };
 var establishStackSpace = Module["establishStackSpace"] = function() {  return Module["asm"]["establishStackSpace"].apply(null, arguments) };
 var setThrew = Module["setThrew"] = function() {  return Module["asm"]["setThrew"].apply(null, arguments) };
 var stackAlloc = Module["stackAlloc"] = function() {  return Module["asm"]["stackAlloc"].apply(null, arguments) };
