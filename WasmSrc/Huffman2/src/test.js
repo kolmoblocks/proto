@@ -1,6 +1,6 @@
 const common = require('..//..//common.js')
-const KBstorage = require('..//..//..//BrowserScript/KBstorage')
-const KBwasm = require('..//..//..//BrowserScript/KBwasm')
+const KBstorage = require('..//..//..//Scripts//Node//KBstorage')
+const KBwasm = require('..//..//..//Scripts//Node//KBwasm')
 
 const MyStorage = new KBstorage("127.0.0.1", 3000);
 

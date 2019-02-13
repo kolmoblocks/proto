@@ -284,7 +284,7 @@
                 "EncodedData" : {
                     "cid" : "E9972B1F3A0F855289E46ECC94FE45EBED9106EF5A9AC2FC08787F7671347150"
                 },
-                "EncodedTable" : {
+                "HuffmanTree" : {
                     "cid" : "90EC7319DFF3815E827BC332EA5EC0B0C828E27FCEC32771BD38F9A32C1F1B63"
                 }
             }
