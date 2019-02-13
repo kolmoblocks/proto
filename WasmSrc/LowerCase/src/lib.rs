@@ -48,14 +48,14 @@ pub extern "C" fn _set_arg_name(arg_handle: u8, size: usize) -> *mut c_void {
 
     if !_args_names.is_empty() {
 
-        set_last_error("set_arg_name, this wasm support only one argument");
+        set_last_error("_set_arg_name, this wasm support only one argument");
         
         return ptr::null_mut();
     }
 
     if _args_names.contains_key(&arg_handle) {
         
-        set_last_error("set_arg_name, given argument handle is already used");
+        set_last_error("_set_arg_name, given argument handle is already used");
         
         return ptr::null_mut();
     }
@@ -82,7 +82,7 @@ pub extern "C" fn _get_arg_index(arg_handle: u8) -> u8 {
 
     if !_args_names.contains_key(&arg_handle) {
         
-        set_last_error("get_arg_index, unknown argument handle");
+        set_last_error("_get_arg_index, unknown argument handle");
         
         return 0;
     }
@@ -95,7 +95,7 @@ pub extern "C" fn _set_arg(arg_index: u8, size: usize) -> *mut c_void {
 
     if 0 == arg_index || 1 != arg_index {
 
-        set_last_error("set_arg, invalid argument index, expected 1");
+        set_last_error("_set_arg, invalid argument index, expected 1");
 
         return ptr::null_mut();
     }
@@ -186,7 +186,7 @@ pub extern "C" fn _exec() -> bool {
     let mut _arg = arg.lock().unwrap();
     if 0 == _arg.len() {
         
-        set_last_error("exec, empty argument is invalid");
+        set_last_error("_exec, empty argument is invalid");
         
         return false;
     }
@@ -253,7 +253,7 @@ pub extern "C" fn _exec() -> bool {
 
     } else {
         
-        set_last_error("exec, empty result for not empty argument");
+        set_last_error("_exec, empty result for not empty argument");
         
         return false;
     }

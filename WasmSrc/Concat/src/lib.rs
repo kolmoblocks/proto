@@ -49,7 +49,7 @@ pub extern "C" fn _set_arg_name(arg_handle: u8, size: usize) -> *mut c_void {
 
     if _args_names.contains_key(&arg_handle) {
         
-        set_last_error("set_arg_name, given argument handle is already used");
+        set_last_error("_set_arg_name, given argument handle is already used");
         
         return ptr::null_mut();
     }
@@ -76,7 +76,7 @@ pub extern "C" fn _get_arg_index(arg_handle: u8) -> u8 {
 
     if !_args_names.contains_key(&arg_handle) {
         
-        set_last_error("get_arg_index, unknown argument handle");
+        set_last_error("_get_arg_index, unknown argument handle");
         
         return 0;
     }
@@ -91,7 +91,7 @@ pub extern "C" fn _get_arg_index(arg_handle: u8) -> u8 {
 
     if _parsed.is_err() {
 
-        set_last_error("get_arg_index, argument name must be like 'ArgN', where N from: 1..255");
+        set_last_error("_get_arg_index, argument name must be like 'ArgN', where N from: 1..255");
 
         return 0;
     }
@@ -104,7 +104,7 @@ pub extern "C" fn _set_arg(arg_index: u8, size: usize) -> *mut c_void {
 
     if 0 == arg_index {
 
-        set_last_error("set_arg, invalid argument index");
+        set_last_error("_set_arg, invalid argument index");
 
         return ptr::null_mut();
     }
