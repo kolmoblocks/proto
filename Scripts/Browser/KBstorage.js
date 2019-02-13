@@ -138,7 +138,7 @@ class KBstorage
     {
         let raw = expression["raw"];
 
-        var result = new Uint8Array(Buffer.from(raw));
+        var result = new TextEncoder("utf-8").encode(raw);
 
         return result;
     }
