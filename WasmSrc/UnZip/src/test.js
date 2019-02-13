@@ -1,6 +1,6 @@
 const common = require('..//..//common.js')
-const KBstorage = require('..//..//..//BrowserScript/KBstorage')
-const KBwasm = require('..//..//..//BrowserScript/KBwasm')
+const KBstorage = require('..//..//..//Scripts//Node//KBstorage')
+const KBwasm = require('..//..//..//Scripts//Node//KBwasm')
 
 const MyStorage = new KBstorage("127.0.0.1",3000);
 
@@ -31,8 +31,9 @@ let expected_data = "hello banana!\n";
 
             let args = new Array();
 
+            arg1["ArgName"] = "any name for this wasm";
             args.push(arg1);
-            
+
             let wasmWrapper = new KBwasm(raw_wasm, args);
             
             wasmWrapper.Exec().then( data => {
