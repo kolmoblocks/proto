@@ -31,7 +31,7 @@ module.exports = class KBWasm
                     
                     var size = arg_name_buffer.length;
 
-                    var pointer = wasmInstance.exports.set_arg_name(arg, arg_name_buffer.length);
+                    var pointer = wasmInstance.exports._set_arg_name(arg, arg_name_buffer.length);
 
                     if ( 0 != pointer )
                     {
@@ -41,7 +41,7 @@ module.exports = class KBWasm
                             pWasmData[i] = arg_name_buffer[i];
                         }
 
-                        arg_index = wasmInstance.exports.get_arg_index(arg);
+                        arg_index = wasmInstance.exports._get_arg_index(arg);
 
                         if ( 0 == arg_index )
                             return this.create_last_error(wasmInstance);
@@ -54,7 +54,7 @@ module.exports = class KBWasm
                 {
                     var size = this.args[arg].length;
 
-                    var pointer = wasmInstance.exports.set_arg(arg_index, size);
+                    var pointer = wasmInstance.exports._set_arg(arg_index, size);
 
                     if ( 0 != pointer )
                     {
@@ -70,12 +70,12 @@ module.exports = class KBWasm
             }
 
             // exec alg in wasm
-            if ( wasmInstance.exports.exec() )
+            if ( wasmInstance.exports._exec() )
             {
                 // get result
-                var size = wasmInstance.exports.get_result_size();
+                var size = wasmInstance.exports._get_result_size();
 
-                var pointer = wasmInstance.exports.get_result();
+                var pointer = wasmInstance.exports._get_result();
 
                 if ( 0 != pointer )
                 {   
@@ -88,7 +88,7 @@ module.exports = class KBWasm
                     }
 
                     // TODO:
-                    // result["MIME"] = wasmInstance.exports.get_result_type();
+                    // result["MIME"] = wasmInstance.exports._get_result_type();
 
                     return result;
                 }
@@ -114,9 +114,9 @@ module.exports = class KBWasm
     {
         let error = new Array();
 
-        let pointer = wasmInstance.exports.get_last_error();
+        let pointer = wasmInstance.exports._get_last_error();
 
-        let size = wasmInstance.exports.get_last_error_size();
+        let size = wasmInstance.exports._get_last_error_size();
 
         var pWasmData = new Uint8ClampedArray(wasmInstance.exports.memory.buffer, pointer, size);
 

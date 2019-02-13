@@ -42,7 +42,7 @@ fn set_last_error(error_text : &'static str) {
 }
 
 #[no_mangle]
-pub extern "C" fn set_arg_name(arg_handle: u8, size: usize) -> *mut c_void {
+pub extern "C" fn _set_arg_name(arg_handle: u8, size: usize) -> *mut c_void {
 
     let mut _args_names = args_names.lock().unwrap();
 
@@ -76,7 +76,7 @@ pub extern "C" fn set_arg_name(arg_handle: u8, size: usize) -> *mut c_void {
 }
 
 #[no_mangle]
-pub extern "C" fn get_arg_index(arg_handle: u8) -> u8 {
+pub extern "C" fn _get_arg_index(arg_handle: u8) -> u8 {
 
     let mut _args_names = args_names.lock().unwrap();
 
@@ -91,7 +91,7 @@ pub extern "C" fn get_arg_index(arg_handle: u8) -> u8 {
 }
 
 #[no_mangle]
-pub extern "C" fn set_arg(arg_index: u8, size: usize) -> *mut c_void {
+pub extern "C" fn _set_arg(arg_index: u8, size: usize) -> *mut c_void {
 
     if 0 == arg_index || 1 != arg_index {
 
@@ -130,7 +130,7 @@ pub extern "C" fn set_arg(arg_index: u8, size: usize) -> *mut c_void {
 }
 
 #[no_mangle]
-pub extern "C" fn get_result() -> *mut c_void {
+pub extern "C" fn _get_result() -> *mut c_void {
     
     let mut buf = Vec::<u8>::new();
 
@@ -148,12 +148,12 @@ pub extern "C" fn get_result() -> *mut c_void {
 }
 
 #[no_mangle]
-pub extern "C" fn get_result_size() -> usize {
+pub extern "C" fn _get_result_size() -> usize {
     return result.lock().unwrap().len();
 }
 
 #[no_mangle]
-pub extern "C" fn get_last_error() -> *mut c_void {
+pub extern "C" fn _get_last_error() -> *mut c_void {
     
     let mut buf = Vec::<u8>::new();
 
@@ -171,12 +171,12 @@ pub extern "C" fn get_last_error() -> *mut c_void {
 }
 
 #[no_mangle]
-pub extern "C" fn get_last_error_size() -> usize {
+pub extern "C" fn _get_last_error_size() -> usize {
     return last_error.lock().unwrap().len();
 }
 
 #[no_mangle]
-pub extern "C" fn exec() -> bool {
+pub extern "C" fn _exec() -> bool {
     
     // ! rule for utf8 BOM:
     //  - arg has BOM -> result has BOM
