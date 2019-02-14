@@ -15,3 +15,6 @@ WasmSrc/UpperCase/target/*
 
 WasmSrc/CabBuilder/pkg/*
 WasmSrc/CabBuilder/target/*
+
+WasmSrc/HashCalculator/pkg/*
+WasmSrc/HashCalculator/target/*

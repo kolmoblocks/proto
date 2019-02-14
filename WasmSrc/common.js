@@ -21,6 +21,12 @@ module.exports = {
 
             let result = this.stringFromUTF8Array(data);
 
+            if (null == result)
+            {
+                console.log("Returned data is not a string (" + data + "), length " + data.length);
+                return false;
+            }
+
             console.log("Returned data '" + result + "'");
 
             if ( result.length != expected_string_data.length )
