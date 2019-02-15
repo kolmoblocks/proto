@@ -8,6 +8,7 @@ use sha2::{Sha256, Sha512, Digest};
 #[macro_use]
 extern crate lazy_static;
 extern crate sha2;
+extern crate md5;
 
 lazy_static! {
 
@@ -43,6 +44,7 @@ const ALG_NAME_SHA256:      &str = "SHA256"; // default (if not set param AlgNam
 const ALG_NAME_SHA512:      &str = "SHA512";
 //const ALG_NAME_SHA512_224:  &str = "SHA512t224";
 //const ALG_NAME_SHA512_256:  &str = "SHA512t256";
+const ALG_NAME_MD5:         &str = "MD5";
 
 fn set_last_error(error_text : &'static str) {
 
@@ -207,7 +209,7 @@ pub extern "C" fn _exec() -> bool {
 
         _arg_name = String::from_utf8(_buffer.to_vec()).unwrap().to_uppercase();
 
-        if ALG_NAME_SHA256 != _arg_name && ALG_NAME_SHA512 != _arg_name {
+        if ALG_NAME_SHA256 != _arg_name && ALG_NAME_SHA512 != _arg_name && ALG_NAME_MD5 != _arg_name {
 
             set_last_error("_exec, invalid algorithm name");
 
@@ -242,6 +244,15 @@ pub extern "C" fn _exec() -> bool {
 
         for index in 1..=_hash.len() {
             _result.push(_hash[index-1]);
+        }
+    }
+
+    if String::from(ALG_NAME_MD5) == _arg_name {
+
+        let _digest = md5::compute(_input);
+
+        for index in 1..=_digest.len() {
+            _result.push(_digest[index-1]);
         }
     }
 
