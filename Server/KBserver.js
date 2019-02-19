@@ -1,7 +1,5 @@
 var fs = require("fs");
 
-const isBrowser = this.window === this;
-
 module.exports = class KBserver
 {
     constructor(server_data_path){
@@ -11,51 +9,70 @@ module.exports = class KBserver
             this.server_data_path = server_data_path;
     }
 
-    GetDataExpressionByCID(cid)
+    GetManifestByDOI(doi)
     {
-        if ( !isBrowser ) 
-        {            
-            try 
-            {  
-                let jsondata = JSON.parse(fs.readFileSync(this.server_data_path + "db.json"));
+        try 
+        {  
+            let jsondata = JSON.parse(fs.readFileSync(this.server_data_path + "manifests.json"));
 
-                for ( var i in jsondata )
-                {
-                    let data = jsondata[i];
-
-                    if ( data.hasOwnProperty("cids") )
-                    {
-                        let data_cids = data["cids"];
-                        for ( var j in data_cids )
-                            if ( data_cids[j] == cid ) return data;
-                    }
-                }
-            } 
-            catch(error) 
+            for ( var i in jsondata )
             {
-                console.log('Error getting data by CID:', error.stack);
+                let data = jsondata[i];
+
+                if ( data.hasOwnProperty("doi") )
+                {
+                    let data_doi = data["doi"];
+                    
+                    for ( var j in data_doi )
+                        if ( data_doi[j] == doi ) return data;
+                }
             }
+        } 
+        catch(error) 
+        {
+            console.log('Error getting manifest by DOI:', error.stack);
         }
         
         return null;
-
     }
 
-    GetRawDataByRef(ref)
-    {
-        if ( !isBrowser ) 
-        {
-            
-            try 
-            {  
-                let data = fs.readFileSync(this.server_data_path + "files//" + ref);
-                return new Uint8Array(data);
-            } 
-            catch(error) 
-            {
-                console.log('Error:', error.stack);
-            }
+    GetDataByDoi(doi)
+    {  
+        try 
+        {  
+            let jsondata = JSON.parse(fs.readFileSync(this.server_data_path + "data chunks.json"));
 
+            for ( var i in jsondata )
+            {
+                let data = jsondata[i];
+
+                if ( data.hasOwnProperty("doi") )
+                {
+                    let data_doi = data["doi"];
+                    
+                    for ( var j in data_doi )
+                    {
+                        if ( data_doi[j] == doi )
+                        {
+                            if ( data.hasOwnProperty("ref") )
+                            {
+                                let file_data = fs.readFileSync(this.server_data_path + "files//" + data["ref"]);
+
+                                var bin_data = new Uint8Array(file_data);
+
+                                if ( data.hasOwnProperty("MIME") )
+                                    bin_data['MIME'] = data["MIME"];
+
+                                return bin_data;
+                            }
+                        }
+                    }
+                }
+            }
+        } 
+        catch(error) 
+        {
+            console.log('Error getting data by DOI:', error.stack);
         }
         
         return null;

@@ -1,0 +1,158 @@
+{
+    "hello" : {
+
+        "MIME" 		: "utf8/text",
+		"size" 		: 5,
+
+        "doi" : {
+            "SHA256" : "2CF24DBA5FB0A30E26E83B2AC5B9E29E1B161E5C1FA7425E73043362938B9824"
+        },
+
+        "ref" : "file1.txt"
+    },
+    
+    "banana" : {
+
+        "MIME" 		: "utf8/text",
+		"size" 		: 6,
+
+        "doi" : {
+            "SHA256" : "B493D48364AFE44D11C0165CF470A4164D1E2609911EF998BE868D46ADE3DE4E"
+        },
+
+        "ref" : "file2.txt"
+    },
+
+    "BIG BROTHER" : {
+
+        "MIME" 		: "utf8/text",
+		"size" 		: 11,
+
+        "doi" : {
+            "SHA256" : "E41B63C496ACD3978DFA624F513AC6B88832E07083BC99B029E2961AE547CB41"
+        },
+
+        "ref" : "file3.txt"
+    },
+
+    "wasm_concat" : {
+
+        "MIME" 		: "application/wasm",
+        "size" 		: 10251,
+        
+        "doi" : {
+            "SHA256" : "_wasm_concat_"
+        },
+
+        "ref" : "concat.wasm"
+    },
+
+    "wasm_unzip" : {
+
+        "MIME" 		: "application/wasm",
+        "size" 		: 110331,
+        
+        "doi" : {
+            "SHA256" : "_wasm_unzip_"
+        },
+
+        "ref" : "unzip.wasm"
+    },
+
+    "hellobanana_zip" : {
+
+        "MIME" 		: "application/x-zip-compressed",
+        "size" 		: 198,
+        
+        "doi" : {
+            "SHA256" : "_hellobanana_zip_"
+        },
+
+        "ref" : "hellobanana.zip"
+    },
+
+    "wasm_uppercase" : {
+
+        "MIME" 		: "application/wasm",
+        "size" 		: 74228,
+        
+        "doi" : {
+            "SHA256" : "_wasm_uppercase_"
+        },
+
+        "ref" : "uppercase.wasm"
+    },
+
+    "wasm_lowercase" : {
+
+        "MIME" 		: "application/wasm",
+        "size" 		: 80148,
+        
+        "doi" : {
+            "SHA256" : "_wasm_lowercase_"
+        },
+
+        "ref" : "lowercase.wasm"
+    },
+
+    "wasm_strreverse" : {
+
+        "MIME" 		: "application/wasm",
+        "size" 		: 50440,
+        
+        "doi" : {
+            "SHA256" : "_wasm_strreverse_"
+        },
+
+        "ref" : "strreverse.wasm"
+    },
+
+    "huffman2" : {
+
+        "MIME" 		: "application/wasm",
+        "size" 		: 2705437,
+        
+        "doi" : {
+            "SHA256" : "_wasm_huffman2_"
+        },
+
+        "ref" : "huffman2.wasm"
+    },
+
+    "book1_encoded_data" : {
+        
+        "MIME" 		: "application/octet-stream",
+        "size" 		: 9020,
+
+        "doi" : {
+            "SHA256" : "E9972B1F3A0F855289E46ECC94FE45EBED9106EF5A9AC2FC08787F7671347150"
+        },
+
+        "ref" : "book1_encoded_data.bin"
+    },
+
+    "book1_encoded_table" : {
+        
+        "MIME" 		: "application/octet-stream",
+        "size" 		: 2594,
+
+        "doi" : {
+            "SHA256" : "90EC7319DFF3815E827BC332EA5EC0B0C828E27FCEC32771BD38F9A32C1F1B63"
+        },
+
+        "ref" : "book1_encoded_table.bin"
+    },
+
+    "hash_calculator" : {
+        
+        "MIME" 		: "application/wasm",
+        "size" 		: 125827,
+
+        "doi" : {
+            "SHA256" : "_hash_calculator_"
+        },
+
+        "ref" : "hashcalculator.wasm"
+    }
+
+}

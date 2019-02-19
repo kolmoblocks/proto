@@ -1,0 +1,423 @@
+{
+    "hellobanana" : {
+
+        "MIME" 		: "utf8/text",
+		"size" 		: 11,
+
+        "doi" : {
+            "SHA256" : "7E1D8D6609499A1A5FB67C6B9E7DD34CF7C6C4355259115FC7161F47266F5F3C"
+        },
+
+        "formulas" : [
+            {
+                "actor" : {
+                    "wasm" : {
+                        "doi" : { 
+                            "SHA256" : "_wasm_concat_" 
+                        }
+                    }
+                },
+                "parameters" : {
+                    "arg1" : {
+                        "doi" : { 
+                            "SHA256" : "2CF24DBA5FB0A30E26E83B2AC5B9E29E1B161E5C1FA7425E73043362938B9824" 
+                        }
+                    },
+                    "arg2" : {
+                        "doi" : { 
+                            "SHA256" : "B493D48364AFE44D11C0165CF470A4164D1E2609911EF998BE868D46ADE3DE4E" 
+                        }
+                    }
+                }
+            }
+        ]
+    },
+
+    "hello banana!" : {
+
+        "MIME" 		: "utf8/text",
+		"size" 		: 17,
+
+        "doi" : {
+            "SHA256" : "6CB855C48656FA78D99F84D89515DEF944F3BDB0B2E0204AC0B09B94967B8E15"
+        },
+
+        "formulas" : [
+            {
+                "actor" : {
+                    "wasm" : {
+                        "doi" : { 
+                            "SHA256" : "_wasm_unzip_" 
+                        }
+                    }
+                },
+                "parameters" : {
+                    "arg1" : {
+                        "doi" : { 
+                            "SHA256" : "_hellobanana_zip_"
+                        }
+                    }
+                }
+            }
+        ]
+    },
+
+    "HELLO" : {
+
+        "MIME" 		: "utf8/text",
+		"size" 		: 5,
+
+        "doi" : {
+            "SHA256" : "3733CD977FF8EB18B987357E22CED99F46097F31ECB239E878AE63760E83E4D5"
+        },
+
+        "formulas" : [
+            {
+                "actor" : {
+                    "wasm" : {
+                        "doi" : { 
+                            "SHA256" : "_wasm_uppercase_" 
+                        }
+                    }
+                },
+                "parameters" : {
+                    "arg1" : {
+                        "doi" : { 
+                            "SHA256" : "2CF24DBA5FB0A30E26E83B2AC5B9E29E1B161E5C1FA7425E73043362938B9824"
+                        }
+                    }
+                }
+            }
+        ]
+    },
+
+    "big brother" : {
+
+        "MIME" 		: "utf8/text",
+		"size" 		: 11,
+
+        "doi" : {
+            "SHA256" : "FCE90620CE70369D4B6A5554CD8E52CA43B0AE303A9DE8014A5CAA88B310394D"
+        },
+
+        "formulas" : [
+            {
+                "actor" : {
+                    "wasm" : {
+                        "doi" : { 
+                            "SHA256" : "_wasm_lowercase_" 
+                        }
+                    }
+                },
+                "parameters" : {
+                    "arg1" : {
+                        "doi" : { 
+                            "SHA256" : "E41B63C496ACD3978DFA624F513AC6B88832E07083BC99B029E2961AE547CB41"
+                        }
+                    }
+                }
+            }
+        ]
+    },
+
+    "REHTORB GIB" : {
+
+        "MIME" 		: "utf8/text",
+		"size" 		: 11,
+
+        "doi" : {
+            "SHA256" : "838ECC02974A726857283E8160A89E25EE6859B1F58117DCA96212E2EA638B41"
+        },
+
+        "formulas" : [
+            {
+                "actor" : {
+                    "wasm" : {
+                        "doi" : { 
+                            "SHA256" : "_wasm_strreverse_" 
+                        }
+                    }
+                },
+                "parameters" : {
+                    "arg1" : {
+                        "doi" : { 
+                            "SHA256" : "E41B63C496ACD3978DFA624F513AC6B88832E07083BC99B029E2961AE547CB41"
+                        }
+                    }
+                }
+            }
+        ]
+    },
+
+    "book1" : {
+        
+        "MIME" 		: "utf8/text",
+        "size" 		: 18130,
+
+        "doi" : {
+            "SHA256" : "_book1_"
+        },
+
+        "formulas" : [
+            {
+                "actor" : {
+                    "wasm" : {
+                        "doi" : { 
+                            "SHA256" : "_wasm_huffman2_"
+                        }
+                    }
+                },
+                "parameters" : {
+                    "EncodedData" : {
+                        "doi" : { 
+                            "SHA256" : "E9972B1F3A0F855289E46ECC94FE45EBED9106EF5A9AC2FC08787F7671347150"
+                        }
+                    },
+                    "HuffmanTree" : {
+                        "doi" : { 
+                            "SHA256" : "90EC7319DFF3815E827BC332EA5EC0B0C828E27FCEC32771BD38F9A32C1F1B63"
+                        }
+                    }
+                }
+            }
+        ]
+    },
+
+    "hello" : {
+
+        "MIME" 		: "utf8/text",
+		"size" 		: 5,
+
+        "doi" : {
+            "SHA256" : "2CF24DBA5FB0A30E26E83B2AC5B9E29E1B161E5C1FA7425E73043362938B9824"
+        }
+    },
+
+    "banana" : {
+
+        "MIME" 		: "utf8/text",
+		"size" 		: 6,
+
+        "doi" : {
+            "SHA256" : "B493D48364AFE44D11C0165CF470A4164D1E2609911EF998BE868D46ADE3DE4E"
+        }
+    },
+
+    "BIG BROTHER" : {
+
+        "MIME" 		: "utf8/text",
+		"size" 		: 11,
+
+        "doi" : {
+            "SHA256" : "E41B63C496ACD3978DFA624F513AC6B88832E07083BC99B029E2961AE547CB41"
+        }
+    },
+
+    "wasm_concat" : {
+
+        "MIME" 		: "application/wasm",
+        "size" 		: 10251,
+        
+        "doi" : {
+            "SHA256" : "_wasm_concat_"
+        }
+    },
+
+    "wasm_unzip" : {
+
+        "MIME" 		: "application/wasm",
+        "size" 		: 110331,
+        
+        "doi" : {
+            "SHA256" : "_wasm_unzip_"
+        }
+    },
+
+    "hellobanana_zip" : {
+
+        "MIME" 		: "application/x-zip-compressed",
+        "size" 		: 198,
+        
+        "doi" : {
+            "SHA256" : "_hellobanana_zip_"
+        }
+    },
+
+    "wasm_uppercase" : {
+
+        "MIME" 		: "application/wasm",
+        "size" 		: 74228,
+        
+        "doi" : {
+            "SHA256" : "_wasm_uppercase_"
+        }
+    },
+
+    "wasm_lowercase" : {
+
+        "MIME" 		: "application/wasm",
+        "size" 		: 80148,
+        
+        "doi" : {
+            "SHA256" : "_wasm_lowercase_"
+        }
+    },
+
+    "wasm_strreverse" : {
+
+        "MIME" 		: "application/wasm",
+        "size" 		: 50440,
+        
+        "doi" : {
+            "SHA256" : "_wasm_strreverse_"
+        }
+    },
+
+    "huffman2" : {
+
+        "MIME" 		: "application/wasm",
+        "size" 		: 2705437,
+        
+        "doi" : {
+            "SHA256" : "_wasm_huffman2_"
+        }
+    },
+
+    "book1_encoded_data" : {
+        
+        "MIME" 		: "application/octet-stream",
+        "size" 		: 9020,
+
+        "doi" : {
+            "SHA256" : "E9972B1F3A0F855289E46ECC94FE45EBED9106EF5A9AC2FC08787F7671347150"
+        }
+    },
+
+    "book1_encoded_table" : {
+        
+        "MIME" 		: "application/octet-stream",
+        "size" 		: 2594,
+
+        "doi" : {
+            "SHA256" : "90EC7319DFF3815E827BC332EA5EC0B0C828E27FCEC32771BD38F9A32C1F1B63"
+        }
+    },
+
+    "hash_calculator" : {
+        
+        "MIME" 		: "application/wasm",
+        "size" 		: 125827,
+
+        "doi" : {
+            "SHA256" : "_hash_calculator_"
+        }
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    "manifest1" : {
+        
+        "size"    : 5,
+        "MIME"    : "utf8/text",
+
+        "doi" : {
+            "SHA256"  : "_1_",
+            "MD5"     : "_2_"
+        },
+
+        "raw" : "hello"
+    },
+
+    "manifest2" : {
+        
+        "size"    : 6,
+        "MIME"    : "utf8/text",
+
+        "doi" : {
+            "SHA256"  : "_3_",
+            "MD5"     : "_4_"
+        },
+
+        "raw" : "banana"
+    },
+
+    "manifest3" : {
+        
+        "size"    : 1024,
+        "MIME"    : "application/wasm",
+
+        "doi" : {
+            "SHA256"  : "_5_",
+            "MD5"     : "_6_"
+        }
+    },
+
+    "manifest4" : {
+        
+        "size"    : 11,
+        "MIME"    : "utf8/text",
+
+        "doi" : {
+            "SHA256"  : "_7_",
+            "MD5"     : "_8_"
+        },
+
+        "formulas" : [
+            
+            {
+                "actor" : {
+
+                    "wasm" : {
+
+                        "doi" : {
+                            "SHA256" : "_5_"
+                        }
+
+                    },
+                    "JSglue" : {
+
+                        "raw" : "var Module...."
+
+                    }
+
+                },
+                
+                "parameters" : {
+
+                    "arg1" : {
+
+                        "doi" : {
+                            "SHA256" : "_1_"
+                        }
+
+                    },
+
+                    "arg2" : {
+
+                        "doi" : {
+                            "SHA256" : "_3_"
+                        }
+
+                    }
+                    
+                }
+            }
+
+        ]
+    }
+}
