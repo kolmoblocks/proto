@@ -1,4 +1,33 @@
-const KBcache = require("./KBcache.js");
+const Engine = require("./Engine.js");
+
+let options = {
+    Network: {
+        DedicatedServer: "127.0.0.1:3000"
+    }
+};
+
+const engine = new Engine(options);
+
+engine.network().search_manifest("7E1D8D6609499A1A5FB67C6B9E7DD34CF7C6C4355259115FC7161F47266F5F3C").then( result => {
+
+    console.log(result);
+
+    engine.network().search_manifest("7E1D8D6609499A1A5FB67C6B9E7DD34CF7C6C4355259115FC7161F47266F5F3C").then( result2 => {
+    
+        console.log(result2);
+    });
+
+});
+
+
+
+
+
+
+
+
+
+/*const KBcache = require("./KBcache.js");
 const KBstorage = require("./KBstorage.js");
 
 
@@ -84,7 +113,7 @@ const KBstorage = require("./KBstorage.js");
 
 
 }
-
+*/
 /*
 TODO: do this code working !
 {
