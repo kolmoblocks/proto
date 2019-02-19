@@ -10,13 +10,11 @@ const engine = new Engine(options);
 
 let doi = "7E1D8D6609499A1A5FB67C6B9E7DD34CF7C6C4355259115FC7161F47266F5F3C";
 
-engine.network().search_manifest(doi).then( result => {
+engine.network().search_manifest(doi).then( manifest => {
 
-    if ( "ok" == result.status )
+    if ( "ok" == manifest.status )
     {
-        let manifest = result.data;
-
-        let formulas = manifest.get_formulas();
+        let formulas = manifest.data.get_formulas();
 
         if ( "ok" == formulas.status )
         {
@@ -28,8 +26,18 @@ engine.network().search_manifest(doi).then( result => {
                 {
                     dependencies.data.forEach(dependency => {
                         
-                        console.log(dependency);
-                        
+                        if (0 == dependency.get_formulas().data.length)
+                        {
+                            engine.network().search_data(dependency).then( res =>{
+                         
+                                
+
+                                console.log("Has no dep. ",res);
+
+
+
+                            } );
+                        }                        
 
                     });
                 }
@@ -42,7 +50,7 @@ engine.network().search_manifest(doi).then( result => {
     }
     else
     {
-        console.log(result.status);
+        console.log(manifest.status);
     }
 });
 

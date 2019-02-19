@@ -70,4 +70,64 @@ module.exports = class Network
 
         return result;
     }
+
+    async search_data(manifest)
+    {
+        let result = {
+            status: "",
+            from_cache: null,
+            data: null
+        };
+
+        let dois = manifest.get_doi();
+
+        if ( 0 == dois.data.length )
+        {
+            result.status = "ok";
+            return result;
+        }
+
+        if ( this.DedicatedServer )
+        {
+            for ( let doi in dois.data )
+            {
+                let data = this.Cache.get_data_by_doi(dois.data[doi]);
+
+                if ( "ok" == data.status )
+                {
+                    result.status = "ok";
+                    result.from_cache = true;
+                    result.data = data.data;
+
+                    return result;
+                }
+            }
+
+            for ( let doi in dois.data )
+            {
+                let server_data = await this.DedicatedServer.get_data_by_doi(dois.data[doi]);
+
+                if ( "ok" == server_data.status )
+                {
+                    result.status = "ok";
+                    result.from_cache = false;
+                    result.data = server_data.data;
+
+                    this.Cache.set_data_by_doi(server_data.data, dois.data[doi]);
+
+                    return result;
+                }
+                else
+                {
+                    result.status = server_data.status;
+                }
+            }
+        }
+        else
+        {    
+            result.status = "Not implimented";
+        }
+
+        return result;
+    }
 }

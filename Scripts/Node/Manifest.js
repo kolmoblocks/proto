@@ -60,9 +60,25 @@ class Manifest
     {
         this.json = json;
         
-        // validate
-        //if ( !this.json.hasOwnProperty("MIME") )
-        //    throw "Not found required property MIME";
+        // TODO: Implement validation RULES:
+        // 1. has no doi -> HAVE TO own raw value or at least one formula
+        // 2. has no MIME -> HAVE TO own doi or at least one formula
+    }
+
+    get_doi()
+    {
+        let result = {
+            status: "ok",
+            data: []
+        };
+
+        if ( this.json.hasOwnProperty("doi") )
+        {
+            for ( var doi in this.json.doi )
+                result.data.push(this.json.doi[doi]);
+        }
+
+        return result;
     }
 
     get_formulas()

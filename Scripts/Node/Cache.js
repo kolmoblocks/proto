@@ -30,4 +30,27 @@ module.exports = class Cache
     {
         this.manifests.set(doi, manifest);
     }
+
+    get_data_by_doi(doi)
+    {
+        let result = {
+            status: "Not found",
+            data: null
+        };
+
+        let data = this.data.get(doi);
+
+        if ( data )
+        {
+            result.status = "ok";
+            result.data = data;
+        }
+
+        return result;
+    }
+
+    set_data_by_doi(data, doi)
+    {
+        this.data.set(doi, data);
+    }
 }

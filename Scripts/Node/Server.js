@@ -42,7 +42,25 @@ module.exports = class Server
 
     async get_data_by_doi(doi)
     {
+        let result = {
+            status: "",
+            data: null
+        };
+    
+        let url = 'http://' + this.address + '/DATA_BY_DOI=' + doi;
 
+        try
+        {
+            result.data = await this.request_server(url);
+
+            result.status = "ok";
+        }
+        catch(error)
+        {
+            result.status = "Error requesting server (" + error + ")";
+        }
+
+        return result;
     }
 
     async request_server(url)
