@@ -23,7 +23,7 @@ module.exports = class Network
         let result = {
             status: "",
             from_cache: null,
-            manifest: null
+            data: null
         };
 
         if ( this.DedicatedServer )
@@ -34,7 +34,7 @@ module.exports = class Network
             {
                 result.status = "ok";
                 result.from_cache = true;
-                result.manifest = manifest.manifest;
+                result.data = manifest.data;
             }
             else
             {
@@ -44,13 +44,13 @@ module.exports = class Network
                 {
                     try
                     {
-                        let manifest = new Manifest(json_manifest.manifest);
+                        let manifest = new Manifest.Manifest(json_manifest.data);
 
                         result.status = "ok";
                         result.from_cache = false;
-                        result.manifest = manifest;
+                        result.data = manifest;
 
-                        this.Cache.set_manifest_by_doi(manifest, doi);
+                        this.Cache.set_manifest_by_doi(manifest, doi);                        
                     }
                     catch(error)
                     {

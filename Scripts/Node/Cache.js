@@ -12,7 +12,7 @@ module.exports = class Cache
     {
         let result = {
             status: "Not found",
-            manifest: null
+            data: null
         };
 
         let manifest = this.manifests.get(doi);
@@ -20,7 +20,7 @@ module.exports = class Cache
         if ( manifest )
         {
             result.status = "ok";
-            result.manifest = manifest;
+            result.data = manifest;
         }
 
         return result;

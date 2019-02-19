@@ -8,15 +8,42 @@ let options = {
 
 const engine = new Engine(options);
 
-engine.network().search_manifest("7E1D8D6609499A1A5FB67C6B9E7DD34CF7C6C4355259115FC7161F47266F5F3C").then( result => {
+let doi = "7E1D8D6609499A1A5FB67C6B9E7DD34CF7C6C4355259115FC7161F47266F5F3C";
 
-    console.log(result);
+engine.network().search_manifest(doi).then( result => {
 
-    engine.network().search_manifest("7E1D8D6609499A1A5FB67C6B9E7DD34CF7C6C4355259115FC7161F47266F5F3C").then( result2 => {
-    
-        console.log(result2);
-    });
+    if ( "ok" == result.status )
+    {
+        let manifest = result.data;
 
+        let formulas = manifest.get_formulas();
+
+        if ( "ok" == formulas.status )
+        {
+            formulas.data.forEach(formula => {
+
+                let dependencies = formula.get_dependencies();
+            
+                if ( "ok" == dependencies.status )
+                {
+                    dependencies.data.forEach(dependency => {
+                        
+                        console.log(dependency);
+                        
+
+                    });
+                }
+                else
+                    console.log(dependencies.status);
+            });
+        }
+        else
+            console.log(formulas.status);
+    }
+    else
+    {
+        console.log(result.status);
+    }
 });
 
 

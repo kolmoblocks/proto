@@ -11,7 +11,7 @@ module.exports = class Server
     {
         let result = {
             status: "",
-            manifest: null
+            data: null
         };
     
         let url = 'http://' + this.address + '/MANIFEST_BY_DOI=' + doi;
@@ -22,7 +22,7 @@ module.exports = class Server
 
             try
             {
-                result.manifest = JSON.parse(response);
+                result.data = JSON.parse(response);
 
                 result.status = "ok";
             }
