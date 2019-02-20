@@ -53,7 +53,7 @@ engine.network().search_manifest(doi).then( manifest => {
                                     engine.eval( formula ).then( evaluated_formula => {
                                         if ( "ok" == evaluated_formula.status )
                                         {
-                                            console.log("Evaluated formula data is ",evaluated_formula.data);
+                                            console.log("Evaluated formula's data is ",evaluated_formula.data);
                                         }
                                         else
                                         {

@@ -2,9 +2,11 @@ const Wasm = require('.//Wasm.js')
 
 class Formula
 {
-    constructor(json)
+    constructor(json, manifest)
     {
         this.json = json;
+        this.manifest = manifest;
+
         this.wasm = null;
         this.JSglue = null;
         this.parameters = [];
@@ -96,6 +98,17 @@ class Formula
 
         result = await new Wasm(wasm, args).exec();
 
+        if ( "ok" == result.status )
+        {
+            if ( this.manifest )
+            {
+                let mime = this.manifest.get_mime();
+                
+                if ( "ok" == mime.status )
+                    result.data.MIME = mime.data;
+            }
+        }
+
         return result;
     }
 }
@@ -109,6 +122,22 @@ class Manifest
         // TODO: Implement validation RULES:
         // 1. has no doi -> HAVE TO own raw value or at least one formula
         // 2. has no MIME -> HAVE TO own doi or at least one formula
+    }
+
+    get_mime()
+    {
+        let result = {
+            status: "Has no MIME",
+            data: null
+        };
+
+        if ( this.json.hasOwnProperty("MIME") )
+        {
+            result.status = "ok";
+            result.data = this.json.MIME;
+        }
+
+        return result;
     }
 
     has_raw_value()
@@ -160,7 +189,7 @@ class Manifest
 
                 try
                 {
-                    result.data.push( new Formula(json_formula) );
+                    result.data.push( new Formula(json_formula, this) );
                 }
                 catch(error)
                 {

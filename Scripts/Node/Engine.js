@@ -56,6 +56,7 @@ module.exports = class Engine
 
         if ( "ok" == eval_result.status )
         {
+            //let check_result = formula.manifest.check_data(eval_result.data);
             result.status = "ok";
             result.data = eval_result.data;
         }
