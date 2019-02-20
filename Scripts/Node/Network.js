@@ -1,12 +1,11 @@
 const Server = require('.//Server.js')
-const Cache = require('.//Cache.js')
 const Common = require('.//Common.js')
 
 module.exports = class Network
 {
-    constructor(settings)
+    constructor(settings, cache)
     {
-        this.Cache = new Cache();
+        this.Cache = cache;
 
         if ( settings.hasOwnProperty("DedicatedServer") )
         {

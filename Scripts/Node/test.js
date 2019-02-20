@@ -61,6 +61,7 @@ engine.network().search_manifest(manifest).then( manifest => {
                                         if ( "ok" == evaluated_formula.status )
                                         {
                                             console.log("Evaluated formula's data is ",evaluated_formula.data);
+                                            console.log("Source of data is ",evaluated_formula.source );
                                         }
                                         else
                                         {

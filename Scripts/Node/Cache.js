@@ -53,4 +53,10 @@ module.exports = class Cache
     {
         this.data.set(doi, data);
     }
+
+    clear()
+    {
+        this.manifests = new Map();
+        this.data = new Map();
+    }
 }
