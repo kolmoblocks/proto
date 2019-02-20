@@ -1,4 +1,4 @@
-module.exports = class KBWasm
+module.exports = class Wasm
 {
     constructor(raw_wasm, args)
     {
@@ -6,8 +6,13 @@ module.exports = class KBWasm
         this.args = args;
     }
 
-    async Exec()
+    async exec()
     {
+        let result = {
+            status: "",
+            data: []
+        };
+
         try 
         {
             var wasmModule = await new WebAssembly.compile(this.raw_wasm);
@@ -19,13 +24,19 @@ module.exports = class KBWasm
             {
                 // check argument for null
                 if ( null == this.args[arg] )
-                    return this.create_error("Wrong usage, one of arguments is empty");
+                {
+                    result.status = this.create_error("Wrong usage, one of arguments is empty");
+                    return result;
+                }
 
                 // let findout argument index by name
                 let arg_index = 0;
                 {
                     if ( !this.args[arg].hasOwnProperty("ArgName") )
-                        return this.create_error("Wrong usage, one of arguments has no 'ArgName' property");
+                    {
+                        result.status = this.create_error("Wrong usage, one of arguments has no 'ArgName' property");
+                        return result;
+                    }
 
                     let arg_name_buffer = new Uint8Array(Buffer.from(this.args[arg]["ArgName"]));
                     
@@ -44,10 +55,16 @@ module.exports = class KBWasm
                         arg_index = wasmInstance.exports._get_arg_index(arg);
 
                         if ( 0 == arg_index )
-                            return this.create_last_error(wasmInstance);
+                        {
+                            result.status = this.create_last_error(wasmInstance);
+                            return result;
+                        }
                     }
                     else
-                        return this.create_last_error(wasmInstance);
+                    {
+                        result.status = this.create_last_error(wasmInstance);
+                        return result;
+                    }
                 }
 
                 // set arg data to Wasm
@@ -65,7 +82,10 @@ module.exports = class KBWasm
                         }
                     }
                     else
-                        return this.create_last_error(wasmInstance);
+                    {
+                        result.status = this.create_last_error(wasmInstance);
+                        return result;
+                    }
                 }
             }
 
@@ -79,30 +99,33 @@ module.exports = class KBWasm
 
                 if ( 0 != pointer )
                 {   
-                    let result = new Array();
+                    let result_data = new Array();
 
                     var pResultData = new Uint8ClampedArray(wasmInstance.exports.memory.buffer, pointer, size);
                     
                     for (var i = 0; i < pResultData.length; i++) {
-                        result.push(pResultData[i]);
+                        result_data.push(pResultData[i]);
                     }
 
                     // TODO:
                     // result["MIME"] = wasmInstance.exports._get_result_type();
 
-                    return result;
+                    result.status = "ok";
+                    result.data = result_data;
                 }
                 else
-                    return this.create_last_error(wasmInstance);
+                    result.status = this.create_last_error(wasmInstance);
             }
             else
-                return this.create_last_error(wasmInstance);
+                result.status = this.create_last_error(wasmInstance);
 
         } 
         catch(error) 
         {
-            return this.create_error("Exception while Exec: " + error);
+            result.status = this.create_error("Exception while Exec: " + error);
         }
+
+        return result;
     }
 
     create_error(text)

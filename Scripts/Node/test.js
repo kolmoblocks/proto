@@ -50,16 +50,16 @@ engine.network().search_manifest(doi).then( manifest => {
 
                                 if ( dep_with_data_counter == dependencies.data.length )
                                 {
-                                    let evaluated_formula = engine.eval( formula );
-
-                                    if ( "ok" == evaluated_formula.status )
-                                    {
-                                        console.log("Evaluated formula data is ",evaluated_formula.data);
-                                    }
-                                    else
-                                    {
-                                        console.log("Formula can not be evaluated ",evaluated_formula.status);
-                                    }
+                                    engine.eval( formula ).then( evaluated_formula => {
+                                        if ( "ok" == evaluated_formula.status )
+                                        {
+                                            console.log("Evaluated formula data is ",evaluated_formula.data);
+                                        }
+                                        else
+                                        {
+                                            console.log("Formula can not be evaluated ",evaluated_formula.status);
+                                        }
+                                    } );
                                 }
 
                             } );

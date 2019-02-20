@@ -1,3 +1,5 @@
+const Wasm = require('.//Wasm.js')
+
 class Formula
 {
     constructor(json)
@@ -15,9 +17,14 @@ class Formula
             throw "Not found required property actor.wasm";
         
         this.wasm = new Manifest(this.json.actor.wasm);
+        this.wasm.ArgName = "actor.wasm";
 
         if( this.json.actor.hasOwnProperty("JSglue") )
+        {
+            throw "Not implemented yet to exec with JSglue";
             this.jsglue = new Manifest(this.json.actor.JSglue);
+            this.jsglue.ArgName = "actor.JSglue";
+        }
 
 
         // validate parameters
@@ -28,7 +35,7 @@ class Formula
         {   
             let param = new Manifest(this.json.parameters[parameter]);
 
-            param["ArgName"] = parameter;
+            param.ArgName = parameter;
 
             this.parameters.push(param);
         };    
@@ -49,6 +56,45 @@ class Formula
         this.parameters.forEach(parameter => {
             result.data.push(parameter);
         });
+
+        return result;
+    }
+
+    async eval(dependencies_data)
+    {
+        let result = {
+            status: "",
+            data: []
+        };
+
+        let wasm = dependencies_data.get("actor.wasm");
+
+        if ( null == wasm )
+        {
+            result.status = "Evaluation failed, has no actor.wasm data";
+            return result;
+        }
+
+        let args = [];
+        
+        for ( var parameter in this.parameters )
+        {
+            let ArgName = this.parameters[parameter].ArgName;
+            
+            let arg = dependencies_data.get(ArgName);
+         
+            if ( null == arg )
+            {
+                result.status = "Evaluation failed, has no " + ArgName + " data";
+                return result;
+            }
+            
+            arg.ArgName = ArgName;
+
+            args.push(arg);
+        }
+
+        result = await new Wasm(wasm, args).exec();
 
         return result;
     }
