@@ -115,7 +115,7 @@ module.exports = class Network
             data: null
         };
 
-        let raw_value = manifest.has_raw_value();
+        let raw_value = manifest.get_raw_value();
 
         if ( "ok" == raw_value.status )
         {

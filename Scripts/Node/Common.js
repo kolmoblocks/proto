@@ -140,7 +140,7 @@ class Manifest
         return result;
     }
 
-    has_raw_value()
+    get_raw_value()
     {
         let result = {
             status: "Has no raw",

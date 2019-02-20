@@ -59,6 +59,7 @@ module.exports = class Engine
             //let check_result = formula.manifest.check_data(eval_result.data);
             result.status = "ok";
             result.data = eval_result.data;
+            // cache eval data for manifest
         }
         else
             result.status = "Error evaluation formula (" + eval_result.status + ")";
