@@ -1,6 +1,6 @@
 const Server = require('.//Server.js')
 const Cache = require('.//Cache.js')
-const Manifest = require('.//Common.js')
+const Common = require('.//Common.js')
 
 module.exports = class Network
 {
@@ -18,11 +18,47 @@ module.exports = class Network
         throw "Bad network settings";
     }
 
-    async search_manifest(doi)
+    async search_manifest(manifest)
+    {
+        let result = {
+            status: "Not found",
+            source: null,
+            data: null
+        };
+
+        let dois = manifest.get_doi();
+
+        if ( 0 == dois.data.length )
+        {
+            result.status = "Manifest has no doi";
+            return result;
+        }
+
+        if ( this.DedicatedServer )
+        {
+            for ( let doi in dois.data )
+            {
+                let search_result = await this.search_manifest_by_doi(dois.data[doi]);
+
+                if ( "ok" == search_result.status )
+                {
+                    result.status = "ok";
+                    result.source = search_result.source;
+                    result.data = search_result.data;
+
+                    return result;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    async search_manifest_by_doi(doi)
     {
         let result = {
             status: "",
-            from_cache: null,
+            source: null,
             data: null
         };
 
@@ -33,7 +69,7 @@ module.exports = class Network
             if ( "ok" == manifest.status )
             {
                 result.status = "ok";
-                result.from_cache = true;
+                result.source = "Cache";
                 result.data = manifest.data;
             }
             else
@@ -44,10 +80,10 @@ module.exports = class Network
                 {
                     try
                     {
-                        let manifest = new Manifest.Manifest(json_manifest.data);
+                        let manifest = new Common.Manifest(json_manifest.data);
 
                         result.status = "ok";
-                        result.from_cache = false;
+                        result.source = "Network";
                         result.data = manifest;
 
                         this.Cache.set_manifest_by_doi(manifest, doi);                        

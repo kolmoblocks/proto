@@ -1,4 +1,5 @@
 const Engine = require("./Engine.js");
+const Common = require("./Common.js");
 
 let options = {
     Network: {
@@ -8,10 +9,16 @@ let options = {
 
 const engine = new Engine(options);
 
-let doi = "7E1D8D6609499A1A5FB67C6B9E7DD34CF7C6C4355259115FC7161F47266F5F3C";
+let manifest_descr = {
+    doi : {
+        SHA256: "7E1D8D6609499A1A5FB67C6B9E7DD34CF7C6C4355259115FC7161F47266F5F3C"
+    }
+};
 
+let manifest = new Common.Manifest(manifest_descr);
 
-engine.network().search_manifest(doi).then( manifest => {
+engine.network().search_manifest(manifest).then( manifest => {
+//engine.network().search_manifest_by_doi("7E1D8D6609499A1A5FB67C6B9E7DD34CF7C6C4355259115FC7161F47266F5F3C").then( manifest => {
 
     if ( "ok" == manifest.status )
     {
@@ -41,7 +48,7 @@ engine.network().search_manifest(doi).then( manifest => {
                                 else
                                 {
                                     console.log("Dependency has no data");
-                                    // search_manifest
+                                    // search_manifest_...
                                     // get_formulas
                                     // get_dependecies
                                     // search_data
