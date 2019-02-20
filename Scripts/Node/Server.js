@@ -1,4 +1,4 @@
-const http = require('http');
+const https = require('https');
 
 module.exports = class Server
 {
@@ -14,7 +14,7 @@ module.exports = class Server
             data: null
         };
     
-        let url = 'http://' + this.address + '/MANIFEST_BY_DOI=' + doi;
+        let url = this.address + '/search?doi=' + doi;
 
         try
         {
@@ -47,7 +47,7 @@ module.exports = class Server
             data: null
         };
     
-        let url = 'http://' + this.address + '/DATA_BY_DOI=' + doi;
+        let url = this.address + '/raw/' + doi;
 
         try
         {
@@ -66,7 +66,7 @@ module.exports = class Server
     async request_server(url)
     {
         return new Promise((resolve, reject) => {
-            http.get(url, (res) => {
+            https.get(url, (res) => {
                 let data = [];
                 res.on('end', () => resolve(Buffer.concat(data)));
                 res.on('data', (chunk) => data.push(chunk));

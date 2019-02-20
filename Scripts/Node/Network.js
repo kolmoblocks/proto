@@ -47,6 +47,8 @@ module.exports = class Network
 
                     return result;
                 }
+                else
+                    result.status = search_result.status;
             }
         }
 
