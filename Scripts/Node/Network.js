@@ -75,7 +75,7 @@ module.exports = class Network
     {
         let result = {
             status: "",
-            from_cache: null,
+            source: null,
             data: null
         };
 
@@ -85,6 +85,7 @@ module.exports = class Network
         {
             result.status = "ok";
             result.data = raw_value.data;
+            result.source = "Raw value";
             return result;
         }
 
@@ -92,7 +93,7 @@ module.exports = class Network
 
         if ( 0 == dois.data.length )
         {
-            result.status = "ok";
+            result.status = "Manifest has no doi";
             return result;
         }
 
@@ -105,7 +106,7 @@ module.exports = class Network
                 if ( "ok" == data.status )
                 {
                     result.status = "ok";
-                    result.from_cache = true;
+                    result.source = "Cache";
                     result.data = data.data;
 
                     return result;
@@ -119,7 +120,7 @@ module.exports = class Network
                 if ( "ok" == server_data.status )
                 {
                     result.status = "ok";
-                    result.from_cache = false;
+                    result.source = "Network";
                     result.data = server_data.data;
 
                     this.Cache.set_data_by_doi(server_data.data, dois.data[doi]);
