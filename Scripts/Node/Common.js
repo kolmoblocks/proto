@@ -65,6 +65,26 @@ class Manifest
         // 2. has no MIME -> HAVE TO own doi or at least one formula
     }
 
+    has_raw_value()
+    {
+        let result = {
+            status: "Has no raw",
+            data: []
+        };
+
+        if ( this.json.hasOwnProperty("raw") )
+        {
+            result.status = "ok";
+
+            result.data = new Uint8Array(Buffer.from(this.json.raw));
+
+            if ( this.json.hasOwnProperty("MIME") )
+                result.data["MIME"] = this.json.MIME;
+        }
+
+        return result;
+    }
+
     get_doi()
     {
         let result = {

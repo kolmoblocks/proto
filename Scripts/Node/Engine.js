@@ -17,4 +17,16 @@ module.exports = class Engine
     {
         return this.Network;
     }
+
+    eval(formula)
+    {
+        let result = {
+            status: "",
+            data: []
+        };
+
+        
+
+        return result;
+    }
 }

@@ -10,6 +10,7 @@ const engine = new Engine(options);
 
 let doi = "7E1D8D6609499A1A5FB67C6B9E7DD34CF7C6C4355259115FC7161F47266F5F3C";
 
+
 engine.network().search_manifest(doi).then( manifest => {
 
     if ( "ok" == manifest.status )
@@ -20,24 +21,49 @@ engine.network().search_manifest(doi).then( manifest => {
         {
             formulas.data.forEach(formula => {
 
+                let dep_with_data_counter = 0;
+
                 let dependencies = formula.get_dependencies();
             
                 if ( "ok" == dependencies.status )
                 {
-                    dependencies.data.forEach(dependency => {
+                    dependencies.data.forEach(manifest_of_dependency => {
                         
-                        if (0 == dependency.get_formulas().data.length)
+                        if (0 == manifest_of_dependency.get_formulas().data.length)
                         {
-                            engine.network().search_data(dependency).then( res =>{
+                            engine.network().search_data(manifest_of_dependency).then( res =>{
                          
-                                
+                                if ("ok" == res.status)
+                                {
+                                    console.log("Dependency has data ",res);
+                                    dep_with_data_counter = dep_with_data_counter + 1;
+                                }
+                                else
+                                {
+                                    console.log("Dependency has no data");
+                                    // search_manifest
+                                    // get_formulas
+                                    // get_dependecies
+                                    // search_data
+                                    // get all dependencies data -> eval formula
+                                }
 
-                                console.log("Has no dep. ",res);
+                                if ( dep_with_data_counter == dependencies.data.length )
+                                {
+                                    let evaluated_formula = engine.eval( formula );
 
-
+                                    if ( "ok" == evaluated_formula.status )
+                                    {
+                                        console.log("Evaluated formula data is ",evaluated_formula.data);
+                                    }
+                                    else
+                                    {
+                                        console.log("Formula can not be evaluated ",evaluated_formula.status);
+                                    }
+                                }
 
                             } );
-                        }                        
+                        }
 
                     });
                 }
@@ -53,6 +79,7 @@ engine.network().search_manifest(doi).then( manifest => {
         console.log(manifest.status);
     }
 });
+
 
 
 

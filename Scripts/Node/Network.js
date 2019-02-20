@@ -1,6 +1,6 @@
 const Server = require('.//Server.js')
 const Cache = require('.//Cache.js')
-const Manifest = require('.//Manifest.js')
+const Manifest = require('.//Common.js')
 
 module.exports = class Network
 {
@@ -78,6 +78,15 @@ module.exports = class Network
             from_cache: null,
             data: null
         };
+
+        let raw_value = manifest.has_raw_value();
+
+        if ( "ok" == raw_value.status )
+        {
+            result.status = "ok";
+            result.data = raw_value.data;
+            return result;
+        }
 
         let dois = manifest.get_doi();
 
