@@ -8,7 +8,7 @@ class Formula
         this.manifest = manifest;
 
         this.wasm = null;
-        this.JSglue = null;
+        this.jsglue = null;
         this.parameters = [];
 
         // validate actor
@@ -21,13 +21,11 @@ class Formula
         this.wasm = new Manifest(this.json.actor.wasm);
         this.wasm.ArgName = "actor.wasm";
 
-        if( this.json.actor.hasOwnProperty("JSglue") )
+        if( this.json.actor.hasOwnProperty("jsglue") )
         {
-            throw "Not implemented yet to exec with JSglue";
             this.jsglue = new Manifest(this.json.actor.JSglue);
-            this.jsglue.ArgName = "actor.JSglue";
+            this.jsglue.ArgName = "actor.jsglue";
         }
-
 
         // validate parameters
         if ( !this.json.hasOwnProperty("parameters") )
@@ -77,6 +75,19 @@ class Formula
             return result;
         }
 
+        let jsglue = null;
+
+        if ( this.jsglue )
+        {
+            jsglue = dependencies_data.get("actor.jsglue");
+
+            if ( null == jsglue )
+            {
+                result.status = "Evaluation failed, has no actor.jsglue data";
+                return result;
+            }   
+        }
+
         let args = [];
         
         for ( var parameter in this.parameters )
@@ -96,7 +107,7 @@ class Formula
             args.push(arg);
         }
 
-        result = await new Wasm(wasm, args).exec();
+        result = await new Wasm(wasm, jsglue).exec(args);
 
         if ( "ok" == result.status )
         {

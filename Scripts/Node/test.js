@@ -3,7 +3,7 @@ const Common = require("./Common.js");
 
 let options = {
     Network: {
-        DedicatedServer: "https://kolmold.org"
+        DedicatedServer: "http://127.0.0.1:3000" // https://kolmold.org
     }
 };
 

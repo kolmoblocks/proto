@@ -1,4 +1,5 @@
 const https = require('https');
+const http = require('http');
 
 module.exports = class Server
 {
@@ -65,12 +66,25 @@ module.exports = class Server
 
     async request_server(url)
     {
-        return new Promise((resolve, reject) => {
-            https.get(url, (res) => {
-                let data = [];
-                res.on('end', () => resolve(Buffer.concat(data)));
-                res.on('data', (chunk) => data.push(chunk));
-            }).on('error', e => reject(e));
-        });
+        if (url.startsWith("https:"))
+        {
+            return new Promise((resolve, reject) => {
+                https.get(url, (res) => {
+                    let data = [];
+                    res.on('end', () => resolve(Buffer.concat(data)));
+                    res.on('data', (chunk) => data.push(chunk));
+                }).on('error', e => reject(e));
+            });
+        }
+        else
+        {
+            return new Promise((resolve, reject) => {
+                http.get(url, (res) => {
+                    let data = [];
+                    res.on('end', () => resolve(Buffer.concat(data)));
+                    res.on('data', (chunk) => data.push(chunk));
+                }).on('error', e => reject(e));
+            });
+        }
     }
 }

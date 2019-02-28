@@ -1,5 +1,5 @@
 var fs = require('fs');
-const https = require('https');
+const http = require('http');
 const KBserver = require("../Server//KBserver")
 
 const hostname = '127.0.0.1';
@@ -10,10 +10,10 @@ const backend = new KBserver("");
 const req1 = '/search?doi=';
 const req2 = '/raw/';
 
-const req1_msg = `To get manifest by DOI -> https://${hostname}:${port}` + req1 + 'FCE90620CE70369D4B6A5554CD8E52CA43B0AE303A9DE8014A5CAA88B310394D';
-const req2_msg = `To get data by DOI -> https://${hostname}:${port}` + req2 + '2CF24DBA5FB0A30E26E83B2AC5B9E29E1B161E5C1FA7425E73043362938B9824';
+const req1_msg = `To get manifest by DOI -> http://${hostname}:${port}` + req1 + 'FCE90620CE70369D4B6A5554CD8E52CA43B0AE303A9DE8014A5CAA88B310394D';
+const req2_msg = `To get data by DOI -> http://${hostname}:${port}` + req2 + '2CF24DBA5FB0A30E26E83B2AC5B9E29E1B161E5C1FA7425E73043362938B9824';
 
-const server = https.createServer((req, res) => {
+const server = http.createServer((req, res) => {
 
     if ( req.url.startsWith(req1) )
     {
@@ -93,7 +93,7 @@ const server = https.createServer((req, res) => {
 
 server.listen(port, hostname, () => {
 
-    console.log(`Server running at https://${hostname}:${port}/`);
+    console.log(`Server running at http://${hostname}:${port}/`);
 
     console.log(req1_msg);
 

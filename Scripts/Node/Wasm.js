@@ -1,12 +1,36 @@
 module.exports = class Wasm
 {
-    constructor(raw_wasm, args)
+    constructor(raw_wasm, jsglue)
     {
         this.raw_wasm = raw_wasm;
-        this.args = args;
+        this.jsglue = jsglue;
+        this.wasm_instance = null;
     }
 
-    async exec()
+    async init()
+    {
+        let result = {
+            status: "ok"
+        };
+
+        try
+        {
+            if ( null == this.wasm_instance )
+            {
+                var wasmModule = await new WebAssembly.compile(this.raw_wasm);
+
+                this.wasm_instance = await new WebAssembly.instantiate(wasmModule, []);
+            }
+        }
+        catch(error)
+        {
+            result.status = this.create_error("Exception while init: " + error);
+        }
+
+        return result;
+    }
+
+    async exec(args)
     {
         let result = {
             status: "",
@@ -15,114 +39,116 @@ module.exports = class Wasm
 
         try 
         {
-            var wasmModule = await new WebAssembly.compile(this.raw_wasm);
+            let init_res = await this.init();
 
-            var wasmInstance = await new WebAssembly.instantiate(wasmModule, []);
-
-            // fill args
-            for ( var arg in this.args )
+            if ( "ok" == init_res.status )
             {
-                // check argument for null
-                if ( null == this.args[arg] )
+                // fill args
+                for ( var arg in args )
                 {
-                    result.status = this.create_error("Wrong usage, one of arguments is empty");
-                    return result;
-                }
-
-                // let findout argument index by name
-                let arg_index = 0;
-                {
-                    if ( !this.args[arg].hasOwnProperty("ArgName") )
+                    // check argument for null
+                    if ( null == args[arg] )
                     {
-                        result.status = this.create_error("Wrong usage, one of arguments has no 'ArgName' property");
+                        result.status = this.create_error("Wrong usage, one of arguments is empty");
                         return result;
                     }
 
-                    let arg_name_buffer = new Uint8Array(Buffer.from(this.args[arg]["ArgName"]));
-                    
-                    var size = arg_name_buffer.length;
-
-                    var pointer = wasmInstance.exports._set_arg_name(arg, arg_name_buffer.length);
-
-                    if ( 0 != pointer )
+                    // lets findout argument index by name
+                    let arg_index = 0;
                     {
-                        var pWasmData = new Uint8ClampedArray(wasmInstance.exports.memory.buffer, pointer, size);
-
-                        for (var i = 0; i < pWasmData.length; i++) {
-                            pWasmData[i] = arg_name_buffer[i];
+                        if ( !args[arg].hasOwnProperty("ArgName") )
+                        {
+                            result.status = this.create_error("Wrong usage, one of arguments has no 'ArgName' property");
+                            return result;
                         }
 
-                        arg_index = wasmInstance.exports._get_arg_index(arg);
+                        let arg_name_buffer = new Uint8Array(Buffer.from(args[arg]["ArgName"]));
+                        
+                        var size = arg_name_buffer.length;
 
-                        if ( 0 == arg_index )
+                        var pointer = this.wasm_instance.exports._set_arg_name(arg, arg_name_buffer.length);
+
+                        if ( 0 != pointer )
                         {
-                            result.status = this.create_last_error(wasmInstance);
+                            var pWasmData = new Uint8ClampedArray(this.wasm_instance.exports.memory.buffer, pointer, size);
+
+                            for (var i = 0; i < pWasmData.length; i++) {
+                                pWasmData[i] = arg_name_buffer[i];
+                            }
+
+                            arg_index = this.wasm_instance.exports._get_arg_index(arg);
+
+                            if ( 0 == arg_index )
+                            {
+                                result.status = this.create_last_error();
+                                return result;
+                            }
+                        }
+                        else
+                        {
+                            result.status = this.create_last_error();
                             return result;
                         }
                     }
-                    else
+
+                    // set arg data to Wasm
                     {
-                        result.status = this.create_last_error(wasmInstance);
-                        return result;
-                    }
-                }
+                        var size = args[arg].length;
 
-                // set arg data to Wasm
-                {
-                    var size = this.args[arg].length;
+                        var pointer = this.wasm_instance.exports._set_arg(arg_index, size);
 
-                    var pointer = wasmInstance.exports._set_arg(arg_index, size);
+                        if ( 0 != pointer )
+                        {
+                            var pWasmData = new Uint8ClampedArray(this.wasm_instance.exports.memory.buffer, pointer, size);
 
-                    if ( 0 != pointer )
-                    {
-                        var pWasmData = new Uint8ClampedArray(wasmInstance.exports.memory.buffer, pointer, size);
-
-                        for (var i = 0; i < pWasmData.length; i++) {
-                            pWasmData[i] = this.args[arg][i];
+                            for (var i = 0; i < pWasmData.length; i++) {
+                                pWasmData[i] = args[arg][i];
+                            }
+                        }
+                        else
+                        {
+                            result.status = this.create_last_error();
+                            return result;
                         }
                     }
-                    else
-                    {
-                        result.status = this.create_last_error(wasmInstance);
-                        return result;
-                    }
                 }
-            }
 
-            // exec alg in wasm
-            if ( wasmInstance.exports._exec() )
-            {
-                // get result
-                var size = wasmInstance.exports._get_result_size();
+                // exec alg in wasm
+                if ( this.wasm_instance.exports._exec() )
+                {
+                    // get result
+                    var size = this.wasm_instance.exports._get_result_size();
 
-                var pointer = wasmInstance.exports._get_result();
+                    var pointer = this.wasm_instance.exports._get_result();
 
-                if ( 0 != pointer )
-                {   
-                    let result_data = new Array();
+                    if ( 0 != pointer )
+                    {   
+                        let result_data = new Array();
 
-                    var pResultData = new Uint8ClampedArray(wasmInstance.exports.memory.buffer, pointer, size);
-                    
-                    for (var i = 0; i < pResultData.length; i++) {
-                        result_data.push(pResultData[i]);
+                        var pResultData = new Uint8ClampedArray(this.wasm_instance.exports.memory.buffer, pointer, size);
+                        
+                        for (var i = 0; i < pResultData.length; i++) {
+                            result_data.push(pResultData[i]);
+                        }
+
+                        // TODO:
+                        // result["MIME"] = this.wasm_instance.exports._get_result_type();
+
+                        result.status = "ok";
+                        result.data = result_data;
                     }
-
-                    // TODO:
-                    // result["MIME"] = wasmInstance.exports._get_result_type();
-
-                    result.status = "ok";
-                    result.data = result_data;
+                    else
+                        result.status = this.create_last_error();
                 }
                 else
-                    result.status = this.create_last_error(wasmInstance);
+                    result.status = this.create_last_error();
             }
             else
-                result.status = this.create_last_error(wasmInstance);
-
+                result.status = this.create_error("Init error: " + init_res.status);
         } 
         catch(error) 
         {
-            result.status = this.create_error("Exception while Exec: " + error);
+            result.status = this.create_error("Exception while exec: " + error);
         }
 
         return result;
@@ -130,18 +156,18 @@ module.exports = class Wasm
 
     create_error(text)
     {
-        return new Uint8Array(Buffer.from(JSON.stringify({ "Error" : "KBwasm->Exec", "Text" : text })));
+        return new Uint8Array(Buffer.from(JSON.stringify({ "Error" : "Wasm->exec", "Text" : text })));
     }
 
-    create_last_error(wasmInstance)
+    create_last_error()
     {
         let error = new Array();
 
-        let pointer = wasmInstance.exports._get_last_error();
+        let pointer = this.wasm_instance.exports._get_last_error();
 
-        let size = wasmInstance.exports._get_last_error_size();
+        let size = this.wasm_instance.exports._get_last_error_size();
 
-        var pWasmData = new Uint8ClampedArray(wasmInstance.exports.memory.buffer, pointer, size);
+        var pWasmData = new Uint8ClampedArray(this.wasm_instance.exports.memory.buffer, pointer, size);
 
         for (var i = 0; i < pWasmData.length; i++) {
             error.push(pWasmData[i]);
