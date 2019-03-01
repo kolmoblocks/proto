@@ -109,19 +109,24 @@ class Formula
 
         var wasm_wrapper = new Wasm(wasm, jsglue);
 
-        result = await wasm_wrapper.exec(args);
+        result = await wasm_wrapper.init();
 
         if ( "ok" == result.status )
         {
-            if ( this.manifest )
+            result = await wasm_wrapper.exec(args);
+
+            if ( "ok" == result.status )
             {
-                let mime = this.manifest.get_mime();
-                
-                if ( "ok" == mime.status )
-                    result.data.MIME = mime.data;
+                if ( this.manifest )
+                {
+                    let mime = this.manifest.get_mime();
+                    
+                    if ( "ok" == mime.status )
+                        result.data.MIME = mime.data;
+                }
             }
         }
-
+        
         return result;
     }
 }
