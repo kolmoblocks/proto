@@ -153,6 +153,42 @@
         },
 
         "ref" : "hashcalculator.wasm"
+    },
+
+    "pdf_2_html_wasm" : {
+        
+        "MIME" 		: "application/wasm",
+        "size" 		: 432789,
+
+        "doi" : {
+            "SHA256" : "_pdf_2_html_wasm_"
+        },
+
+        "ref" : "pdf2html.wasm"
+    },
+
+    "pdf_2_html_wasm_jsglue" : {
+        
+        "MIME" 		: "application/javascript",
+        "size" 		: 202181,
+
+        "doi" : {
+            "SHA256" : "_pdf_2_html_wasm_jsglue_"
+        },
+
+        "ref" : "pdf2html.js"
+    },
+
+    "pdf_Spec1" : {
+        
+        "MIME" 		: "application/pdf",
+        "size"		: 56801,
+
+        "doi" : {
+            "SHA256" : "_pdf_Spec1_"
+        },
+
+        "ref" : "Spec1.pdf"
     }
 
 }

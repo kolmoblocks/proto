@@ -313,6 +313,71 @@
         }
     },
 
+    "pdf_2_html_wasm" : {
+        
+        "MIME" 		: "application/wasm",
+        "size" 		: 432789,
+
+        "doi" : {
+            "SHA256" : "_pdf_2_html_wasm_"
+        }
+    },
+
+    "pdf_2_html_wasm_jsglue" : {
+        
+        "MIME" 		: "application/javascript",
+        "size" 		: 202181,
+
+        "doi" : {
+            "SHA256" : "_pdf_2_html_wasm_jsglue_"
+        }
+    },
+
+    "pdf_Spec1" : {
+        
+        "MIME" 		: "application/pdf",
+        "size"		: 56801,
+
+        "doi" : {
+            "SHA256" : "_pdf_Spec1_"
+        }
+    },
+
+    "Spec1_html" : {
+        
+        "size"    : 1101,
+        "MIME"    : "text/html",
+
+        "doi" : {
+            "SHA256"  : "_Spec1_html_"
+        },
+
+        "formulas" : [
+            {
+                "actor" : {
+                    "wasm" : {
+                        "doi" : {
+                            "SHA256" : "_pdf_2_html_wasm_"
+                        }
+                    },
+                    "jsglue" : {
+                        "doi" : {
+                            "SHA256" : "_pdf_2_html_wasm_jsglue_"
+                        }
+                    }
+                },
+                
+                "parameters" : {
+                    "arg1" : {
+                        "doi" : {
+                            "SHA256" : "_pdf_Spec1_"
+                        }
+                    }
+                }
+            }
+        ]
+    },
+
 
 
 
@@ -389,7 +454,7 @@
                         }
 
                     },
-                    "JSglue" : {
+                    "jsglue" : {
 
                         "raw" : "var Module...."
 

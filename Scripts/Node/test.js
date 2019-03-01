@@ -12,6 +12,7 @@ const engine = new Engine(options);
 let manifest_descr = {
     doi : {
         SHA256: "7E1D8D6609499A1A5FB67C6B9E7DD34CF7C6C4355259115FC7161F47266F5F3C"
+        //SHA256: "_Spec1_html_"
     }
 };
 

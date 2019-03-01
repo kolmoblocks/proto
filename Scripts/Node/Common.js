@@ -23,7 +23,7 @@ class Formula
 
         if( this.json.actor.hasOwnProperty("jsglue") )
         {
-            this.jsglue = new Manifest(this.json.actor.JSglue);
+            this.jsglue = new Manifest(this.json.actor.jsglue);
             this.jsglue.ArgName = "actor.jsglue";
         }
 
@@ -107,7 +107,9 @@ class Formula
             args.push(arg);
         }
 
-        result = await new Wasm(wasm, jsglue).exec(args);
+        var wasm_wrapper = new Wasm(wasm, jsglue);
+
+        result = await wasm_wrapper.exec(args);
 
         if ( "ok" == result.status )
         {

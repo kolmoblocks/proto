@@ -4,7 +4,8 @@ module.exports = class Wasm
     {
         this.raw_wasm = raw_wasm;
         this.jsglue = jsglue;
-        this.wasm_instance = null;
+        this.wasm = null;
+        this.wasm_memory = null;
     }
 
     async init()
@@ -15,11 +16,41 @@ module.exports = class Wasm
 
         try
         {
-            if ( null == this.wasm_instance )
+            if ( null == this.wasm )
             {
-                var wasmModule = await new WebAssembly.compile(this.raw_wasm);
+                if ( null == this.jsglue )
+                {
+                    var wasmModule = await new WebAssembly.compile(this.raw_wasm);
 
-                this.wasm_instance = await new WebAssembly.instantiate(wasmModule, []);
+                    var wasm = await new WebAssembly.instantiate(wasmModule, []);
+
+                    this.wasm = wasm.exports;
+
+                    this.wasm_memory = this.wasm.memory;
+                }
+                else
+                {
+                    var jsglue = this.stringFromUTF8Array(this.jsglue);
+                    
+                    var Module = eval(jsglue);
+
+                    this.wasm = new Module (
+                        { 
+                            raw_wasm : this.raw_wasm, // !!!
+
+                            instantiateWasm : function(imports, successCallback)
+                            {
+                                WebAssembly.instantiate(this.raw_wasm, imports).then(function(output) {
+
+                                    successCallback(output.instance);
+
+                                });
+                            }
+                        }
+                    );
+
+                    this.wasm_memory = this.wasm.wasmMemory;
+                }
             }
         }
         catch(error)
@@ -66,17 +97,17 @@ module.exports = class Wasm
                         
                         var size = arg_name_buffer.length;
 
-                        var pointer = this.wasm_instance.exports._set_arg_name(arg, arg_name_buffer.length);
+                        var pointer = this.wasm._set_arg_name(arg, arg_name_buffer.length);
 
                         if ( 0 != pointer )
                         {
-                            var pWasmData = new Uint8ClampedArray(this.wasm_instance.exports.memory.buffer, pointer, size);
+                            var pWasmData = new Uint8ClampedArray(this.wasm_memory.buffer, pointer, size);
 
                             for (var i = 0; i < pWasmData.length; i++) {
                                 pWasmData[i] = arg_name_buffer[i];
                             }
 
-                            arg_index = this.wasm_instance.exports._get_arg_index(arg);
+                            arg_index = this.wasm._get_arg_index(arg);
 
                             if ( 0 == arg_index )
                             {
@@ -95,11 +126,11 @@ module.exports = class Wasm
                     {
                         var size = args[arg].length;
 
-                        var pointer = this.wasm_instance.exports._set_arg(arg_index, size);
+                        var pointer = this.wasm._set_arg(arg_index, size);
 
                         if ( 0 != pointer )
                         {
-                            var pWasmData = new Uint8ClampedArray(this.wasm_instance.exports.memory.buffer, pointer, size);
+                            var pWasmData = new Uint8ClampedArray(this.wasm_memory.buffer, pointer, size);
 
                             for (var i = 0; i < pWasmData.length; i++) {
                                 pWasmData[i] = args[arg][i];
@@ -114,25 +145,25 @@ module.exports = class Wasm
                 }
 
                 // exec alg in wasm
-                if ( this.wasm_instance.exports._exec() )
+                if ( this.wasm._exec() )
                 {
                     // get result
-                    var size = this.wasm_instance.exports._get_result_size();
+                    var size = this.wasm._get_result_size();
 
-                    var pointer = this.wasm_instance.exports._get_result();
+                    var pointer = this.wasm._get_result();
 
                     if ( 0 != pointer )
                     {   
                         let result_data = new Array();
 
-                        var pResultData = new Uint8ClampedArray(this.wasm_instance.exports.memory.buffer, pointer, size);
+                        var pResultData = new Uint8ClampedArray(this.wasm_memory.buffer, pointer, size);
                         
                         for (var i = 0; i < pResultData.length; i++) {
                             result_data.push(pResultData[i]);
                         }
 
                         // TODO:
-                        // result["MIME"] = this.wasm_instance.exports._get_result_type();
+                        // result["MIME"] = this.wasm._get_result_type();
 
                         result.status = "ok";
                         result.data = result_data;
@@ -163,11 +194,11 @@ module.exports = class Wasm
     {
         let error = new Array();
 
-        let pointer = this.wasm_instance.exports._get_last_error();
+        let pointer = this.wasm._get_last_error();
 
-        let size = this.wasm_instance.exports._get_last_error_size();
+        let size = this.wasm._get_last_error_size();
 
-        var pWasmData = new Uint8ClampedArray(this.wasm_instance.exports.memory.buffer, pointer, size);
+        var pWasmData = new Uint8ClampedArray(this.wasm_memory.buffer, pointer, size);
 
         for (var i = 0; i < pWasmData.length; i++) {
             error.push(pWasmData[i]);

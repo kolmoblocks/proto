@@ -25,17 +25,54 @@ int Arg1Size = 0;
 char* pResult = NULL;
 int ResultSize = 0;
 
+char* pArgName = NULL;
+int pArgNameSize = 0;
+
 extern "C" {
+    int* set_arg_name(uint8_t arg_handle, int size);
+    uint8_t get_arg_index(uint8_t arg_handle);
     int* set_arg(uint8_t arg_index, int size);
     int* get_result();
     int get_result_size();
     int exec();
+    int* get_last_error();
+    int get_last_error_size();    
 }
 
 
+int* set_arg_name(uint8_t arg_handle, int size)
+{
+    if ( pArgName )
+        delete [] pArgName;
+        
+    pArgName = new char[size];
+    
+    pArgNameSize = size;
+    
+    return (int*)pArgName;
+}
+
+
+uint8_t get_arg_index(uint8_t arg_handle)
+{
+    return 1; // just one argument
+}
+
+
+int* get_last_error()
+{
+    return NULL;
+}
+
+
+int get_last_error_size()
+{
+    return 0;
+}
+
 int* set_arg(uint8_t arg_index, int size)
 {
-    if (0 == arg_index)
+    if (1 == arg_index)
     {
         if (pArg1)
             delete [] pArg1;
@@ -91,6 +128,8 @@ int exec()
             pResult = new char[ResultSize];
             
             memcpy( (void*)pResult, (void*)html.c_str(), ResultSize );
+
+            delete globalParams;
 
             return true;
         }

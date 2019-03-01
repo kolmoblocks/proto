@@ -30,7 +30,7 @@ function displayPDF(filename)
     {
         let arr_arg0 = new Uint8Array(pdfBinary);
 
-        let pointer = MyWasm._set_arg(0, arr_arg0.length );
+        let pointer = MyWasm._set_arg(1, arr_arg0.length );
         
         var pdf = new Uint8ClampedArray(MyWasm.wasmMemory.buffer, pointer, arr_arg0.length);
 
