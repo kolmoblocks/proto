@@ -187,7 +187,7 @@ module.exports = class Wasm
 
     create_error(text)
     {
-        return new Uint8Array(Buffer.from(JSON.stringify({ "Error" : "Wasm->exec", "Text" : text })));
+        return JSON.stringify({ "Error" : "Wasm->exec", "Text" : text });
     }
 
     create_last_error()
