@@ -18,3 +18,6 @@ WasmSrc/CabBuilder/target/*
 
 WasmSrc/HashCalculator/pkg/*
 WasmSrc/HashCalculator/target/*
+
+WasmSrc/UnBrotli/pkg/*
+WasmSrc/UnBrotli/target/*

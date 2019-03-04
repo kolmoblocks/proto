@@ -1,0 +1,15 @@
+[package]
+name = "unbrotli"
+version = "0.1.0"
+authors = ["Mikhail Ignatovich <mikka_rus@yahoo.com>"]
+description = "Decompress data by Brotli alg"
+license = "MIT/Apache-2.0"
+repository = "https://github.com/kolmoblocks/proto"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "0.2"
+lazy_static = "1.2.0"
+brotli = "3.3.0"

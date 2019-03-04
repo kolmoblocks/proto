@@ -59,6 +59,30 @@
         "ref" : "unzip.wasm"
     },
 
+    "wasm_unzip.br" : {
+
+        "MIME" 		: "application/x-brotli",
+        "size" 		: 49651,
+        
+        "doi" : {
+            "SHA256" : "_wasm_unzip_br_"
+        },
+
+        "ref" : "unzip.wasm.br"
+    },
+
+    "wasm_unbrotli" : {
+
+        "MIME" 		: "application/wasm",
+        "size" 		: 1537590,
+        
+        "doi" : {
+            "SHA256" : "_wasm_unbrotli_"
+        },
+
+        "ref" : "unbrotli.wasm"
+    },
+
     "hellobanana_zip" : {
 
         "MIME" 		: "application/x-zip-compressed",
@@ -119,6 +143,18 @@
         "ref" : "huffman2.wasm"
     },
 
+    "huffman2.br" : {
+
+        "MIME" 		: "application/x-brotli",
+        "size" 		: 4151,
+        
+        "doi" : {
+            "SHA256" : "_wasm_huffman2_br_"
+        },
+
+        "ref" : "huffman2.wasm.br"
+    },
+
     "book1_encoded_data" : {
         
         "MIME" 		: "application/octet-stream",
@@ -167,6 +203,18 @@
         "ref" : "pdf2html.wasm"
     },
 
+    "pdf_2_html_wasm.br" : {
+        
+        "MIME" 		: "application/x-brotli",
+        "size" 		: 125214,
+
+        "doi" : {
+            "SHA256" : "_pdf_2_html_wasm_br_"
+        },
+
+        "ref" : "pdf2html.wasm.br"
+    },
+
     "pdf_2_html_wasm_jsglue" : {
         
         "MIME" 		: "application/javascript",
@@ -177,6 +225,18 @@
         },
 
         "ref" : "pdf2html.js"
+    },
+
+    "pdf_2_html_wasm_jsglue.br" : {
+        
+        "MIME" 		: "application/x-brotli",
+        "size" 		: 40951,
+
+        "doi" : {
+            "SHA256" : "_pdf_2_html_wasm_jsglue_br_"
+        },
+
+        "ref" : "pdf2html.js.br"
     },
 
     "pdf_Spec1" : {
