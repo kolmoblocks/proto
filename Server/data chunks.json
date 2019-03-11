@@ -83,6 +83,30 @@
         "ref" : "unbrotli.wasm"
     },
 
+    "wasm_unzstd" : {
+
+        "MIME" 		: "application/wasm",
+        "size" 		: 42866,
+        
+        "doi" : {
+            "SHA256" : "_wasm_unzstd_"
+        },
+
+        "ref" : "unzstd.wasm"
+    },
+
+    "wasm_unzstd_jsglue" : {
+        
+        "MIME" 		: "application/javascript",
+        "size" 		: 68548,
+
+        "doi" : {
+            "SHA256" : "_wasm_unzstd_jsglue_"
+        },
+
+        "ref" : "unzstd.js"
+    },
+
     "hellobanana_zip" : {
 
         "MIME" 		: "application/x-zip-compressed",
@@ -237,6 +261,18 @@
         },
 
         "ref" : "pdf2html.js.br"
+    },
+
+    "pdf_2_html_wasm_jsglue.zst" : {
+        
+        "MIME" 		: "application/zstd",
+        "size" 		: 44111,
+
+        "doi" : {
+            "SHA256" : "_pdf_2_html_wasm_jsglue_zst_"
+        },
+
+        "ref" : "pdf2html.js.zst"
     },
 
     "pdf_Spec1" : {

@@ -2,3 +2,4 @@ emcc main.cpp -O1 -s WASM=1 -s EXPORTED_FUNCTIONS="[_set_arg_name, _get_arg_inde
 wasm2wat unzstd.wasm -o unzstd.wast
 cp unzstd.wasm ../../Server/files/unzstd.wasm
 cp unzstd.js ../../Server/files/unzstd.js
+node test.js
