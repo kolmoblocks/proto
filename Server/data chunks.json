@@ -285,6 +285,42 @@
         },
 
         "ref" : "Spec1.pdf"
+    },
+
+    "ZSTD_dictionary.dat" : {
+        
+        "MIME" 		: "application/octet-stream",
+        "size"		: 112640,
+
+        "doi" : {
+            "SHA256" : "_ZSTD_dictionary.dat_"
+        },
+
+        "ref" : "cite/ZSTD_dictionary.dat"
+    },
+
+    "bootstrap.css.zst" : {
+        
+        "MIME" 		: "application/octet-stream",
+        "size"		: 18455,
+
+        "doi" : {
+            "SHA256" : "_bootstrap.css.zst_"
+        },
+
+        "ref" : "cite/bootstrap.css.zst"
+    },
+
+    "bootstrap.css" : {
+        
+        "MIME" 		: "application/octet-stream",
+        "size"		: 192348,
+
+        "doi" : {
+            "SHA256" : "_bootstrap.css_"
+        },
+
+        "ref" : "cite/bootstrap.css"
     }
 
 }

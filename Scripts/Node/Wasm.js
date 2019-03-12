@@ -32,7 +32,7 @@ module.exports = class Wasm
                 {
                     var jsglue = this.stringFromUTF8Array(this.jsglue);
                     
-                    var Module = eval(jsglue);
+                    var Module = await eval(jsglue);
 
                     this.wasm = new Module (
                         { 

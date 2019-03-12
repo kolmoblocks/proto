@@ -42,6 +42,14 @@ int DictionarySize = 0;
 char* pResult = NULL;
 int ResultSize = 0;
 
+void freeResult()
+{
+    if ( NULL != pResult )
+        delete [] pResult;
+
+    pResult = NULL;
+    ResultSize = 0; 
+}
 
 void set_last_error(const char* text)
 {
@@ -70,11 +78,11 @@ int* set_arg_name(uint8_t arg_handle, int size)
         return NULL;
     }
 
-    auto pResult = new char [size];
+    auto pRes = new char [size];
 
-    pArgsNames[arg_handle] = pResult;
+    pArgsNames[arg_handle] = pRes;
 
-    return (int*)pResult;
+    return (int*)pRes;
 }
 
 
@@ -163,6 +171,8 @@ int get_result_size() {
 
 int exec()
 {
+    freeResult();
+
     if (( NULL == pCompressedData ) || ( 0 == CompressedDataSize ))
     {
         set_last_error("_exec, compressed data not defined");
@@ -171,7 +181,7 @@ int exec()
     }
 
     auto rSize = ZSTD_findDecompressedSize((void*)pCompressedData, CompressedDataSize);
-
+    
     if ( ZSTD_CONTENTSIZE_ERROR == rSize )
     {
         set_last_error("_exec, it was not compressed by zstd");
@@ -180,29 +190,64 @@ int exec()
     } 
     else if ( ZSTD_CONTENTSIZE_UNKNOWN == rSize ) 
     {
-        set_last_error("_exec, original size unknown");
+        //set_last_error("_exec, original size unknown");
 
-        return false;
+        //return false;
+
+        rSize = 192348;
     }
-
-    pResult = new char [rSize];
 
     ResultSize = rSize;
 
-    size_t const dSize = ZSTD_decompress((void*)pResult, rSize, (void*)pCompressedData, CompressedDataSize);
+    pResult = new char [ResultSize];
 
-    if ( dSize != rSize ) 
+    size_t dSize = 0;
+    
+    if (( NULL != pDictionary ) && ( 0 != DictionarySize ))
     {
-        delete [] pResult;
-        
-        pResult = NULL;
+        ZSTD_DDict* const pZSTDDictionary = ZSTD_createDDict((void*)pDictionary, DictionarySize);
 
-        ResultSize = 0;
+        if ( NULL == pZSTDDictionary )
+        { 
+            set_last_error("_exec, create dictionary error");
 
+            freeResult();
+
+            return false;
+        }
+
+        ZSTD_DCtx* const pZSTDDictCtx = ZSTD_createDCtx();
+
+        if ( NULL == pZSTDDictCtx )
+        { 
+            set_last_error("_exec, create dictionary context");
+
+            ZSTD_freeDDict(pZSTDDictionary);
+
+            freeResult();
+
+            return false;
+        }
+
+        dSize = ZSTD_decompress_usingDDict(pZSTDDictCtx, (void*)pResult, ResultSize, (void*)pCompressedData, CompressedDataSize, pZSTDDictionary);
+
+        ZSTD_freeDCtx(pZSTDDictCtx);
+
+        ZSTD_freeDDict(pZSTDDictionary);
+    }
+    else
+    {
+        dSize = ZSTD_decompress((void*)pResult, ResultSize, (void*)pCompressedData, CompressedDataSize);
+    }
+
+    if ( dSize != ResultSize ) 
+    {
         set_last_error("_exec, error decoding");
+
+        freeResult();
         
         return false;
     }
-
+    
     return true;
 }
