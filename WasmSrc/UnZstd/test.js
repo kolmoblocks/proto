@@ -32,7 +32,7 @@ console.log = function(data)
 
 async function first()
 {
-    console.log("Test for Zstd decompression (pdf_2_html_wasm_jsglue_zst_ ----UnZstd----> _pdf_2_html_wasm_jsglue_)");
+    console.log("Test for Zstd decompression (_pdf_2_html_wasm_jsglue_zst_ ----UnZstd----> _pdf_2_html_wasm_jsglue_)");
 
     Server.get_data_by_doi("_wasm_unzstd_").then( wasm_unzstd => {
 

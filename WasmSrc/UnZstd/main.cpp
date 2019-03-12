@@ -42,6 +42,7 @@ int DictionarySize = 0;
 char* pResult = NULL;
 int ResultSize = 0;
 
+
 void freeResult()
 {
     if ( NULL != pResult )
@@ -171,6 +172,8 @@ int get_result_size() {
 
 int exec()
 {
+    bool bDecompressedSizeFinded = true;
+
     freeResult();
 
     if (( NULL == pCompressedData ) || ( 0 == CompressedDataSize ))
@@ -190,11 +193,23 @@ int exec()
     } 
     else if ( ZSTD_CONTENTSIZE_UNKNOWN == rSize ) 
     {
-        //set_last_error("_exec, original size unknown");
+        rSize = ZSTD_decompressBound((void*)pCompressedData, CompressedDataSize);
 
-        //return false;
+        if ( ZSTD_CONTENTSIZE_ERROR == rSize )
+        {
+            set_last_error("_exec, original size unknown");
 
-        rSize = 192348;
+            return false;
+        }
+
+        bDecompressedSizeFinded = false;
+    }
+
+    if ( 0 == rSize )
+    {
+        set_last_error("_exec, original size is zero");
+
+        return false;
     }
 
     ResultSize = rSize;
@@ -242,6 +257,16 @@ int exec()
 
     if ( dSize != ResultSize ) 
     {
+        if (( false == bDecompressedSizeFinded ) && dSize )
+        {
+            if ( dSize < ResultSize ) 
+            {
+                ResultSize = dSize;
+
+                return true;
+            }
+        }
+
         set_last_error("_exec, error decoding");
 
         freeResult();
