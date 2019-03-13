@@ -71,6 +71,7 @@ module.exports = class Server
             return new Promise((resolve, reject) => {
                 https.get(url, (res) => {
                     let data = [];
+                    if (200 != res.statusCode) return reject(res.statusMessage + ", code=" + res.statusCode);
                     res.on('end', () => resolve(Buffer.concat(data)));
                     res.on('data', (chunk) => data.push(chunk));
                 }).on('error', e => reject(e));
@@ -81,6 +82,7 @@ module.exports = class Server
             return new Promise((resolve, reject) => {
                 http.get(url, (res) => {
                     let data = [];
+                    if (200 != res.statusCode) return reject(res.statusMessage + ", code=" + res.statusCode);
                     res.on('end', () => resolve(Buffer.concat(data)));
                     res.on('data', (chunk) => data.push(chunk));
                 }).on('error', e => reject(e));
