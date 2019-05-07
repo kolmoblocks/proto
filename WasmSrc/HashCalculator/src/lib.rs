@@ -209,10 +209,8 @@ pub extern "C" fn _exec() -> bool {
 
         _arg_name = String::from_utf8(_buffer.to_vec()).unwrap().to_uppercase();
 
-        if ALG_NAME_SHA256 != _arg_name && ALG_NAME_SHA512 != _arg_name && ALG_NAME_MD5 != _arg_name {
-
+        if (false == _arg_name.contains(ALG_NAME_SHA256)) && (_arg_name.contains(ALG_NAME_SHA512)) && (_arg_name.contains(ALG_NAME_MD5)) {
             set_last_error("_exec, invalid algorithm name");
-
             return false;
         }
     }
@@ -221,7 +219,7 @@ pub extern "C" fn _exec() -> bool {
     
     let mut _result = result.lock().unwrap();
 
-    if String::from(ALG_NAME_SHA256) == _arg_name {
+    if _arg_name.contains(ALG_NAME_SHA256) {
 
         let mut _hasher = Sha256::new();
 
@@ -234,7 +232,7 @@ pub extern "C" fn _exec() -> bool {
         }
     }
 
-    if String::from(ALG_NAME_SHA512) == _arg_name {
+    if _arg_name.contains(ALG_NAME_SHA512) {
 
         let mut _hasher = Sha512::new();
 
@@ -247,7 +245,7 @@ pub extern "C" fn _exec() -> bool {
         }
     }
 
-    if String::from(ALG_NAME_MD5) == _arg_name {
+    if _arg_name.contains(ALG_NAME_MD5) {
 
         let _digest = md5::compute(_input);
 
